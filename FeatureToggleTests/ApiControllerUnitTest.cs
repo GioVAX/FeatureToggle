@@ -1,6 +1,7 @@
 using FeatureToggle.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace FeatureToggleTests
@@ -17,9 +18,17 @@ namespace FeatureToggleTests
         [Fact]
         public void GetFeature_ReturnsJson()
         {
-            var features = _sut.GetFeatures();
+            var json = _sut.GetFeatures();
 
-            Assert.IsType<JsonResult>(features);
+            Assert.IsType<JsonResult>(json);
+        }
+
+        [Fact]
+        public void GetFeature_ReturnsArrayOfFeatures()
+        {
+            var json = _sut.GetFeatures();
+
+            Assert.IsType<KeyValuePair<string, string>[]>(json.Value);
         }
     }
 }

@@ -11,7 +11,12 @@ namespace FeatureToggle.Controllers
 
         public JsonResult GetFeatures()
         {
-            return Json("hello");
+            var features = new KeyValuePair<string, string>[]
+            {
+                new KeyValuePair<string, string>("hello", "world")
+            };
+
+            return Json(features);
         }
     }
 }
