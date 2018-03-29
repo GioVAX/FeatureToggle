@@ -8,7 +8,6 @@ namespace FeatureToggle.Controllers
 {
     public class ApiController : Controller
     {
-
         public JsonResult GetFeatures()
         {
             var features = new KeyValuePair<string, string>[]

@@ -1,6 +1,5 @@
 using FeatureToggle.Controllers;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using Xunit;
 
@@ -8,7 +7,7 @@ namespace FeatureToggleTests
 {
     public class ApiControllerUnitTest
     {
-        ApiController _sut;
+        readonly ApiController _sut;
 
         public ApiControllerUnitTest()
         {
