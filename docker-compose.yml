@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  featuretoggle:
+    image: featuretoggle
+    build:
+      context: .
+      dockerfile: FeatureToggle/Dockerfile
