@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System.Collections.Generic;
 using Xunit;
+using FluentAssertions;
 
 namespace FeatureToggle.Tests
 {
@@ -17,8 +18,9 @@ namespace FeatureToggle.Tests
             _repository = new Mock<IFeatureRepository>();
             _repository.Setup(mock => mock.Select())
                 .Returns(new KeyValuePair<string, string>[] {
-                new KeyValuePair<string, string>("hello", "world")
-           });
+                    new KeyValuePair<string, string>("hello", "world")
+                }
+            );
 
             _sut = new ApiController(_repository.Object);
         }
@@ -29,7 +31,7 @@ namespace FeatureToggle.Tests
         {
             var json = _sut.GetFeatures();
 
-            Assert.IsType<JsonResult>(json);
+            json.Should().BeOfType<JsonResult>();
         }
 
         [Fact]
@@ -38,7 +40,8 @@ namespace FeatureToggle.Tests
         {
             var json = _sut.GetFeatures();
 
-            Assert.IsType<KeyValuePair<string, string>[]>(json.Value);
+
+            json.Value.Should().BeOfType<KeyValuePair<string, string>[]>();
         }
 
         [Fact]
