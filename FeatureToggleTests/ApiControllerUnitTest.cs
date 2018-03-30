@@ -24,6 +24,7 @@ namespace FeatureToggleTests
         }
 
         [Fact]
+        [Trait("Subcutaneous", "")]
         public void GetFeature_ReturnsJson()
         {
             var json = _sut.GetFeatures();
@@ -32,6 +33,7 @@ namespace FeatureToggleTests
         }
 
         [Fact]
+        [Trait("Subcutaneous", "")]
         public void GetFeature_ReturnsArrayOfFeatures()
         {
             var json = _sut.GetFeatures();
@@ -40,6 +42,7 @@ namespace FeatureToggleTests
         }
 
         [Fact]
+        [Trait("Subcutaneous", "")]
         public void GetFeature_CallsRepositorySelect()
         {
             var _ = _sut.GetFeatures();
