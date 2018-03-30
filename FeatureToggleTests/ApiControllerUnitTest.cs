@@ -1,5 +1,7 @@
 using FeatureToggle.Controllers;
+using FeatureToggle.Definitions;
 using Microsoft.AspNetCore.Mvc;
+using Moq;
 using System.Collections.Generic;
 using Xunit;
 
@@ -8,10 +10,17 @@ namespace FeatureToggleTests
     public class ApiControllerUnitTest
     {
         readonly ApiController _sut;
+        readonly Mock<IFeatureRepository> _repository;
 
         public ApiControllerUnitTest()
         {
-            _sut = new ApiController();
+            _repository = new Mock<IFeatureRepository>();
+            _repository.Setup(mock => mock.Select())
+                .Returns(new KeyValuePair<string, string>[] {
+                new KeyValuePair<string, string>("hello", "world")
+           });
+
+            _sut = new ApiController(_repository.Object);
         }
 
         [Fact]
@@ -28,6 +37,14 @@ namespace FeatureToggleTests
             var json = _sut.GetFeatures();
 
             Assert.IsType<KeyValuePair<string, string>[]>(json.Value);
+        }
+
+        [Fact]
+        public void GetFeature_CallsRepositorySelect()
+        {
+            var _ = _sut.GetFeatures();
+
+            _repository.Verify(mock => mock.Select(), Times.Once);
         }
     }
 }

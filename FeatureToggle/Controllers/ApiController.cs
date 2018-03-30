@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FeatureToggle.Definitions;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,12 +9,16 @@ namespace FeatureToggle.Controllers
 {
     public class ApiController : Controller
     {
+        IFeatureRepository _repository;
+
+        public ApiController( IFeatureRepository repository )
+        {
+            _repository = repository;
+        }
+
         public JsonResult GetFeatures()
         {
-            var features = new KeyValuePair<string, string>[]
-            {
-                new KeyValuePair<string, string>("hello", "world")
-            };
+            var features = _repository.Select();
 
             return Json(features);
         }
