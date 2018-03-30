@@ -6,6 +6,6 @@ namespace FeatureToggle.Definitions
 {
     public interface IFeatureRepository
     {
-        IEnumerable<KeyValuePair<string, string>> Select();
+        IEnumerable<KeyValuePair<string, string>> Select( string pattern);
     }
 }

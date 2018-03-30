@@ -16,7 +16,7 @@ namespace FeatureToggle.Tests
         public ApiControllerUnitTest()
         {
             _repository = new Mock<IFeatureRepository>();
-            _repository.Setup(mock => mock.Select())
+            _repository.Setup(mock => mock.Select( It.IsAny<string>()))
                 .Returns(new KeyValuePair<string, string>[] {
                     new KeyValuePair<string, string>("hello", "world")
                 }
@@ -50,7 +50,7 @@ namespace FeatureToggle.Tests
         {
             var _ = _sut.GetFeatures();
 
-            _repository.Verify(mock => mock.Select(), Times.Once);
+            _repository.Verify(mock => mock.Select(It.IsAny<string>()), Times.Once);
         }
     }
 }

@@ -18,7 +18,7 @@ namespace FeatureToggle.Controllers
 
         public JsonResult GetFeatures()
         {
-            var features = _repository.Select();
+            var features = _repository.Select("");
 
             return Json(features);
         }
