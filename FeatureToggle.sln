@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2015
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatureToggle", "FeatureToggle\FeatureToggle.csproj", "{C01455B7-9622-4552-BA22-9198AD647859}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FeatureToggle", "FeatureToggle\FeatureToggle.csproj", "{C01455B7-9622-4552-BA22-9198AD647859}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{178D9498-C28D-4667-8CBC-7A506D6CC43E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatureToggleTests", "FeatureToggleTests\FeatureToggleTests.csproj", "{6F764E77-FB47-4131-B6AA-7005E84CAE41}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FeatureToggle.Tests", "FeatureToggleTests\FeatureToggle.Tests.csproj", "{6F764E77-FB47-4131-B6AA-7005E84CAE41}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatureToggle.Definitions", "FeatureToggle.Definitions\FeatureToggle.Definitions.csproj", "{64E310C7-763A-4EAC-BAF9-BB04C55D1B4B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FeatureToggle.Definitions", "FeatureToggle.Definitions\FeatureToggle.Definitions.csproj", "{64E310C7-763A-4EAC-BAF9-BB04C55D1B4B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -5,7 +5,7 @@ using Moq;
 using System.Collections.Generic;
 using Xunit;
 
-namespace FeatureToggleTests
+namespace FeatureToggle.Tests
 {
     public class ApiControllerUnitTest
     {
