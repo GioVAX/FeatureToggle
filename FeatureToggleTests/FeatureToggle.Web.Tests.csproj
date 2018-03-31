@@ -16,7 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FeatureToggle.Definitions\FeatureToggle.Definitions.csproj" />
-    <ProjectReference Include="..\FeatureToggle\FeatureToggle.csproj" />
+    <ProjectReference Include="..\FeatureToggle\FeatureToggle.Web.csproj" />
   </ItemGroup>
 
 </Project>
