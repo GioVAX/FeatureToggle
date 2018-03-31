@@ -11,6 +11,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FeatureToggle.Tests", "Feat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FeatureToggle.Definitions", "FeatureToggle.Definitions\FeatureToggle.Definitions.csproj", "{64E310C7-763A-4EAC-BAF9-BB04C55D1B4B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatureToggle.DAL", "FeatureToggle.DAL\FeatureToggle.DAL.csproj", "{B951FFFE-D943-4148-9E2D-5B621C097037}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatureToggle.DAL.Tests", "FeatureToggle.DAL.Tests\FeatureToggle.DAL.Tests.csproj", "{D8096157-CD68-4353-B286-FDD7D9D39D5E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{64E310C7-763A-4EAC-BAF9-BB04C55D1B4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{64E310C7-763A-4EAC-BAF9-BB04C55D1B4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{64E310C7-763A-4EAC-BAF9-BB04C55D1B4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B951FFFE-D943-4148-9E2D-5B621C097037}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B951FFFE-D943-4148-9E2D-5B621C097037}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B951FFFE-D943-4148-9E2D-5B621C097037}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B951FFFE-D943-4148-9E2D-5B621C097037}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8096157-CD68-4353-B286-FDD7D9D39D5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8096157-CD68-4353-B286-FDD7D9D39D5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8096157-CD68-4353-B286-FDD7D9D39D5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8096157-CD68-4353-B286-FDD7D9D39D5E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
