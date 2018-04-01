@@ -11,14 +11,19 @@ namespace FeatureToggle.DAL.Tests
 
         public FeatureRepositoryUnitTests()
         {
-            _sut = new FeatureRepository();
+            _sut = new FeatureRepository( @"Test.Json" );
         }
 
         [Fact]
         public void FeatureRepository_ShouldImplementIFeatureRepository()
         {
             _sut.Should().BeAssignableTo<IFeatureRepository>();
+        }
 
+        [Fact]
+        public void FeatureRepository_SelectNoPattern_ShouldReturnAllFeatures()
+        {
+            _sut.Select("").Should().HaveCount(4);
         }
     }
 }

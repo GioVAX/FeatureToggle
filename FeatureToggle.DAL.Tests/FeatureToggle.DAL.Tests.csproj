@@ -20,4 +20,10 @@
     <ProjectReference Include="..\FeatureToggle.Definitions\FeatureToggle.Definitions.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Test.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
