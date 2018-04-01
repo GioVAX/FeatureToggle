@@ -7,11 +7,11 @@ namespace FeatureToggle.DAL.Tests
 {
     public class FeatureRepositoryUnitTests
     {
-        readonly FeatureRepository _sut; 
+        readonly FeatureRepository _sut;
 
         public FeatureRepositoryUnitTests()
         {
-            _sut = new FeatureRepository( @"Test.Json" );
+            _sut = new FeatureRepository(@"Test.Json");
         }
 
         [Fact]
@@ -21,9 +21,16 @@ namespace FeatureToggle.DAL.Tests
         }
 
         [Fact]
-        public void FeatureRepository_SelectNoPattern_ShouldReturnAllFeatures()
+        public void FeatureRepository_SelectNoPattern_ShouldReturn4Features()
         {
             _sut.Select("").Should().HaveCount(4);
+        }
+
+        [Fact]
+        public void FeatureRepository_SelectPatternFeatureToggle_ShouldReturn2FeaturesStartingWithFeatureToggle()
+        {
+            _sut.Select("FeatureToggle").Should().HaveCount(2)
+                .And.OnlyContain(pair => pair.Key.StartsWith("FeatureToggle", StringComparison.InvariantCultureIgnoreCase));
         }
     }
 }

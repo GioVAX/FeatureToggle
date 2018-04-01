@@ -1,9 +1,9 @@
-﻿using FeatureToggle.Definitions;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
+using System.Linq;
+using FeatureToggle.Definitions;
+using Newtonsoft.Json;
 
 namespace FeatureToggle.DAL
 {
@@ -19,7 +19,10 @@ namespace FeatureToggle.DAL
 
         public IEnumerable<KeyValuePair<string, string>> Select(string pattern)
         {
-            return _features;
+            if (string.IsNullOrEmpty(pattern))
+                return _features;
+
+            return _features.Where(pair => pair.Key.StartsWith(pattern, StringComparison.InvariantCultureIgnoreCase));
         }
     }
 }
