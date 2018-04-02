@@ -29,8 +29,9 @@ namespace FeatureToggle.DAL.Tests
         [Fact]
         public void FeatureRepository_SelectPatternFeatureToggle_ShouldReturn2FeaturesStartingWithFeatureToggle()
         {
-            _sut.Select("FeatureToggle").Should().HaveCount(2)
-                .And.OnlyContain(pair => pair.Key.StartsWith("FeatureToggle", StringComparison.InvariantCultureIgnoreCase));
+            var pattern = "FeatureToggle";
+            _sut.Select(pattern).Should().HaveCount(2)
+                .And.OnlyContain(pair => pair.Key.StartsWith(pattern, StringComparison.InvariantCultureIgnoreCase));
         }
     }
 }
