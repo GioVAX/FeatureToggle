@@ -7,13 +7,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FeatureToggle.Web", "Featur
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{178D9498-C28D-4667-8CBC-7A506D6CC43E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FeatureToggle.Web.Tests", "FeatureToggleTests\FeatureToggle.Web.Tests.csproj", "{6F764E77-FB47-4131-B6AA-7005E84CAE41}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FeatureToggle.Web.Tests", "FeatureToggle.Web.Tests\FeatureToggle.Web.Tests.csproj", "{6F764E77-FB47-4131-B6AA-7005E84CAE41}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FeatureToggle.Definitions", "FeatureToggle.Definitions\FeatureToggle.Definitions.csproj", "{64E310C7-763A-4EAC-BAF9-BB04C55D1B4B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatureToggle.DAL", "FeatureToggle.DAL\FeatureToggle.DAL.csproj", "{B951FFFE-D943-4148-9E2D-5B621C097037}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FeatureToggle.DAL", "FeatureToggle.DAL\FeatureToggle.DAL.csproj", "{B951FFFE-D943-4148-9E2D-5B621C097037}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatureToggle.DAL.Tests", "FeatureToggle.DAL.Tests\FeatureToggle.DAL.Tests.csproj", "{D8096157-CD68-4353-B286-FDD7D9D39D5E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FeatureToggle.DAL.Tests", "FeatureToggle.DAL.Tests\FeatureToggle.DAL.Tests.csproj", "{D8096157-CD68-4353-B286-FDD7D9D39D5E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
