@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Features.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.6" />
   </ItemGroup>
 
@@ -14,6 +18,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Features.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FeatureToggle.DAL\FeatureToggle.DAL.csproj" />
     <ProjectReference Include="..\FeatureToggle.Definitions\FeatureToggle.Definitions.csproj" />
   </ItemGroup>
 

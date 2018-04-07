@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FeatureToggle.DAL;
+using FeatureToggle.Definitions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -22,6 +24,9 @@ namespace FeatureToggle
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
+            var featuresConfigurationFile = Configuration.GetValue<string>("FeaturesConfigurationFile");
+            services.AddSingleton<IFeatureRepository>(_ => new DiskFeatureRepository(featuresConfigurationFile));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

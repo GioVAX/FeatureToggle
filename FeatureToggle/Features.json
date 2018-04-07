@@ -1,0 +1,18 @@
+[
+  {
+    "Key": "FeatureToggle.Config1",
+    "Value": "1"
+  },
+  {
+    "Key": "FeatureToggle.Color",
+    "Value": "Red"
+  },
+  {
+    "Key": "OtherRoot.Font",
+    "Value": "Calibri"
+  },
+  {
+    "Key": "Boolean.Value",
+    "Value": "true"
+  }
+]
