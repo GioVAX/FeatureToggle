@@ -7,11 +7,11 @@ namespace FeatureToggle.DAL.Tests
 {
     public class FeatureRepositoryUnitTests
     {
-        readonly FeatureRepository _sut;
+        readonly DiskFeatureRepository _sut;
 
         public FeatureRepositoryUnitTests()
         {
-            _sut = new FeatureRepository(@"Test.Json");
+            _sut = new DiskFeatureRepository(@"Test.Json");
         }
 
         [Fact]

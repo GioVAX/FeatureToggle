@@ -7,11 +7,11 @@ using Newtonsoft.Json;
 
 namespace FeatureToggle.DAL
 {
-    public class FeatureRepository : IFeatureRepository
+    public class DiskFeatureRepository : IFeatureRepository
     {
         List<KeyValuePair<string, string>> _features;
 
-        public FeatureRepository(string filepath)
+        public DiskFeatureRepository(string filepath)
         {
             var json = File.ReadAllText(filepath);
             _features = JsonConvert.DeserializeObject<List<KeyValuePair<string, string>>>(json);
