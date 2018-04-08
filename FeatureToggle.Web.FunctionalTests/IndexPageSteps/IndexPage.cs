@@ -10,7 +10,7 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
     public class IndexPageModel
     {
         public static By FeaturesListBy => By.CssSelector("#featuresList");
-
+        public static By FeatureListTableRowsBy => By.CssSelector("#featuresList tbody tr");
     }
 
     [Binding]
@@ -28,13 +28,13 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
         public void GivenIHaveAccessToTheWebSite()
         {
         }
-        
+
         [When(@"I browse the index page of features")]
         public void WhenIBrowseTheIndexPageOfFeatures()
         {
             _driver.Navigate().GoToUrl(_baseUrl);
         }
-        
+
         [Then(@"I will see the features list")]
         public void ThenIWillSeeFeatures()
         {
@@ -44,7 +44,7 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
         [Then(@"it will contain (.*) features")]
         public void ThenItWillContainFeatures(int featuresNumber)
         {
-            ScenarioContext.Current.Pending();
+            Assert.Equal(featuresNumber, _driver.FindElements(IndexPageModel.FeatureListTableRowsBy).Count);
         }
     }
 }
