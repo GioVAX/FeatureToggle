@@ -20,6 +20,8 @@ namespace FeatureToggle.Controllers
 
         public IActionResult Index()
         {
+            var features = _repository.Select("");
+
             return View();
         }
 

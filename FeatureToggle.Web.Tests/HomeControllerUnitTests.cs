@@ -1,5 +1,7 @@
 ﻿using FeatureToggle.Controllers;
 using FeatureToggle.Definitions;
+using FluentAssertions;
+using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -22,8 +24,24 @@ namespace FeatureToggle.Web.Tests
 
         [Fact]
         [Trait("Subcutaneous", "")]
-        public void FirstTest()
+        public void Index_ReturnsView()
         {
+            var view = _sut.Index();
+            view.Should().BeOfType<ViewResult>();
+        }
+
+        [Fact]
+        [Trait("Subcutaneous","")]
+        public void Index_ShouldCallRepositoryGetFeatures()
+        {
+            _repository.Setup(mock => mock.Select(It.IsAny<string>()))
+                .Returns(new KeyValuePair<string, string>[] {
+                    new KeyValuePair<string, string>("hello", "world")
+                });
+
+            _sut.Index();
+
+            _repository.Verify(repo => repo.Select( It.IsAny<string>() ), Times.Once);
         }
     }
 }
