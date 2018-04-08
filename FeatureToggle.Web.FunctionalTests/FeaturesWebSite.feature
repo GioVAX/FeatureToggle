@@ -7,4 +7,5 @@
 Scenario: View the list of configured features
 	Given I have access to the web site
 	When I browse the index page of features
-	Then I will see 4 features
+	Then I will see the features list
+	And it will contain 4 features

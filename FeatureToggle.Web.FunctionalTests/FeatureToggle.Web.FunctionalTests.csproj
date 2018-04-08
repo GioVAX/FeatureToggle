@@ -75,6 +75,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>FeaturesWebSite.feature</DependentUpon>
     </Compile>
+    <Compile Include="IndexPageSteps\IndexPage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
