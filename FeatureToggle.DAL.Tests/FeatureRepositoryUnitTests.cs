@@ -2,6 +2,7 @@ using System;
 using Xunit;
 using FluentAssertions;
 using FeatureToggle.Definitions;
+using System.Collections.Generic;
 
 namespace FeatureToggle.DAL.Tests
 {
@@ -18,6 +19,13 @@ namespace FeatureToggle.DAL.Tests
         public void FeatureRepository_ShouldImplementIFeatureRepository()
         {
             _sut.Should().BeAssignableTo<IFeatureRepository>();
+        }
+
+        [Fact]
+        public void FeatureRepository_Select_ShouldReturnListOfFeatures()
+        {
+            _sut.Select("").Should()
+                .BeOfType<List<KeyValuePair<string, string>>>();
         }
 
         [Fact]
