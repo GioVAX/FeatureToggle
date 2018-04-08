@@ -5,11 +5,19 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using FeatureToggle.Models;
+using FeatureToggle.Definitions;
 
 namespace FeatureToggle.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IFeatureRepository _repository;
+
+        public HomeController(IFeatureRepository repository)
+        {
+            _repository = repository;
+        }
+
         public IActionResult Index()
         {
             return View();
