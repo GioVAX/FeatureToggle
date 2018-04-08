@@ -22,7 +22,7 @@ namespace FeatureToggle.Controllers
         {
             var features = _repository.Select("");
 
-            return View();
+            return View(features);
         }
 
         public IActionResult About()

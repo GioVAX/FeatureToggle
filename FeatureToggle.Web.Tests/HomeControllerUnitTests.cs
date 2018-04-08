@@ -1,6 +1,7 @@
 ﻿using FeatureToggle.Controllers;
 using FeatureToggle.Definitions;
 using FluentAssertions;
+using FluentAssertions.Execution;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System;
@@ -31,17 +32,42 @@ namespace FeatureToggle.Web.Tests
         }
 
         [Fact]
-        [Trait("Subcutaneous","")]
+        [Trait("Subcutaneous", "")]
         public void Index_ShouldCallRepositoryGetFeatures()
         {
             _repository.Setup(mock => mock.Select(It.IsAny<string>()))
-                .Returns(new KeyValuePair<string, string>[] {
+                .Returns(new List<KeyValuePair<string, string>> {
                     new KeyValuePair<string, string>("hello", "world")
                 });
 
             _sut.Index();
 
-            _repository.Verify(repo => repo.Select( It.IsAny<string>() ), Times.Once);
+            _repository.Verify(repo => repo.Select(It.IsAny<string>()), Times.Once);
+        }
+
+        [Fact]
+        [Trait("Subcutaneous", "")]
+        public void Index_ShouldReturnModelViewWithEnumerableOfFeatures()
+        {
+            var featureList = new List<KeyValuePair<string, string>> {
+                                new KeyValuePair<string, string>("hello", "world"),
+                                new KeyValuePair<string, string>("ciao", "mondo"),
+                };
+
+            _repository.Setup(mock => mock.Select(It.IsAny<string>()))
+                .Returns(featureList);
+
+            var model = ((ViewResult)_sut.Index()).Model;
+
+            using (new AssertionScope())
+            {
+                model.Should().BeAssignableTo<IEnumerable<KeyValuePair<string, string>>>();
+
+                var modelList = (IEnumerable<KeyValuePair<string, string>>)model;
+
+                modelList.Should().HaveCount(2)
+                    .And.BeEquivalentTo(featureList);
+            }
         }
     }
 }
