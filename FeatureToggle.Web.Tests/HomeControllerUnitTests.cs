@@ -11,6 +11,7 @@ using Xunit;
 
 namespace FeatureToggle.Web.Tests
 {
+    [Trait("Subcutaneous", "")]
     public class HomeControllerUnitTests
     {
 
@@ -24,7 +25,6 @@ namespace FeatureToggle.Web.Tests
         }
 
         [Fact]
-        [Trait("Subcutaneous", "")]
         public void Index_ReturnsView()
         {
             var view = _sut.Index();
@@ -32,7 +32,6 @@ namespace FeatureToggle.Web.Tests
         }
 
         [Fact]
-        [Trait("Subcutaneous", "")]
         public void Index_ShouldCallRepositoryGetFeatures()
         {
             _repository.Setup(mock => mock.Select(It.IsAny<string>()))
@@ -46,9 +45,9 @@ namespace FeatureToggle.Web.Tests
         }
 
         [Fact]
-        [Trait("Subcutaneous", "")]
         public void Index_ShouldReturnModelViewWithEnumerableOfFeatures()
         {
+            // Arrange
             var featureList = new List<FeatureConfiguration> {
                                 new FeatureConfiguration("hello", "world"),
                                 new FeatureConfiguration("ciao", "mondo"),
@@ -57,8 +56,10 @@ namespace FeatureToggle.Web.Tests
             _repository.Setup(mock => mock.Select(It.IsAny<string>()))
                 .Returns(featureList);
 
+            //Act
             var viewModel = _sut.Index().Model;
 
+            //Assert
             using (new AssertionScope())
             {
                 viewModel.Should().BeAssignableTo<IEnumerable<FeatureConfiguration>>();

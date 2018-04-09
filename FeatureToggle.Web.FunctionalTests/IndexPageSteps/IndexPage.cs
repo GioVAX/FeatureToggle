@@ -7,7 +7,7 @@ using Xunit;
 namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
 {
 
-    public class IndexPageModel
+    public static class IndexPageModel
     {
         public static By FeaturesListBy => By.CssSelector("#featuresList");
         public static By FeatureListTableRowsBy => By.CssSelector("#featuresList tbody tr");

@@ -8,6 +8,7 @@ using FluentAssertions;
 
 namespace FeatureToggle.Tests
 {
+    [Trait("Subcutaneous", "")]
     public class ApiControllerUnitTest
     {
         readonly ApiController _sut;
@@ -16,17 +17,11 @@ namespace FeatureToggle.Tests
         public ApiControllerUnitTest()
         {
             _repository = new Mock<IFeatureRepository>();
-            _repository.Setup(mock => mock.Select( It.IsAny<string>()))
-                .Returns(new List<FeatureConfiguration> {
-                    new FeatureConfiguration("hello", "world")
-                }
-            );
 
             _sut = new ApiController(_repository.Object);
         }
 
         [Fact]
-        [Trait("Subcutaneous", "")]
         public void GetFeature_ReturnsJson()
         {
             var json = _sut.GetFeatures();
@@ -35,16 +30,19 @@ namespace FeatureToggle.Tests
         }
 
         [Fact]
-        [Trait("Subcutaneous", "")]
         public void GetFeature_ReturnsArrayOfFeatures()
         {
+            _repository.Setup(mock => mock.Select(It.IsAny<string>()))
+                .Returns(new List<FeatureConfiguration> {
+                    new FeatureConfiguration("hello", "world")
+                });
+
             var json = _sut.GetFeatures();
 
             json.Value.Should().BeAssignableTo<IEnumerable<FeatureConfiguration>>();
         }
 
         [Fact]
-        [Trait("Subcutaneous", "")]
         public void GetFeature_CallsRepositorySelect()
         {
             var _ = _sut.GetFeatures();
