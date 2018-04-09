@@ -1,5 +1,7 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IEnumerable<FeatureToggle.Definitions.FeatureConfiguration>
+
+@{
+    ViewData["Title"] = "Features List";
 }
 
 <div class="row">
@@ -13,10 +15,14 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>2</td>
-                </tr>
+                @foreach (var config in Model)
+                {
+                    <tr>
+                        <td>@config.Feature</td>
+                        <td>@config.Value</td>
+                    </tr>
+
+                }
             </tbody>
         </table>
     </div>
