@@ -36,8 +36,8 @@ namespace FeatureToggle.Web.Tests
         public void Index_ShouldCallRepositoryGetFeatures()
         {
             _repository.Setup(mock => mock.Select(It.IsAny<string>()))
-                .Returns(new List<KeyValuePair<string, string>> {
-                    new KeyValuePair<string, string>("hello", "world")
+                .Returns(new List<FeatureConfiguration> {
+                    new FeatureConfiguration("hello", "world")
                 });
 
             _sut.Index();
@@ -49,9 +49,9 @@ namespace FeatureToggle.Web.Tests
         [Trait("Subcutaneous", "")]
         public void Index_ShouldReturnModelViewWithEnumerableOfFeatures()
         {
-            var featureList = new List<KeyValuePair<string, string>> {
-                                new KeyValuePair<string, string>("hello", "world"),
-                                new KeyValuePair<string, string>("ciao", "mondo"),
+            var featureList = new List<FeatureConfiguration> {
+                                new FeatureConfiguration("hello", "world"),
+                                new FeatureConfiguration("ciao", "mondo"),
                 };
 
             _repository.Setup(mock => mock.Select(It.IsAny<string>()))
@@ -61,9 +61,9 @@ namespace FeatureToggle.Web.Tests
 
             using (new AssertionScope())
             {
-                model.Should().BeAssignableTo<IEnumerable<KeyValuePair<string, string>>>();
+                model.Should().BeAssignableTo<IEnumerable<FeatureConfiguration>>();
 
-                var modelList = (IEnumerable<KeyValuePair<string, string>>)model;
+                var modelList = (IEnumerable<FeatureConfiguration>)model;
 
                 modelList.Should().HaveCount(2)
                     .And.BeEquivalentTo(featureList);

@@ -9,20 +9,20 @@ namespace FeatureToggle.DAL
 {
     public class DiskFeatureRepository : IFeatureRepository
     {
-        List<KeyValuePair<string, string>> _features;
+        List<FeatureConfiguration> _features;
 
         public DiskFeatureRepository(string filepath)
         {
             var json = File.ReadAllText(filepath);
-            _features = JsonConvert.DeserializeObject<List<KeyValuePair<string, string>>>(json);
+            _features = JsonConvert.DeserializeObject<List<FeatureConfiguration>>(json);
         }
 
-        public IEnumerable<KeyValuePair<string, string>> Select(string pattern)
+        public IEnumerable<FeatureConfiguration> Select(string pattern)
         {
             if (string.IsNullOrEmpty(pattern))
                 return _features;
 
-            return _features.Where(pair => pair.Key.StartsWith(pattern, StringComparison.InvariantCultureIgnoreCase));
+            return _features.Where(pair => pair.Feature.StartsWith(pattern, StringComparison.InvariantCultureIgnoreCase));
         }
     }
 }

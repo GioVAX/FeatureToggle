@@ -17,8 +17,8 @@ namespace FeatureToggle.Tests
         {
             _repository = new Mock<IFeatureRepository>();
             _repository.Setup(mock => mock.Select( It.IsAny<string>()))
-                .Returns(new List<KeyValuePair<string, string>> {
-                    new KeyValuePair<string, string>("hello", "world")
+                .Returns(new List<FeatureConfiguration> {
+                    new FeatureConfiguration("hello", "world")
                 }
             );
 
@@ -40,7 +40,7 @@ namespace FeatureToggle.Tests
         {
             var json = _sut.GetFeatures();
 
-            json.Value.Should().BeAssignableTo<IEnumerable<KeyValuePair<string, string>>>();
+            json.Value.Should().BeAssignableTo<IEnumerable<FeatureConfiguration>>();
         }
 
         [Fact]
