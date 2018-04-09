@@ -18,7 +18,7 @@ namespace FeatureToggle.Controllers
             _repository = repository;
         }
 
-        public IActionResult Index()
+        public ViewResult Index()
         {
             var features = _repository.Select("");
 

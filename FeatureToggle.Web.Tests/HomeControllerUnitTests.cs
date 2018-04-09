@@ -57,13 +57,13 @@ namespace FeatureToggle.Web.Tests
             _repository.Setup(mock => mock.Select(It.IsAny<string>()))
                 .Returns(featureList);
 
-            var model = ((ViewResult)_sut.Index()).Model;
+            var viewModel = _sut.Index().Model;
 
             using (new AssertionScope())
             {
-                model.Should().BeAssignableTo<IEnumerable<FeatureConfiguration>>();
+                viewModel.Should().BeAssignableTo<IEnumerable<FeatureConfiguration>>();
 
-                var modelList = (IEnumerable<FeatureConfiguration>)model;
+                var modelList = (IEnumerable<FeatureConfiguration>)viewModel;
 
                 modelList.Should().HaveCount(2)
                     .And.BeEquivalentTo(featureList);
