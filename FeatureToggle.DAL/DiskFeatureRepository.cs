@@ -30,5 +30,10 @@ namespace FeatureToggle.DAL
 
             return _features.Where(pair => pair.Feature.StartsWith(pattern, StringComparison.InvariantCultureIgnoreCase));
         }
+
+        public void Delete(string featureName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

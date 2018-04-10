@@ -1,4 +1,5 @@
-﻿using FeatureToggle.Definitions;
+﻿using System;
+using FeatureToggle.Definitions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FeatureToggle.Web.Controllers
@@ -7,7 +8,7 @@ namespace FeatureToggle.Web.Controllers
     {
         readonly IFeatureRepository _repository;
 
-        public ApiController( IFeatureRepository repository )
+        public ApiController(IFeatureRepository repository)
         {
             _repository = repository;
         }
@@ -17,6 +18,13 @@ namespace FeatureToggle.Web.Controllers
             var features = _repository.Select(beginningWith);
 
             return Json(features);
+        }
+
+        public IActionResult DeleteFeature(string featureName)
+        {
+            _repository.Delete(featureName);
+
+            return new JsonResult("") { StatusCode = 203 };
         }
     }
 }
