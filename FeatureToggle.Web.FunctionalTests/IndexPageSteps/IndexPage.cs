@@ -11,6 +11,7 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
     {
         public static By FeaturesListBy => By.CssSelector("#featuresList");
         public static By FeatureListTableRowsBy => By.CssSelector("#featuresList tbody tr");
+        public static By FeatureListTableEditIconsBy => By.CssSelector("#featuresList tbody tr td:last-child > .glyphicon-pencil");
     }
 
     [Binding]
@@ -44,7 +45,15 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
         [Then(@"it will contain (.*) features")]
         public void ThenItWillContainFeatures(int featuresNumber)
         {
-            Assert.Equal(featuresNumber, _driver.FindElements(IndexPageModel.FeatureListTableRowsBy).Count);
+            var featureRows = _driver.FindElements(IndexPageModel.FeatureListTableRowsBy);
+            Assert.Equal(featuresNumber, featureRows.Count);
+        }
+
+        [Then(@"it will contain (.*) edit buttons")]
+        public void ThenEachFeatureHasTheEditButton(int iconCount)
+        {
+            var featureRows = _driver.FindElements(IndexPageModel.FeatureListTableEditIconsBy);
+            Assert.Equal(iconCount, featureRows.Count);
         }
     }
 }

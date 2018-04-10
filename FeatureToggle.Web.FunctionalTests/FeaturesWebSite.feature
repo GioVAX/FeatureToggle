@@ -8,3 +8,4 @@ Scenario: View the list of configured features
 	When I browse the index page of features
 	Then I will see the features list
 	And it will contain 4 features
+	And it will contain 4 edit buttons
