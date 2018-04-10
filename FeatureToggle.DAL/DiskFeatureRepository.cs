@@ -13,6 +13,12 @@ namespace FeatureToggle.DAL
 
         public DiskFeatureRepository(string filepath)
         {
+            if (filepath == null)
+            {
+                _features = new List<FeatureConfiguration>();
+                return;
+            }
+
             var json = File.ReadAllText(filepath);
             _features = JsonConvert.DeserializeObject<List<FeatureConfiguration>>(json);
         }
