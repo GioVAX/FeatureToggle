@@ -5,6 +5,7 @@ using Moq;
 using System.Collections.Generic;
 using Xunit;
 using FluentAssertions;
+using System;
 
 namespace FeatureToggle.Tests
 {
@@ -24,7 +25,7 @@ namespace FeatureToggle.Tests
         [Fact]
         public void GetFeature_ReturnsJson()
         {
-            var json = _sut.GetFeatures();
+            var json = _sut.GetFeatures("");
 
             json.Should().BeOfType<JsonResult>();
         }
@@ -37,7 +38,7 @@ namespace FeatureToggle.Tests
                     new FeatureConfiguration("hello", "world")
                 });
 
-            var json = _sut.GetFeatures();
+            var json = _sut.GetFeatures("");
 
             json.Value.Should().BeAssignableTo<IEnumerable<FeatureConfiguration>>();
         }
@@ -45,9 +46,26 @@ namespace FeatureToggle.Tests
         [Fact]
         public void GetFeature_CallsRepositorySelect()
         {
-            var _ = _sut.GetFeatures();
+            var _ = _sut.GetFeatures("");
 
             _repository.Verify(mock => mock.Select(It.IsAny<string>()), Times.Once);
+        }
+
+        [Fact]
+        public void GetFeature_WithParameter_ReturnsFilteredList()
+        {
+            const string pattern = "hello";
+            _repository.Setup(mock => mock.Select(It.IsAny<string>()))
+                .Returns(new List<FeatureConfiguration> {
+                    new FeatureConfiguration("hello", "world")
+                });
+
+            var featuresJson = _sut.GetFeatures(pattern);
+
+            var features = featuresJson.Value as IEnumerable<FeatureConfiguration>;
+
+            features.Should().HaveCount(1)
+                .And.OnlyContain(pair => pair.Feature.StartsWith(pattern, StringComparison.InvariantCultureIgnoreCase));
         }
     }
 }

@@ -16,9 +16,9 @@ namespace FeatureToggle.Controllers
             _repository = repository;
         }
 
-        public JsonResult GetFeatures()
+        public JsonResult GetFeatures(string beginningWith)
         {
-            var features = _repository.Select("");
+            var features = _repository.Select(beginningWith);
 
             return Json(features);
         }
