@@ -9,3 +9,4 @@ Scenario: View the list of configured features
 	Then I will see the features list
 	And it will contain 4 features
 	And it will contain 4 edit buttons
+	And it will contain 4 delete buttons
