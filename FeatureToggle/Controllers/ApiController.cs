@@ -1,15 +1,11 @@
 ﻿using FeatureToggle.Definitions;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace FeatureToggle.Controllers
+namespace FeatureToggle.Web.Controllers
 {
     public class ApiController : Controller
     {
-        IFeatureRepository _repository;
+        readonly IFeatureRepository _repository;
 
         public ApiController( IFeatureRepository repository )
         {

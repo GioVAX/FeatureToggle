@@ -1,13 +1,13 @@
-using FeatureToggle.Controllers;
+using System;
+using System.Collections.Generic;
 using FeatureToggle.Definitions;
+using FeatureToggle.Web.Controllers;
+using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using System.Collections.Generic;
 using Xunit;
-using FluentAssertions;
-using System;
 
-namespace FeatureToggle.Tests
+namespace FeatureToggle.Web.Tests
 {
     [Trait("Subcutaneous", "")]
     public class ApiControllerUnitTest

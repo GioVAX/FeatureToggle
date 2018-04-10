@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using FeatureToggle.DAL;
+﻿using FeatureToggle.DAL;
 using FeatureToggle.Definitions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace FeatureToggle
+namespace FeatureToggle.Web
 {
     public class Startup
     {

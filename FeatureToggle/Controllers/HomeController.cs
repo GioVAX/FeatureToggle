@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using FeatureToggle.Models;
+﻿using System.Diagnostics;
 using FeatureToggle.Definitions;
+using FeatureToggle.Models;
+using Microsoft.AspNetCore.Mvc;
 
-namespace FeatureToggle.Controllers
+namespace FeatureToggle.Web.Controllers
 {
     public class HomeController : Controller
     {

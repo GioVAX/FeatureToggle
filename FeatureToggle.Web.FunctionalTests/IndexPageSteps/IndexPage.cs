@@ -1,6 +1,6 @@
-﻿using OpenQA.Selenium;
+﻿using System;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using System;
 using TechTalk.SpecFlow;
 using Xunit;
 
@@ -15,10 +15,10 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
     }
 
     [Binding]
-    public class IndexPage
+    public class IndexPage : IDisposable
     {
-        private IWebDriver _driver;
-        private const string _baseUrl = "http://localhost:51847/";
+        private readonly IWebDriver _driver;
+        private const string BaseUrl = "http://localhost:51847/";
 
         public IndexPage()
         {
@@ -33,7 +33,7 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
         [When(@"I browse the index page of features")]
         public void WhenIBrowseTheIndexPageOfFeatures()
         {
-            _driver.Navigate().GoToUrl(_baseUrl);
+            _driver.Navigate().GoToUrl(BaseUrl);
         }
 
         [Then(@"I will see the features list")]
@@ -54,6 +54,12 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
         {
             var featureRows = _driver.FindElements(IndexPageModel.FeatureListTableEditIconsBy);
             Assert.Equal(iconCount, featureRows.Count);
+        }
+
+        public void Dispose()
+        {
+            _driver?.Quit();
+            _driver?.Dispose();
         }
     }
 }

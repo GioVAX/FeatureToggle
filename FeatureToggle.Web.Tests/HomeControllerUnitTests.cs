@@ -1,12 +1,10 @@
-﻿using FeatureToggle.Controllers;
+﻿using System.Collections.Generic;
 using FeatureToggle.Definitions;
+using FeatureToggle.Web.Controllers;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
 namespace FeatureToggle.Web.Tests
@@ -14,8 +12,7 @@ namespace FeatureToggle.Web.Tests
     [Trait("Subcutaneous", "")]
     public class HomeControllerUnitTests
     {
-
-        HomeController _sut;
+        readonly HomeController _sut;
         readonly Mock<IFeatureRepository> _repository;
 
         public HomeControllerUnitTests()

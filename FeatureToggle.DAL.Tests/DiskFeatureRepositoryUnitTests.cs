@@ -3,6 +3,7 @@ using Xunit;
 using FluentAssertions;
 using FeatureToggle.Definitions;
 using System.Collections.Generic;
+using System.Linq;
 using FluentAssertions.Execution;
 
 namespace FeatureToggle.DAL.Tests
@@ -32,7 +33,7 @@ namespace FeatureToggle.DAL.Tests
         [Fact]
         public void FeatureRepository_SelectNoPattern_ShouldReturn4ValidFeatures()
         {
-            var features = _sut.Select("");
+            var features = _sut.Select("").ToList();
             using (new AssertionScope())
             {
                 features.Should().HaveCount(4);
@@ -43,7 +44,7 @@ namespace FeatureToggle.DAL.Tests
         [Fact]
         public void FeatureRepository_SelectPatternFeatureToggle_ShouldReturn2FeaturesStartingWithFeatureToggle()
         {
-            var pattern = "FeatureToggle";
+            const string pattern = "FeatureToggle";
             var features = _sut.Select(pattern);
 
             features.Should().HaveCount(2)

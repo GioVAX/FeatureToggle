@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿
 namespace FeatureToggle.Definitions
 {
     public class FeatureConfiguration
@@ -12,7 +9,7 @@ namespace FeatureToggle.Definitions
             Value = value;
         }
 
-        public string Feature { get; set; }
+        public string Feature { get; }
 
         public string Value { get; set; }
     }
