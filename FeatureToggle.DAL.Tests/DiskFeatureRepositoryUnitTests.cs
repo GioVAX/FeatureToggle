@@ -32,6 +32,14 @@ namespace FeatureToggle.DAL.Tests
         }
 
         [Fact]
+        public void FeatureRepository_InitWithNonExistingFile_ShouldReturnEmptyListOfFeatures()
+        {
+            var sut = new DiskFeatureRepository("lksflskdjf.oiwefiuwrf");
+
+            sut.Select("").Should().BeEmpty();
+        }
+
+        [Fact]
         public void FeatureRepository_Select_ShouldReturnListOfFeatures()
         {
             _sut.Select("").Should()

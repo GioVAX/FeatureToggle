@@ -13,7 +13,7 @@ namespace FeatureToggle.DAL
 
         public DiskFeatureRepository(string filepath)
         {
-            if (filepath == null)
+            if (filepath == null || !File.Exists(filepath))
             {
                 _features = new List<FeatureConfiguration>();
                 return;
