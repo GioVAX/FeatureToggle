@@ -13,23 +13,23 @@ namespace FeatureToggle.Web.Tests
 {
     public class ConfigurationTests
     {
-        //IWebHost _sut;
+        readonly IWebHost _sut;
 
-        //public ConfigurationTests()
-        //{
-        //    _sut = WebHost.CreateDefaultBuilder()
-        //       .UseStartup<Startup>()
-        //       .Build();
-        //}
+        public ConfigurationTests()
+        {
+            _sut = WebHost.CreateDefaultBuilder()
+               .UseStartup<Startup>()
+               .Build();
+        }
 
-        //[Fact]
-        //public void FeatureRepository_ShouldBeRegistered()
-        //{
-        //    var repository = _sut.Services.GetService(typeof(IFeatureRepository));
+        [Fact]
+        public void FeatureRepository_ShouldBeRegistered()
+        {
+            var repository = _sut.Services.GetService(typeof(IFeatureRepository));
 
-        //    repository.Should().NotBeNull()
-        //        .And.BeOfType<DiskFeatureRepository>();
-        //}
+            repository.Should().NotBeNull()
+                .And.BeOfType<DiskFeatureRepository>();
+        }
 
         //[Fact]
         //public void FeatureConfigurationFile_IsConfigured()
