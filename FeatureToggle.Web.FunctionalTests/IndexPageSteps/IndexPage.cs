@@ -24,6 +24,11 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
         {
             _driver = new ChromeDriver();
         }
+        public void Dispose()
+        {
+            _driver?.Quit();
+            _driver?.Dispose();
+        }
 
         [Given(@"I have access to the web site")]
         public void GivenIHaveAccessToTheWebSite()
@@ -54,12 +59,6 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
         {
             var featureRows = _driver.FindElements(IndexPageModel.FeatureListTableEditIconsBy);
             Assert.Equal(iconCount, featureRows.Count);
-        }
-
-        public void Dispose()
-        {
-            _driver?.Quit();
-            _driver?.Dispose();
         }
     }
 }
