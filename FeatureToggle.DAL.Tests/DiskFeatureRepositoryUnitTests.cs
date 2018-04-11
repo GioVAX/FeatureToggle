@@ -3,18 +3,27 @@ using Xunit;
 using FluentAssertions;
 using FeatureToggle.Definitions;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using FluentAssertions.Execution;
 
 namespace FeatureToggle.DAL.Tests
 {
-    public class DiskFeatureRepositoryUnitTests
+    public class DiskFeatureRepositoryUnitTests : IDisposable
     {
         readonly DiskFeatureRepository _sut;
+        private readonly string _destFileName = "Test_Tmp.Json";
 
         public DiskFeatureRepositoryUnitTests()
         {
-            _sut = new DiskFeatureRepository("Test.Json");
+            File.Copy("Test.Json", _destFileName);
+
+            _sut = new DiskFeatureRepository(_destFileName);
+        }
+
+        public void Dispose()
+        {
+            File.Delete(_destFileName);
         }
 
         [Fact]
@@ -96,7 +105,7 @@ namespace FeatureToggle.DAL.Tests
 
             _sut.Delete(featureName);
 
-            var checkRepository = new DiskFeatureRepository("Test_Tmp.Json");
+            var checkRepository = new DiskFeatureRepository(_destFileName);
 
             checkRepository.Select("")
                 .Should().HaveCount(3)
