@@ -88,5 +88,19 @@ namespace FeatureToggle.DAL.Tests
             action.Should().Throw<KeyNotFoundException>()
                 .WithMessage($"Feature <{featureName}> is not configured.");
         }
+
+        [Fact]
+        public void FeatureRepository_DeleteFeature_ShouldBePersistedImmediately()
+        {
+            const string featureName = "OtherRoot.Font";
+
+            _sut.Delete(featureName);
+
+            var checkRepository = new DiskFeatureRepository("Test_Tmp.Json");
+
+            checkRepository.Select("")
+                .Should().HaveCount(3)
+                .And.NotContain(configuration => string.Equals(configuration.Feature, featureName, StringComparison.InvariantCultureIgnoreCase));
+        }
     }
 }
