@@ -66,5 +66,17 @@ namespace FeatureToggle.DAL.Tests
             features.Should().HaveCount(2)
                 .And.OnlyContain(pair => pair.Feature.StartsWith(pattern, StringComparison.InvariantCultureIgnoreCase));
         }
+
+        [Fact]
+        public void FeatureRepository_DeleteExisitingFeature_ShouldRemoveTheFeature()
+        {
+            const string featureName = "OtherRoot.Font";
+
+            _sut.Delete(featureName);
+
+            _sut.Select("")
+                .Should().HaveCount(3)
+                .And.NotContain(configuration => string.Equals(configuration.Feature, featureName, StringComparison.InvariantCultureIgnoreCase));
+        }
     }
 }
