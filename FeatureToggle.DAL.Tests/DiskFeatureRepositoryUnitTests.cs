@@ -78,5 +78,15 @@ namespace FeatureToggle.DAL.Tests
                 .Should().HaveCount(3)
                 .And.NotContain(configuration => string.Equals(configuration.Feature, featureName, StringComparison.InvariantCultureIgnoreCase));
         }
+
+        [Fact]
+        public void FeatureRepository_DeleteNonExisitingFeature_ShouldThrowException()
+        {
+            const string featureName = "kjsddfskj";
+            Action action = () => _sut.Delete(featureName);
+
+            action.Should().Throw<KeyNotFoundException>()
+                .WithMessage($"Feature <{featureName}> is not configured.");
+        }
     }
 }

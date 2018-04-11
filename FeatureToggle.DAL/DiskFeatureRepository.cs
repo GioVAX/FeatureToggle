@@ -33,8 +33,8 @@ namespace FeatureToggle.DAL
 
         public void Delete(string featureName)
         {
-            _features.RemoveAll(configuration =>
-                string.Equals(configuration.Feature, featureName, StringComparison.InvariantCultureIgnoreCase));
+            if (_features.RemoveAll(configuration => string.Equals(configuration.Feature, featureName, StringComparison.InvariantCultureIgnoreCase)) == 0)
+                throw new KeyNotFoundException($"Feature <{featureName}> is not configured.");
         }
     }
 }
