@@ -9,3 +9,9 @@ Scenario: View the list of configured features
 	Then I will see the features list
 	And it will contain 4 features
 	And it will contain 4 edit buttons
+
+Scenario: Delete one of the configured features
+	Given I browse the index page of features
+	When I click the delete button
+	Then I will see the features list
+	And it will contain 3 features

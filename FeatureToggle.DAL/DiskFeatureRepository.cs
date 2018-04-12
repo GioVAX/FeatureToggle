@@ -33,7 +33,8 @@ namespace FeatureToggle.DAL
 
         public IEnumerable<FeatureConfiguration> DeleteFeature(string featureName)
         {
-            throw new NotImplementedException();
+            _features.RemoveAll(config => string.Equals(config.Feature, featureName, StringComparison.InvariantCultureIgnoreCase));
+            return _features;
         }
     }
 }

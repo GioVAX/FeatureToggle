@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using TechTalk.SpecFlow;
@@ -12,6 +13,7 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
         public static By FeaturesListBy => By.CssSelector("#featuresList");
         public static By FeatureListTableRowsBy => By.CssSelector("#featuresList tbody tr");
         public static By FeatureListTableEditIconsBy => By.CssSelector("#featuresList tbody tr td:last-child > .glyphicon-pencil");
+        public static By FeatureListTableDeleteButton => By.CssSelector("#featuresList tbody tr td:last-child > .glyphicon-remove");
     }
 
     [Binding]
@@ -35,6 +37,7 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
         {
         }
 
+        [Given(@"I browse the index page of features")]
         [When(@"I browse the index page of features")]
         public void WhenIBrowseTheIndexPageOfFeatures()
         {
@@ -59,6 +62,13 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
         {
             var featureRows = _driver.FindElements(IndexPageModel.FeatureListTableEditIconsBy);
             Assert.Equal(iconCount, featureRows.Count);
+        }
+
+        [When(@"I click the delete button")]
+        public void WhenIClickTheDeleteButton()
+        {
+            var button = _driver.FindElements(IndexPageModel.FeatureListTableDeleteButton).First();
+            button.Click();
         }
     }
 }
