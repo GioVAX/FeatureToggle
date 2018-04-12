@@ -20,6 +20,13 @@ namespace FeatureToggle.Web.Controllers
 
             return View(features);
         }
+         
+        public IActionResult DeleteFeature(string featureName) 
+        { 
+            _repository.Delete(featureName); 
+ 
+            return RedirectToAction("Index"); 
+        } 
 
         public IActionResult Error()
         {
