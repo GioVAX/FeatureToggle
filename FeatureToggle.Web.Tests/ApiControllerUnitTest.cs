@@ -67,5 +67,26 @@ namespace FeatureToggle.Web.Tests
             features.Should().HaveCount(1)
                 .And.OnlyContain(pair => pair.Feature.StartsWith(pattern, StringComparison.InvariantCultureIgnoreCase));
         }
+
+        [Fact]
+        public void DeleteFeature_ReturnsListOfFeatures()
+        {
+            var json = _sut.DeleteFeature("featureName");
+
+            json.Value.Should().BeAssignableTo<IEnumerable<FeatureConfiguration>>();
+        }
+
+        [Fact]
+        public void DeleteFeature_ShouldCallRepositoryDeleteFeature()
+        {
+            _repository.Setup(mock => mock.DeleteFeature(It.IsAny<string>()))
+                .Returns(new List<FeatureConfiguration> {
+                    new FeatureConfiguration("hello", "world")
+                });
+
+            var json = _sut.DeleteFeature("featureName");
+
+            _repository.Verify(mock => mock.DeleteFeature(It.IsAny<string>()), Times.Once);
+        }
     }
 }

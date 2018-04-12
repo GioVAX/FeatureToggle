@@ -1,4 +1,5 @@
-﻿using FeatureToggle.Definitions;
+﻿using System.Collections.Generic;
+using FeatureToggle.Definitions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FeatureToggle.Web.Controllers
@@ -16,6 +17,12 @@ namespace FeatureToggle.Web.Controllers
         {
             var features = _repository.Select(beginningWith);
 
+            return Json(features);
+        }
+
+        public JsonResult DeleteFeature(string featurename)
+        {
+            var features = _repository.DeleteFeature(featurename);
             return Json(features);
         }
     }
