@@ -18,7 +18,7 @@
             <tbody>
                 @foreach (var config in Model)
                 {
-                    <tr>
+                    <tr class="@config.Feature.Replace('.', '_')">
                         <td>@config.Feature</td>
                         <td>@config.Value</td>
                         <td>

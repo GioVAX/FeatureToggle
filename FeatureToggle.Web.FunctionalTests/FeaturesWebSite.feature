@@ -13,6 +13,7 @@ Scenario: View the list of configured features
  
 Scenario: Delete one of the configured features 
     Given I browse the index page of features 
-    When I click the delete button 
+    When I click the delete button of the FeatureToggle.Color feature
     Then I will see the features list 
     And it will contain 3 features
+	And it will not contain the FeatureToggle.Color feature

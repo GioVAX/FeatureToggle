@@ -15,6 +15,12 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
         public static By FeatureListTableRowsBy => By.CssSelector("#featuresList tbody tr");
         public static By FeatureListTableEditIconsBy => By.CssSelector("#featuresList tbody tr td:last-child > .glyphicon-pencil");
         public static By FeatureListTableDeleteIconsBy => By.CssSelector("#featuresList tbody tr td:last-child > .glyphicon-remove");
+        public static By FeatureListTableListedFeatures => By.CssSelector("#featuresList tbody tr td:first-child");
+
+        public static By FeatureListTableDeleteIconForFeatureBy(string featureName)
+        {
+            return By.CssSelector($"#featuresList tbody tr.{featureName.Replace('.', '_')} td:last-child > .glyphicon-remove");
+        }
     }
 
     [Binding]
@@ -46,7 +52,7 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
 
         [Given(@"I browse the index page of features")]
         [When(@"I browse the index page of features")]
-        public void WhenIBrowseTheIndexPageOfFeatures()
+        public void BrowseTheIndexPageOfFeatures()
         {
             _driver.Navigate().GoToUrl(BaseUrl);
         }
@@ -78,11 +84,18 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
             Assert.Equal(iconCount, featureRows.Count);
         }
 
-        [When(@"I click the delete button")]
-        public void WhenIClickTheDeleteButton()
+        [When(@"I click the delete button of the (.*) feature")]
+        public void WhenIClickTheDeleteButtonForFeature(string featureName)
         {
-            var button = _driver.FindElements(IndexPageModel.FeatureListTableDeleteIconsBy).First();
+            var button = _driver.FindElement(IndexPageModel.FeatureListTableDeleteIconForFeatureBy(featureName));
             button.Click();
+        }
+
+        [Then(@"it will not contain the (.*) feature")]
+        public void ThenItWillNotContainTheRemovedFeature(string removedFeature)
+        {
+            var cells = _driver.FindElements(IndexPageModel.FeatureListTableListedFeatures);
+            Assert.DoesNotContain(removedFeature, cells.Select(c => c.Text));
         }
     }
 }
