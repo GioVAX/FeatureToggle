@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
@@ -21,9 +22,15 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
     {
         private readonly IWebDriver _driver;
         private const string BaseUrl = "http://localhost:51847/";
+        public const string WebApplicationRelativePath = @"..\..\..\FeatureToggle";
 
         public IndexPage()
         {
+            File.Copy(
+                Path.Combine(WebApplicationRelativePath, "Features_Test.Json"),
+                Path.Combine(WebApplicationRelativePath, "Features.json"),
+                true);
+
             _driver = new ChromeDriver();
         }
         public void Dispose()
@@ -70,12 +77,12 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
             var featureRows = _driver.FindElements(IndexPageModel.FeatureListTableDeleteIconsBy);
             Assert.Equal(iconCount, featureRows.Count);
         }
-         
-        [When(@"I click the delete button")] 
-        public void WhenIClickTheDeleteButton() 
-        { 
-            var button = _driver.FindElements(IndexPageModel.FeatureListTableDeleteIconsBy).First(); 
-            button.Click(); 
-        } 
+
+        [When(@"I click the delete button")]
+        public void WhenIClickTheDeleteButton()
+        {
+            var button = _driver.FindElements(IndexPageModel.FeatureListTableDeleteIconsBy).First();
+            button.Click();
+        }
     }
 }
