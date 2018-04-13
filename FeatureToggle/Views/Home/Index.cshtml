@@ -22,8 +22,13 @@
                         <td>@config.Feature</td>
                         <td>@config.Value</td>
                         <td>
-                            <button class="glyphicon glyphicon-pencil"></button>
-                            @Html.ActionLink("", "DeleteFeature", new { featureName = config.Feature}, new {@class = "glyphicon glyphicon-remove" })
+                            <button class="btn btn-default glyphicon glyphicon-pencil"></button>
+                            @Html.ActionLink("", "DeleteFeature", new { featureName = config.Feature },
+                                                     new
+                                                     {
+                                                         @class = "glyphicon glyphicon-remove btn btn-default",
+                                                         data_feature = @config.Feature
+                                                     })
                         </td>
                     </tr>
                 }
@@ -31,3 +36,15 @@
         </table>
     </div>
 </div>
+
+@section Scripts
+    {
+    <script language="javascript">
+        jQuery("#featuresList tbody").on("click", ".glyphicon-remove.btn", function (event) {
+            var origin = jQuery(event.currentTarget);
+            var featureName = origin.data('feature');
+
+            return confirm('Do you really want to delete feature <' + featureName + '>?');
+        });
+    </script>
+}

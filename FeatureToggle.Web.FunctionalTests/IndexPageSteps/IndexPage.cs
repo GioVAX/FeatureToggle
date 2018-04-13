@@ -13,13 +13,13 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
     {
         public static By FeaturesListBy => By.CssSelector("#featuresList");
         public static By FeatureListTableRowsBy => By.CssSelector("#featuresList tbody tr");
-        public static By FeatureListTableEditIconsBy => By.CssSelector("#featuresList tbody tr td:last-child > .glyphicon-pencil");
-        public static By FeatureListTableDeleteIconsBy => By.CssSelector("#featuresList tbody tr td:last-child > .glyphicon-remove");
+        public static By FeatureListTableEditIconsBy => By.CssSelector("#featuresList tbody tr td:last-child > .btn.glyphicon-pencil");
+        public static By FeatureListTableDeleteIconsBy => By.CssSelector("#featuresList tbody tr td:last-child > .btn.glyphicon-remove");
         public static By FeatureListTableListedFeatures => By.CssSelector("#featuresList tbody tr td:first-child");
 
         public static By FeatureListTableDeleteIconForFeatureBy(string featureName)
         {
-            return By.CssSelector($"#featuresList tbody tr.{featureName.Replace('.', '_')} td:last-child > .glyphicon-remove");
+            return By.CssSelector($"#featuresList tbody tr.{featureName.Replace('.', '_')} td:last-child > .btn.glyphicon-remove");
         }
     }
 
@@ -41,6 +41,12 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
         }
         public void Dispose()
         {
+            try
+            {
+                var alert = _driver?.SwitchTo().Alert();
+                alert?.Dismiss();
+            } catch {}
+
             _driver?.Quit();
             _driver?.Dispose();
         }
@@ -84,18 +90,49 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
             Assert.Equal(iconCount, featureRows.Count);
         }
 
+        [Given(@"I click the delete button of the (.*) feature")]
         [When(@"I click the delete button of the (.*) feature")]
         public void WhenIClickTheDeleteButtonForFeature(string featureName)
         {
             var button = _driver.FindElement(IndexPageModel.FeatureListTableDeleteIconForFeatureBy(featureName));
             button.Click();
         }
-
+  
         [Then(@"it will not contain the (.*) feature")]
         public void ThenItWillNotContainTheRemovedFeature(string removedFeature)
         {
             var cells = _driver.FindElements(IndexPageModel.FeatureListTableListedFeatures);
             Assert.DoesNotContain(removedFeature, cells.Select(c => c.Text));
+        }
+
+        [Then(@"I will see a confirmation (.*) popup")]
+        public void ThenIWillSeeAConfirmationDeletePopup(string action2Confirm)
+        {
+            var alert = _driver.SwitchTo().Alert();
+            var text = alert.Text;
+
+            Assert.Contains(action2Confirm, text);
+        }
+
+        [Then(@"the popup message will reference the (.*) feature")]
+        public void ThenThePopupMessageWillReferenceTheFeature(string featureName)
+        {
+            var alert = _driver.SwitchTo().Alert();
+            var text = alert.Text;
+         
+            Assert.Contains(featureName, text);
+        }
+
+        [Then(@"the popup will have a (.*) button")]
+        public void ThenThePopupWillHaveAButton(string buttonText)
+        {
+            
+        }
+
+        [When(@"I click Yes in the confirmation dialog")]
+        public void WhenIClickYesInTheConfirmationDialog()
+        {
+            _driver.SwitchTo().Alert().Accept();
         }
     }
 }

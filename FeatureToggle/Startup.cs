@@ -22,7 +22,7 @@ namespace FeatureToggle.Web
             services.AddMvc();
 
             var featuresConfigurationFile = Configuration.GetValue<string>("FeaturesConfigurationFile");
-            services.AddSingleton<IFeatureRepository>(_ => new DiskFeatureRepository(featuresConfigurationFile));
+            services.AddTransient<IFeatureRepository>(_ => new DiskFeatureRepository(featuresConfigurationFile));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
