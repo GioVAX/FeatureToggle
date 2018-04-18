@@ -10,6 +10,13 @@ Scenario: View the list of configurations
 	And it will contain 4 features
 	And it will contain 4 edit buttons
 	And it will contain 4 delete buttons
+	
+Scenario: Editing a configuration shows a modal form
+    Given I browsed the index page of features 
+    When I click the edit button of the FeatureToggle.Color feature
+    Then I will see a modal popup to modify the configuration
+	And the form method will be post
+	And the form will not allow modifying the feature name
 
 Scenario: Deleting a configuration shows a confirmation popup
     Given I browsed the index page of features 

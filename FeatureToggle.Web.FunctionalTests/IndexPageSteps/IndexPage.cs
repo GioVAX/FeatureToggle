@@ -16,11 +16,11 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
         public static By FeatureListTableEditIconsBy => By.CssSelector("#featuresList tbody tr td:last-child > .btn.glyphicon-pencil");
         public static By FeatureListTableDeleteIconsBy => By.CssSelector("#featuresList tbody tr td:last-child > .btn.glyphicon-remove");
         public static By FeatureListTableListedFeatures => By.CssSelector("#featuresList tbody tr td:first-child");
+        public static By EditFeaturePopupForm => By.CssSelector("#featureForm form");
+        public static By EditPopupFeatureNameEdit => By.CssSelector("#featureForm form input[name=feature]");
 
-        public static By FeatureListTableDeleteIconForFeatureBy(string featureName, string action)
-        {
-            return By.CssSelector($"#featuresList tbody tr.{featureName.Replace('.', '_')} td:last-child > .btn.{action}");
-        }
+        public static By FeatureListTableDeleteIconForFeatureBy(string featureName, string action) =>
+            By.CssSelector($"#featuresList tbody tr.{featureName.Replace('.', '_')} td:last-child > .btn.{action}");
     }
 
     [Binding]
@@ -98,6 +98,28 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
             button.Click();
         }
 
+        [Then(@"I will see a modal popup to modify the configuration")]
+        public void ThenIWillSeeAModalPopupToModifyTheConfiguration()
+        {
+            var form = _driver.FindElement(IndexPageModel.EditFeaturePopupForm);
+            Assert.NotNull(form);
+        }
+
+        [Then(@"the form method will be (.*)")]
+        public void ThenTheFormMethodWillBePost(string expectedMethod)
+        {
+            var form = _driver.FindElement(IndexPageModel.EditFeaturePopupForm);
+            var actualMethod = form.GetAttribute("method");
+            Assert.Equal(expectedMethod, actualMethod);
+        }
+
+        [Then(@"the form will not allow modifying the feature name")]
+        public void ThenTheFormWillNotAllowModifyingTheFeatureName()
+        {
+            var nameTextbox = _driver.FindElement(IndexPageModel.EditPopupFeatureNameEdit);
+            Assert.False(nameTextbox.Enabled);
+        }
+
         [Then(@"it will not contain the (.*) feature")]
         public void ThenItWillNotContainTheRemovedFeature(string removedFeature)
         {
@@ -119,14 +141,14 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
         {
             var alert = _driver.SwitchTo().Alert();
             var text = alert.Text;
-         
+
             Assert.Contains(featureName, text);
         }
 
         [Then(@"the popup will have a (.*) button")]
         public void ThenThePopupWillHaveAButton(string buttonText)
         {
-            
+
         }
 
         [When(@"I click Yes in the confirmation dialog")]
