@@ -3,7 +3,7 @@
 	As a feature admin
 	I want to use a web site to manage the configured toggles
 
-Scenario: View the list of configured features
+Scenario: View the list of configurations
 	Given I have access to the web site
 	When I browse the index page of features
 	Then I will see the features list
@@ -11,7 +11,7 @@ Scenario: View the list of configured features
 	And it will contain 4 edit buttons
 	And it will contain 4 delete buttons
 
-Scenario: Require confirmation to delete a configuration
+Scenario: Deleting a configuration shows a confirmation popup
     Given I browse the index page of features 
     When I click the delete button of the FeatureToggle.Color feature
     Then I will see a confirmation delete popup
@@ -19,7 +19,7 @@ Scenario: Require confirmation to delete a configuration
 	And the popup will have a Yes button
 	And the popup will have a Cancel button
 
-Scenario: Confirm deletion of a configured feature
+Scenario: Delete a configuration
     Given I browse the index page of features 
     And I click the delete button of the FeatureToggle.Color feature
 	When I click Yes in the confirmation dialog
