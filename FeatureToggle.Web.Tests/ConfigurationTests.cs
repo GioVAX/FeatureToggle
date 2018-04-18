@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Xunit;
-using FluentAssertions;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore;
+﻿using FeatureToggle.DAL;
 using FeatureToggle.Definitions;
-using FeatureToggle.DAL;
-using Microsoft.Extensions.Configuration;
+using FluentAssertions;
+using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using Xunit;
 
 namespace FeatureToggle.Web.Tests
 {
@@ -25,7 +22,7 @@ namespace FeatureToggle.Web.Tests
         [Fact]
         public void FeatureRepository_ShouldBeRegistered()
         {
-            var repository = _sut.Services.GetService(typeof(IFeatureRepository));
+            var repository = _sut.Services.GetService<IFeatureRepository>();
 
             repository.Should().NotBeNull()
                 .And.BeOfType<DiskFeatureRepository>();
@@ -34,7 +31,7 @@ namespace FeatureToggle.Web.Tests
         //[Fact]
         //public void FeatureConfigurationFile_IsConfigured()
         //{
-        //    var configuration = (IConfiguration )_sut.Services.GetService(typeof(IConfiguration));
+        //    var configuration = (IConfiguration )_sut.Services.GetService<IFeatureRepository>();
 
         //    configuration.GetValue<string>("FeaturesConfigurationFile")
         //        .Should().NotBeNullOrWhiteSpace();
