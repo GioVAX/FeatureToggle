@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using FeatureToggle.Definitions;
 using FeatureToggle.Web.Controllers;
 using FluentAssertions;
@@ -20,6 +21,16 @@ namespace FeatureToggle.Web.Tests
             _repository = new Mock<IFeatureRepository>();
 
             _sut = new ApiController(_repository.Object);
+        }
+
+        [Fact]
+        public void ApiController_ShouldOnlyHaveGetFeaturesEndpoint()
+        {
+            var type = typeof(ApiController);
+
+            type.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly)
+                .Should().HaveCount(1)
+                .And.Contain(method => string.Equals(method.Name, "GetFeatures", StringComparison.InvariantCultureIgnoreCase));
         }
 
         [Fact]
@@ -66,17 +77,6 @@ namespace FeatureToggle.Web.Tests
 
             features.Should().HaveCount(1)
                 .And.OnlyContain(pair => pair.Feature.StartsWith(pattern, StringComparison.InvariantCultureIgnoreCase));
-        }
-
-        [Fact]
-        public void DeleteFeature_ShouldCallRepositoryDelete()
-        {
-            _repository.Setup(mock => mock.Delete(It.IsAny<string>()));
-
-            var featureName = "dsdds";
-            var json = _sut.DeleteFeature(featureName);
-
-            _repository.Verify( mock => mock.Delete(featureName), Times.Once);
         }
     }
 }
