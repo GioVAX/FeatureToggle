@@ -22,11 +22,11 @@
                         <td>@config.Feature</td>
                         <td>@config.Value</td>
                         <td>
-                            <button class="btn btn-default glyphicon glyphicon-pencil"></button>
+                            <button class="btn btn-default glyphicon glyphicon-pencil edit"></button>
                             @Html.ActionLink("", "DeleteFeature", new { featureName = config.Feature },
                                                      new
                                                      {
-                                                         @class = "glyphicon glyphicon-remove btn btn-default",
+                                                         @class = "glyphicon glyphicon-remove btn btn-default delete",
                                                          data_feature = @config.Feature
                                                      })
                         </td>

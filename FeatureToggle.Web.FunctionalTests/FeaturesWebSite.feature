@@ -12,7 +12,7 @@ Scenario: View the list of configurations
 	And it will contain 4 delete buttons
 
 Scenario: Deleting a configuration shows a confirmation popup
-    Given I browse the index page of features 
+    Given I browsed the index page of features 
     When I click the delete button of the FeatureToggle.Color feature
     Then I will see a confirmation delete popup
 	And the popup message will reference the FeatureToggle.Color feature
@@ -20,8 +20,8 @@ Scenario: Deleting a configuration shows a confirmation popup
 	And the popup will have a Cancel button
 
 Scenario: Delete a configuration
-    Given I browse the index page of features 
-    And I click the delete button of the FeatureToggle.Color feature
+    Given I browsed the index page of features 
+    And I clicked the delete button of the FeatureToggle.Color feature
 	When I click Yes in the confirmation dialog
     Then I will see the features list 
     And it will contain 3 features

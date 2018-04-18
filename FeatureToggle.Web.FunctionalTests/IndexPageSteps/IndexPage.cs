@@ -17,9 +17,9 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
         public static By FeatureListTableDeleteIconsBy => By.CssSelector("#featuresList tbody tr td:last-child > .btn.glyphicon-remove");
         public static By FeatureListTableListedFeatures => By.CssSelector("#featuresList tbody tr td:first-child");
 
-        public static By FeatureListTableDeleteIconForFeatureBy(string featureName)
+        public static By FeatureListTableDeleteIconForFeatureBy(string featureName, string action)
         {
-            return By.CssSelector($"#featuresList tbody tr.{featureName.Replace('.', '_')} td:last-child > .btn.glyphicon-remove");
+            return By.CssSelector($"#featuresList tbody tr.{featureName.Replace('.', '_')} td:last-child > .btn.{action}");
         }
     }
 
@@ -28,7 +28,7 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
     {
         private readonly IWebDriver _driver;
         private const string BaseUrl = "http://localhost:51847/";
-        public const string WebApplicationRelativePath = @"..\..\..\FeatureToggle";
+        private const string WebApplicationRelativePath = @"..\..\..\FeatureToggle";
 
         public IndexPage()
         {
@@ -56,7 +56,7 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
         {
         }
 
-        [Given(@"I browse the index page of features")]
+        [Given(@"I browsed the index page of features")]
         [When(@"I browse the index page of features")]
         public void BrowseTheIndexPageOfFeatures()
         {
@@ -90,14 +90,14 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
             Assert.Equal(iconCount, featureRows.Count);
         }
 
-        [Given(@"I click the delete button of the (.*) feature")]
-        [When(@"I click the delete button of the (.*) feature")]
-        public void WhenIClickTheDeleteButtonForFeature(string featureName)
+        [Given(@"I clicked the (.*) button of the (.*) feature")]
+        [When(@"I click the (.*) button of the (.*) feature")]
+        public void WhenIClickAnActionButtonForFeature(string action, string featureName)
         {
-            var button = _driver.FindElement(IndexPageModel.FeatureListTableDeleteIconForFeatureBy(featureName));
+            var button = _driver.FindElement(IndexPageModel.FeatureListTableDeleteIconForFeatureBy(featureName, action));
             button.Click();
         }
-  
+
         [Then(@"it will not contain the (.*) feature")]
         public void ThenItWillNotContainTheRemovedFeature(string removedFeature)
         {
