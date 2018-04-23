@@ -120,6 +120,12 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
             Assert.False(nameTextbox.Enabled);
         }
 
+        [Then(@"the form will allow modifying the feature value")]
+        public void ThenTheFormWillAllowModifyingTheFeatureValue()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
         [Then(@"it will not contain the (.*) feature")]
         public void ThenItWillNotContainTheRemovedFeature(string removedFeature)
         {

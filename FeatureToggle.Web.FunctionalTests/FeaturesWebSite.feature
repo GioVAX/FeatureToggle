@@ -17,6 +17,7 @@ Scenario: Editing a configuration shows a modal form
     Then I will see a modal popup to modify the configuration
 	And the form method will be post
 	And the form will not allow modifying the feature name
+	And the form will allow modifying the feature value
 
 Scenario: Deleting a configuration shows a confirmation popup
     Given I browsed the index page of features 
