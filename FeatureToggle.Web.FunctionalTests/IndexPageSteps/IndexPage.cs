@@ -110,7 +110,8 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
         [Then(@"the feature name will be (.*)")]
         public void ThenTheFeatureNameWillBe(string featureName)
         {
-            ScenarioContext.Current.Pending();
+            var featureTextBox = _driver.FindElement(IndexPageModel.EditPopupFeatureNameEdit);
+            Assert.Equal(featureName, featureTextBox.Text);
         }
 
         [Then(@"the form method will be (.*)")]
