@@ -18,6 +18,7 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
         public static By FeatureListTableListedFeatures => By.CssSelector("#featuresList tbody tr td:first-child");
         public static By EditFeaturePopupForm => By.CssSelector("#featureForm form");
         public static By EditPopupFeatureNameEdit => By.CssSelector("#featureForm form input[name=feature]");
+        public static By EditPopupFeatureValueEdit => By.CssSelector("#featureForm form input[name=value]");
 
         public static By FeatureListTableDeleteIconForFeatureBy(string featureName, string action) =>
             By.CssSelector($"#featuresList tbody tr.{featureName.Replace('.', '_')} td:last-child > .btn.{action}");
@@ -45,7 +46,8 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
             {
                 var alert = _driver?.SwitchTo().Alert();
                 alert?.Dismiss();
-            } catch {}
+            }
+            catch { }
 
             _driver?.Quit();
             _driver?.Dispose();
@@ -123,7 +125,8 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
         [Then(@"the form will allow modifying the feature value")]
         public void ThenTheFormWillAllowModifyingTheFeatureValue()
         {
-            ScenarioContext.Current.Pending();
+            var nameTextbox = _driver.FindElement(IndexPageModel.EditPopupFeatureValueEdit);
+            Assert.True(nameTextbox.Enabled);
         }
 
         [Then(@"it will not contain the (.*) feature")]
