@@ -107,6 +107,12 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
             Assert.NotNull(form);
         }
 
+        [Then(@"the feature name will be (.*)")]
+        public void ThenTheFeatureNameWillBe(string featureName)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
         [Then(@"the form method will be (.*)")]
         public void ThenTheFormMethodWillBePost(string expectedMethod)
         {
