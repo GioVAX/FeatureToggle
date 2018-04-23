@@ -17,8 +17,8 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
         public static By FeatureListTableDeleteIconsBy => By.CssSelector("#featuresList tbody tr td:last-child > .btn.glyphicon-remove");
         public static By FeatureListTableListedFeatures => By.CssSelector("#featuresList tbody tr td:first-child");
         public static By EditFeaturePopupForm => By.CssSelector("#featureForm form");
-        public static By EditPopupFeatureNameEdit => By.CssSelector("#featureForm form input[name=feature]");
-        public static By EditPopupFeatureValueEdit => By.CssSelector("#featureForm form input[name=value]");
+        public static By EditPopupFeatureNameEdit => By.CssSelector("#featureForm form input[name=Feature]");
+        public static By EditPopupFeatureValueEdit => By.CssSelector("#featureForm form input[name=Value]");
 
         public static By FeatureListTableDeleteIconForFeatureBy(string featureName, string action) =>
             By.CssSelector($"#featuresList tbody tr.{featureName.Replace('.', '_')} td:last-child > .btn.{action}");
