@@ -26,11 +26,11 @@
                         <td>
                             <button class="btn btn-default glyphicon glyphicon-pencil edit" data-toggle="modal" data-target="#featureForm"></button>
                             @Html.ActionLink("", "DeleteFeature", new { featureName = config.Feature },
-                                                                                                                                new
-                                                                                                                                {
-                                                                                                                                    @class = "glyphicon glyphicon-remove btn btn-default delete",
-                                                                                                                                    data_feature = @config.Feature
-                                                                                                                                })
+                                new
+                                {
+                                    @class = "glyphicon glyphicon-remove btn btn-default delete",
+                                    data_feature = @config.Feature
+                                })
                         </td>
                     </tr>
                 }
@@ -82,6 +82,16 @@
                 var featureName = origin.data('feature');
 
                 return confirm('Do you really want to delete feature <' + featureName + '>?');
+            });
+
+        jQuery('#featureForm').on('show.bs.modal',
+            function (event) {
+                var button = jQuery(event.relatedTarget);
+                var cells = button.parent().siblings();
+
+                var feature = cells.first().text();
+
+                jQuery('#featureForm input[name=Feature]').val(feature);
             });
     </script>
 }
