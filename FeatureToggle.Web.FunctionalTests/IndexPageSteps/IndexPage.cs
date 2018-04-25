@@ -179,5 +179,23 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
         {
             _driver.SwitchTo().Alert().Accept();
         }
+
+        [Given(@"I modified the feature value to (.*)")]
+        public void GivenIModifiedTheFeatureValueTo( string newFeatureValue)
+        {
+            ScenarioContext.Current.Pending();
+        }
+        
+        [When(@"I click the Submit button")]
+        public void WhenIClickTheSubmitButton()
+        {
+            ScenarioContext.Current.Pending();
+        }
+        
+        [Then(@"the feature value of (.*) will be (.*)")]
+        public void ThenTheFeatureValueOfFeatureWillBe(string featureName, string featureValue)
+        {
+            ScenarioContext.Current.Pending();
+        }
     }
 }

@@ -21,6 +21,14 @@ Scenario: Editing a configuration shows a modal form
 	And the form will not allow modifying the feature name
 	And the form will allow modifying the feature value
 
+Scenario: Editing a configuration shows a modal form
+    Given I browsed the index page of features 
+    And I clicked the edit button of the FeatureToggle.Color feature
+	And I modified the feature value to Yellow
+	When I click the Submit button
+	Then I will see the features list
+	And the feature value of FeatureToggle.Color will be Yellow
+
 Scenario: Deleting a configuration shows a confirmation popup
     Given I browsed the index page of features 
     When I click the delete button of the FeatureToggle.Color feature
