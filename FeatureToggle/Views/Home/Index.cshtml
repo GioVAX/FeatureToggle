@@ -90,8 +90,10 @@
                 var cells = button.parent().siblings();
 
                 var feature = cells.first().text();
-
                 jQuery('#featureForm input[name=Feature]').val(feature);
+
+                var value = cells.last().text();
+                jQuery('#featureForm input[name=Value]').val(value);
             });
     </script>
 }
