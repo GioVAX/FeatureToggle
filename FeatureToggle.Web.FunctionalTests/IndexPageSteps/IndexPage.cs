@@ -114,6 +114,13 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
             Assert.Equal(featureName, featureTextBox.GetAttribute("value"));
         }
 
+        [Then(@"the feature value will be (.*)")]
+        public void ThenTheFeatureValueWillBe(string featureValue)
+        {
+            var featureTextBox = _driver.FindElement(IndexPageModel.EditPopupFeatureValueEdit);
+            Assert.Equal(featureValue, featureTextBox.GetAttribute("value"));
+        }
+
         [Then(@"the form method will be (.*)")]
         public void ThenTheFormMethodWillBePost(string expectedMethod)
         {
