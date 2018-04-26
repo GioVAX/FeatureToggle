@@ -67,5 +67,14 @@ namespace FeatureToggle.Web.Tests
                     .And.BeEquivalentTo(featureList);
             }
         }
+
+        [Fact]
+        public void EditFeature_ShouldBeDecoratedWithPost()
+        {
+            var type = typeof(HomeController);
+            var editFeatureMethod = type.GetMethod(nameof(HomeController.EditFeature));
+
+            editFeatureMethod.Should().BeDecoratedWith<HttpPostAttribute>();
+        }
     }
 }
