@@ -139,8 +139,8 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
         [Then(@"the form will allow modifying the feature value")]
         public void ThenTheFormWillAllowModifyingTheFeatureValue()
         {
-            var nameTextbox = _driver.FindElement(IndexPageModel.EditPopupFeatureValueEdit);
-            Assert.True(nameTextbox.Enabled);
+            var valueTextbox = _driver.FindElement(IndexPageModel.EditPopupFeatureValueEdit);
+            Assert.True(valueTextbox.Enabled);
         }
 
         [Then(@"it will not contain the (.*) feature")]
