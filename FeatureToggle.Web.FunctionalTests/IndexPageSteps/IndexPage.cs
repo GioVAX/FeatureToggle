@@ -19,9 +19,12 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
         public static By EditFeaturePopupForm => By.CssSelector("#featureForm form");
         public static By EditPopupFeatureNameEdit => By.CssSelector("#featureForm form input[name=Feature]");
         public static By EditPopupFeatureValueEdit => By.CssSelector("#featureForm form input[name=Value]");
+        public static By EditPopupSubmitButton => By.CssSelector("#featureForm form button[type=submit]");
 
         public static By FeatureListTableDeleteIconForFeatureBy(string featureName, string action) =>
             By.CssSelector($"#featuresList tbody tr.{featureName.Replace('.', '_')} td:last-child > .btn.{action}");
+        public static By FeatureListTableFeatureValueCell(string featureName) =>
+            By.CssSelector($"#featuresList tbody tr.{featureName.Replace('.', '_')} td:nth-child(2)");
     }
 
     [Binding]
@@ -180,7 +183,7 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
             _driver.SwitchTo().Alert().Accept();
         }
 
-        [Given(@"I modified the feature value to (.*)")]
+        [Given("I modified the feature value to (.*)")]
         public void GivenIModifiedTheFeatureValueTo(string newFeatureValue)
         {
             var valueTextbox = _driver.FindElement(IndexPageModel.EditPopupFeatureValueEdit);
@@ -189,15 +192,24 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
         }
 
         [When(@"I click the Submit button")]
-        public void WhenIClickTheSubmitButton()
+        public void WhenIClickTheSubmitButton() => _driver.FindElement(IndexPageModel.EditPopupSubmitButton).Click();
+
+        [Then(@"the modal popup will not be visible")]
+        public void ThenTheModalPopupWillNotBeVisible()
         {
-            ScenarioContext.Current.Pending();
+            try
+            {
+                _driver.FindElement(IndexPageModel.EditFeaturePopupForm);
+            }
+            catch (NoSuchElementException)
+            {}
         }
 
         [Then(@"the feature value of (.*) will be (.*)")]
         public void ThenTheFeatureValueOfFeatureWillBe(string featureName, string featureValue)
         {
-            ScenarioContext.Current.Pending();
+            var cell = _driver.FindElement(IndexPageModel.FeatureListTableFeatureValueCell(featureName));
+            Assert.Equal(featureValue, cell.Text);
         }
     }
 }

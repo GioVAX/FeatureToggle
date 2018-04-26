@@ -26,6 +26,7 @@ Scenario: Editing a configuration changes the feature value
     And I clicked the edit button of the FeatureToggle.Color feature
 	And I modified the feature value to Yellow
 	When I click the Submit button
+	Then the modal popup will not be visible
 	Then I will see the features list
 	And the feature value of FeatureToggle.Color will be Yellow
 
