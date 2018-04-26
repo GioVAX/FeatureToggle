@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using FeatureToggle.Definitions;
 using FeatureToggle.Web.Controllers;
 using FluentAssertions;
@@ -75,6 +76,19 @@ namespace FeatureToggle.Web.Tests
             var editFeatureMethod = type.GetMethod(nameof(HomeController.EditFeature));
 
             editFeatureMethod.Should().BeDecoratedWith<HttpPostAttribute>();
+        }
+
+        [Fact]
+        public void EditFeature_ShouldAcceptFeatureNameAndFeatureValue()
+        {
+            var type = typeof(HomeController);
+            var editFeatureParameters = type
+                .GetMethod(nameof(HomeController.EditFeature))
+                .GetParameters()
+                .Select(prm => prm.Name);
+
+            editFeatureParameters.Should()
+                .BeEquivalentTo(new[] { "feature", "value" });
         }
     }
 }
