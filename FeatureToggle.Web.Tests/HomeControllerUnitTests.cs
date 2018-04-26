@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using AutoFixture;
 using FeatureToggle.Definitions;
 using FeatureToggle.Web.Controllers;
 using FluentAssertions;
@@ -14,12 +15,14 @@ namespace FeatureToggle.Web.Tests
     public class HomeControllerUnitTests
     {
         readonly HomeController _sut;
+        readonly Fixture _fixture;
         readonly Mock<IFeatureRepository> _repository;
 
         public HomeControllerUnitTests()
         {
             _repository = new Mock<IFeatureRepository>();
             _sut = new HomeController(_repository.Object);
+            _fixture = new Fixture();
         }
 
         [Fact]
@@ -90,5 +93,21 @@ namespace FeatureToggle.Web.Tests
             editFeatureParameters.Should()
                 .BeEquivalentTo(new[] { "feature", "value" });
         }
-    }
+
+        [Fact]
+        public void EditFeature_ShouldCallRepositoryUpdateFeatureOnce()
+        {
+            var feature = _fixture.Create<string>();
+            var newValue = _fixture.Create<string>();
+            var featureList = new List<FeatureConfiguration> {
+                new FeatureConfiguration("hello", "world"),
+                new FeatureConfiguration("ciao", "mondo"),
+            };
+            _repository.Setup(mock => mock.Update(feature, newValue))
+                .Returns(featureList);
+
+            _sut.EditFeature(feature, newValue);
+
+            _repository.Verify(repo => repo.Update(feature, newValue), Times.Once);
+        }
 }
