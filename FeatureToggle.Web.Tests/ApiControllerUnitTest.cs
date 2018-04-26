@@ -29,8 +29,8 @@ namespace FeatureToggle.Web.Tests
             var type = typeof(ApiController);
 
             type.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly)
-                .Should().HaveCount(1)
-                .And.Contain(method => string.Equals(method.Name, "GetFeatures", StringComparison.InvariantCultureIgnoreCase));
+                .Should().HaveCount(1, "because the API should only allow retrieving features.")
+                .And.Contain(method => string.Equals(method.Name, "GetFeatures", StringComparison.InvariantCultureIgnoreCase), "because the API should only allow retrieving features.");
         }
 
         [Fact]
