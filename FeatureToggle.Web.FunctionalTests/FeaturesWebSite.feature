@@ -21,7 +21,7 @@ Scenario: Editing a configuration shows a modal form
 	And the form will not allow modifying the feature name
 	And the form will allow modifying the feature value
 
-Scenario: Editing a configuration shows a modal form
+Scenario: Editing a configuration changes the feature value
     Given I browsed the index page of features 
     And I clicked the edit button of the FeatureToggle.Color feature
 	And I modified the feature value to Yellow

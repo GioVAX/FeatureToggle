@@ -181,17 +181,19 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
         }
 
         [Given(@"I modified the feature value to (.*)")]
-        public void GivenIModifiedTheFeatureValueTo( string newFeatureValue)
+        public void GivenIModifiedTheFeatureValueTo(string newFeatureValue)
         {
-            ScenarioContext.Current.Pending();
+            var valueTextbox = _driver.FindElement(IndexPageModel.EditPopupFeatureValueEdit);
+            valueTextbox.Clear();
+            valueTextbox.SendKeys(newFeatureValue);
         }
-        
+
         [When(@"I click the Submit button")]
         public void WhenIClickTheSubmitButton()
         {
             ScenarioContext.Current.Pending();
         }
-        
+
         [Then(@"the feature value of (.*) will be (.*)")]
         public void ThenTheFeatureValueOfFeatureWillBe(string featureName, string featureValue)
         {
