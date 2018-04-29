@@ -36,7 +36,8 @@ namespace FeatureToggle.Web.Tests
         public void Index_ShouldCallRepositoryGetFeatures()
         {
             _repository.Setup(mock => mock.Select(It.IsAny<string>()))
-                .Returns(new List<FeatureConfiguration> {
+                .Returns(new List<FeatureConfiguration>
+                {
                     new FeatureConfiguration("hello", "world")
                 });
 
@@ -49,10 +50,11 @@ namespace FeatureToggle.Web.Tests
         public void Index_ShouldReturnModelViewWithEnumerableOfFeatures()
         {
             // Arrange
-            var featureList = new List<FeatureConfiguration> {
-                                new FeatureConfiguration("hello", "world"),
-                                new FeatureConfiguration("ciao", "mondo"),
-                };
+            var featureList = new List<FeatureConfiguration>
+            {
+                new FeatureConfiguration("hello", "world"),
+                new FeatureConfiguration("ciao", "mondo"),
+            };
 
             _repository.Setup(mock => mock.Select(It.IsAny<string>()))
                 .Returns(featureList);
@@ -65,7 +67,7 @@ namespace FeatureToggle.Web.Tests
             {
                 viewModel.Should().BeAssignableTo<IEnumerable<FeatureConfiguration>>();
 
-                var modelList = (IEnumerable<FeatureConfiguration>)viewModel;
+                var modelList = (IEnumerable<FeatureConfiguration>) viewModel;
 
                 modelList.Should().HaveCount(2)
                     .And.BeEquivalentTo(featureList);
@@ -73,7 +75,7 @@ namespace FeatureToggle.Web.Tests
         }
 
         [Fact]
-        public void EditFeature_ShouldBeDecoratedWithPost()
+        public void EditFeature_ShouldBeDecoratedWithHttpPost()
         {
             var type = typeof(HomeController);
             var editFeatureMethod = type.GetMethod(nameof(HomeController.EditFeature));
@@ -91,7 +93,7 @@ namespace FeatureToggle.Web.Tests
                 .Select(prm => prm.Name);
 
             editFeatureParameters.Should()
-                .BeEquivalentTo(new[] { "feature", "value" });
+                .BeEquivalentTo(new[] {"feature", "value"});
         }
 
         [Fact]
@@ -99,7 +101,8 @@ namespace FeatureToggle.Web.Tests
         {
             var feature = _fixture.Create<string>();
             var newValue = _fixture.Create<string>();
-            var featureList = new List<FeatureConfiguration> {
+            var featureList = new List<FeatureConfiguration>
+            {
                 new FeatureConfiguration("hello", "world"),
                 new FeatureConfiguration("ciao", "mondo"),
             };
@@ -110,4 +113,5 @@ namespace FeatureToggle.Web.Tests
 
             _repository.Verify(repo => repo.Update(feature, newValue), Times.Once);
         }
+    }
 }
