@@ -36,7 +36,9 @@ namespace FeatureToggle.Web.Controllers
         [HttpPost]
         public IActionResult EditFeature(string feature, string value)
         {
-            throw new System.NotImplementedException();
+            _repository.Update(feature, value);
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

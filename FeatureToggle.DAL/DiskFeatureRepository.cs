@@ -48,5 +48,10 @@ namespace FeatureToggle.DAL
 
             WriteConfigurationFile();
         }
+
+        public IEnumerable<FeatureConfiguration> Update(string feature, string newValue)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
