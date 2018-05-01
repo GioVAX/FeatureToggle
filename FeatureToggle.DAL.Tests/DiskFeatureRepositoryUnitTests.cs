@@ -179,7 +179,7 @@ namespace FeatureToggle.DAL.Tests
 
         
         [Fact]
-        public void FeatureRepository_UpdateUnknownFeature_ShouldThrowShowingTheUnknownFeatureName()
+        public void FeatureRepository_UpdateUnknownFeature_ShouldThrowShowingFeatureName()
         {
             var featureName = _fixture.Create<string>();
 
