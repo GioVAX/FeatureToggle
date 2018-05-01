@@ -97,7 +97,7 @@ namespace FeatureToggle.Web.Tests
         }
 
         [Fact]
-        public void EditFeature_ShouldCallRepositoryUpdateFeatureOnce()
+        public void EditFeature_ShouldCallRepositoryUpdateFeatureOncePassingTheReceivedValues()
         {
             var feature = _fixture.Create<string>();
             var newValue = _fixture.Create<string>();
