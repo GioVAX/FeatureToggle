@@ -62,6 +62,8 @@ namespace FeatureToggle.DAL
 
             feature.Value = newValue;
 
+            WriteConfigurationFile();
+
             return _features;
         }
     }
