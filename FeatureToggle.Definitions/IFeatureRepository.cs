@@ -6,6 +6,6 @@ namespace FeatureToggle.Definitions
     {
         IEnumerable<FeatureConfiguration> Select( string pattern);
         void Delete(string featureName);
-        IEnumerable<FeatureConfiguration> Update(string feature, string newValue);
+        IEnumerable<FeatureConfiguration> Update(string featureName, string newValue);
     }
 }

@@ -49,9 +49,12 @@ namespace FeatureToggle.DAL
             WriteConfigurationFile();
         }
 
-        public IEnumerable<FeatureConfiguration> Update(string feature, string newValue)
+        public IEnumerable<FeatureConfiguration> Update(string featureName, string newValue)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(featureName))
+                throw new ArgumentException("Feature name cannot be empty", nameof(featureName));
+
+            return null;
         }
     }
 }

@@ -121,5 +121,13 @@ namespace FeatureToggle.DAL.Tests
 
             action.Should().Throw<ArgumentException>()
                 .Which.Message.Should().StartWith("Feature name cannot be empty");
-    }
+        }
+
+        [Fact]
+        public void FeatureRepository_Update_NullFeatureName_ShouldThrow()
+        {
+            Action action = () => _sut.Update(null, _fixture.Create<string>());
+
+            action.Should().Throw<ArgumentException>()
+                .Which.Message.Should().StartWith("Feature name cannot be empty");
 }
