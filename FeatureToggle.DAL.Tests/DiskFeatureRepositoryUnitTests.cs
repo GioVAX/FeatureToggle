@@ -143,7 +143,7 @@ namespace FeatureToggle.DAL.Tests
             var newFeaturesList = _sut.Update(featureName, newValue);
 
             newFeaturesList.Should()
-                .HaveSameCount( origFeaturesList );
+                .HaveSameCount(origFeaturesList);
         }
 
         [Fact]
@@ -159,7 +159,7 @@ namespace FeatureToggle.DAL.Tests
                 .Select(feature => feature.Feature);
 
             newFeaturesList.Should()
-                .BeEquivalentTo( origFeaturesList );
+                .BeEquivalentTo(origFeaturesList);
         }
 
         [Fact]
@@ -172,12 +172,12 @@ namespace FeatureToggle.DAL.Tests
 
             var newFeature = newFeaturesList.Single(feature =>
                 string.Equals(feature.Feature, featureName, StringComparison.InvariantCultureIgnoreCase));
-            
+
             newFeature.Value
                 .Should().Be(newValue);
         }
 
-        
+
         [Fact]
         public void FeatureRepository_UpdateUnknownFeature_ShouldThrowShowingFeatureName()
         {
@@ -187,6 +187,21 @@ namespace FeatureToggle.DAL.Tests
 
             action.Should().Throw<KeyNotFoundException>()
                 .Which.Message.Should().StartWith($"Feature <{featureName}> is not configured");
+        }
+
+        [Fact]
+        public void FeatureRepository_Update_ShouldBePersisted()
+        {
+            const string featureName = "OtherRoot.Font";
+            var newValue = _fixture.Create<string>();
+
+            _sut.Update(featureName, newValue);
+
+            var checkRepository = new DiskFeatureRepository(_destFileName);
+
+            var feature = checkRepository.Select(featureName).Single();
+
+            feature.Value.Should().Be(newValue);
         }
     }
 }
