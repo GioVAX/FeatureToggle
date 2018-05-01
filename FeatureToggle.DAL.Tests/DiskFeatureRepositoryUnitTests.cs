@@ -161,3 +161,20 @@ namespace FeatureToggle.DAL.Tests
             newFeaturesList.Should()
                 .BeEquivalentTo( origFeaturesList );
         }
+
+        [Fact]
+        public void FeatureRepository_Update_ShouldChangeFeatureToTheNewValue()
+        {
+            var newValue = _fixture.Create<string>();
+            const string featureName = "OtherRoot.Font";
+
+            var newFeaturesList = _sut.Update(featureName, newValue);
+
+            var newFeature = newFeaturesList.Single(feature =>
+                string.Equals(feature.Feature, featureName, StringComparison.InvariantCultureIgnoreCase));
+            
+            newFeature.Value
+                .Should().Be(newValue);
+        }
+    }
+}
