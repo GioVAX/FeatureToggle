@@ -5,14 +5,16 @@ using FeatureToggle.Definitions;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using AutoFixture;
 using FluentAssertions.Execution;
 
 namespace FeatureToggle.DAL.Tests
 {
     public class DiskFeatureRepositoryUnitTests : IDisposable
     {
-        readonly DiskFeatureRepository _sut;
+        private readonly DiskFeatureRepository _sut;
         private readonly string _destFileName = "Test_Tmp.Json";
+        private readonly Fixture _fixture = new Fixture();
 
         public DiskFeatureRepositoryUnitTests()
         {
@@ -111,5 +113,13 @@ namespace FeatureToggle.DAL.Tests
                 .Should().HaveCount(3)
                 .And.NotContain(configuration => string.Equals(configuration.Feature, featureName, StringComparison.InvariantCultureIgnoreCase));
         }
+
+        [Fact]
+        public void FeatureRepository_Update_EmptyFeatureName_ShouldThrow()
+        {
+            Action action = () => _sut.Update("", _fixture.Create<string>());
+
+            action.Should().Throw<ArgumentException>()
+                .Which.Message.Should().StartWith("Feature name cannot be empty");
     }
 }
