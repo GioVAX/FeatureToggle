@@ -45,6 +45,9 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
         }
         public void Dispose()
         {
+            if (ScenarioContext.Current.TestError != null)
+                return;
+
             try
             {
                 var alert = _driver?.SwitchTo().Alert();
