@@ -176,5 +176,17 @@ namespace FeatureToggle.DAL.Tests
             newFeature.Value
                 .Should().Be(newValue);
         }
+
+        
+        [Fact]
+        public void FeatureRepository_UpdateUnknownFeature_ShouldThrowShowingTheUnknownFeatureName()
+        {
+            var featureName = _fixture.Create<string>();
+
+            Action action = () => _sut.Update(featureName, _fixture.Create<string>());
+
+            action.Should().Throw<KeyNotFoundException>()
+                .Which.Message.Should().StartWith($"Feature <{featureName}> is not configured");
+        }
     }
 }
