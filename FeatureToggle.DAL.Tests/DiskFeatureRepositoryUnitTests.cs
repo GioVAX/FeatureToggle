@@ -130,4 +130,18 @@ namespace FeatureToggle.DAL.Tests
 
             action.Should().Throw<ArgumentException>()
                 .Which.Message.Should().StartWith("Feature name cannot be empty");
-}
+        }
+
+        [Fact]
+        public void FeatureRepository_Update_ShouldNotChangeNumberOfFeatures()
+        {
+            var newValue = _fixture.Create<string>();
+            const string featureName = "OtherRoot.Font";
+
+            var origFeaturesList = _sut.Select(null);
+
+            var newFeaturesList = _sut.Update(featureName, newValue);
+
+            newFeaturesList.Should()
+                .HaveSameCount( origFeaturesList );
+        }
