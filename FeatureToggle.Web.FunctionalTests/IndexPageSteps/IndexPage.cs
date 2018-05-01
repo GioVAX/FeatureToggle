@@ -139,7 +139,7 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
         public void ThenTheFormWillNotAllowModifyingTheFeatureName()
         {
             var nameTextbox = _driver.FindElement(IndexPageModel.EditPopupFeatureNameEdit);
-            Assert.False(nameTextbox.Enabled);
+            Assert.Equal("true", nameTextbox.GetAttribute("readonly"));
         }
 
         [Then(@"the form will allow modifying the feature value")]
@@ -147,6 +147,7 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
         {
             var valueTextbox = _driver.FindElement(IndexPageModel.EditPopupFeatureValueEdit);
             Assert.True(valueTextbox.Enabled);
+            Assert.True(string.IsNullOrEmpty(valueTextbox.GetAttribute("readonly")));
         }
 
         [Then(@"it will not contain the (.*) feature")]
@@ -205,7 +206,7 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
                 _driver.FindElement(IndexPageModel.EditFeaturePopupForm);
             }
             catch (NoSuchElementException)
-            {}
+            { }
         }
 
         [Then(@"the feature value of (.*) will be (.*)")]
