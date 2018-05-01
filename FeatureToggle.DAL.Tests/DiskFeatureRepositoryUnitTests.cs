@@ -145,3 +145,19 @@ namespace FeatureToggle.DAL.Tests
             newFeaturesList.Should()
                 .HaveSameCount( origFeaturesList );
         }
+
+        [Fact]
+        public void FeatureRepository_Update_ShouldContainTheSameFeatures()
+        {
+            var newValue = _fixture.Create<string>();
+            const string featureName = "OtherRoot.Font";
+
+            var origFeaturesList = _sut.Select(null)
+                .Select(feature => feature.Feature);
+
+            var newFeaturesList = _sut.Update(featureName, newValue)
+                .Select(feature => feature.Feature);
+
+            newFeaturesList.Should()
+                .BeEquivalentTo( origFeaturesList );
+        }
