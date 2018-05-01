@@ -54,7 +54,7 @@ namespace FeatureToggle.DAL
             if (string.IsNullOrWhiteSpace(featureName))
                 throw new ArgumentException("Feature name cannot be empty", nameof(featureName));
 
-            return null;
+            return _features;
         }
     }
 }
