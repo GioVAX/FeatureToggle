@@ -53,6 +53,9 @@ namespace FeatureToggle.DAL
         {
             if (string.IsNullOrWhiteSpace(featureName))
                 throw new ArgumentException("Feature name cannot be empty", nameof(featureName));
+            
+            var feature = _features.Single(feat => feat.Feature.Equals(featureName, StringComparison.InvariantCultureIgnoreCase));
+            feature.Value = newValue;
 
             return _features;
         }
