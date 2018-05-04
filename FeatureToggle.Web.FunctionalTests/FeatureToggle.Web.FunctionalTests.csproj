@@ -70,21 +70,39 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FeaturesWebSite.feature.cs">
+    <Compile Include="FeaturesList.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>FeaturesWebSite.feature</DependentUpon>
+      <DependentUpon>FeaturesList.feature</DependentUpon>
+    </Compile>
+    <Compile Include="EditFeature.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EditFeature.feature</DependentUpon>
     </Compile>
     <Compile Include="IndexPageSteps\IndexPage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="DeleteFeature.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DeleteFeature.feature</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="FeaturesWebSite.feature">
+    <None Include="FeaturesList.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>FeaturesWebSite.feature.cs</LastGenOutput>
+      <LastGenOutput>FeaturesList.feature.cs</LastGenOutput>
+    </None>
+    <None Include="EditFeature.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>EditFeature.feature.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
+    <None Include="DeleteFeature.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>DeleteFeature.feature.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="chromedriver.exe">
