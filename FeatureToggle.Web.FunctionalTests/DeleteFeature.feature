@@ -1,11 +1,20 @@
-﻿Feature: SpecFlowFeature1
-	In order to avoid silly mistakes
-	As a math idiot
-	I want to be told the sum of two numbers
+﻿Feature: DeleteFeature
+	In order to work with features toggles
+	As a feature admin
+	I want to use a web site to manage the configured toggles
 
-@mytag
-Scenario: Add two numbers
-	Given I have entered 50 into the calculator
-	And I have entered 70 into the calculator
-	When I press add
-	Then the result should be 120 on the screen
+Scenario: Deleting a configuration shows a confirmation popup
+    Given I browsed the index page of features 
+    When I click the delete button of the FeatureToggle.Color feature
+    Then I will see a confirmation delete popup
+	And the popup message will reference the FeatureToggle.Color feature
+	And the popup will have a Yes button
+	And the popup will have a Cancel button
+
+Scenario: Delete a configuration
+    Given I browsed the index page of features 
+    And I clicked the delete button of the FeatureToggle.Color feature
+	When I click Yes in the confirmation dialog
+    Then I will see the features list
+    And it will contain 3 features
+	And it will not contain the FeatureToggle.Color feature
