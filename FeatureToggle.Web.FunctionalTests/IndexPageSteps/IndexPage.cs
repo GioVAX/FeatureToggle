@@ -98,6 +98,12 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
             Assert.Equal(iconCount, featureRows.Count);
         }
 
+        [Then(@"the page will have a add button")]
+        public void ThenThePageWillHaveAAddButton()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
         [Given(@"I clicked the (.*) button of the (.*) feature")]
         [When(@"I click the (.*) button of the (.*) feature")]
         public void WhenIClickAnActionButtonForFeature(string action, string featureName)

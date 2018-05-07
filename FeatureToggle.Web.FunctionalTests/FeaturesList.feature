@@ -10,3 +10,4 @@ Scenario: View the list of configurations
 	And it will contain 4 features
 	And it will contain 4 edit buttons
 	And it will contain 4 delete buttons
+	And the page will have a add button
