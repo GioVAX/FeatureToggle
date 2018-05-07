@@ -13,6 +13,7 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
     {
         public static By FeaturesListBy => By.CssSelector("#featuresList");
         public static By FeatureListTableRowsBy => By.CssSelector("#featuresList tbody tr");
+        public static By FeatureListAddFeatureBy => By.CssSelector("#featuresList .btn.glyphicon-plus");
         public static By FeatureListTableEditIconsBy => By.CssSelector("#featuresList tbody tr td:last-child > .btn.glyphicon-pencil");
         public static By FeatureListTableDeleteIconsBy => By.CssSelector("#featuresList tbody tr td:last-child > .btn.glyphicon-remove");
         public static By FeatureListTableListedFeatures => By.CssSelector("#featuresList tbody tr td:first-child");
@@ -101,7 +102,8 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
         [Then(@"the page will have a add button")]
         public void ThenThePageWillHaveAAddButton()
         {
-            ScenarioContext.Current.Pending();
+            var addButton = _driver.FindElement(IndexPageModel.FeatureListAddFeatureBy);
+            Assert.NotNull(addButton);
         }
 
         [Given(@"I clicked the (.*) button of the (.*) feature")]
