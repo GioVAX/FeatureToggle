@@ -13,6 +13,7 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
     {
         public static By FeaturesListBy => By.CssSelector("#featuresList");
         public static By FeatureListTableRowsBy => By.CssSelector("#featuresList tbody tr");
+        public static By FeatureListAddFeatureBy => By.CssSelector("#featuresList .btn.glyphicon-plus");
         public static By FeatureListTableEditIconsBy => By.CssSelector("#featuresList tbody tr td:last-child > .btn.glyphicon-pencil");
         public static By FeatureListTableDeleteIconsBy => By.CssSelector("#featuresList tbody tr td:last-child > .btn.glyphicon-remove");
         public static By FeatureListTableListedFeatures => By.CssSelector("#featuresList tbody tr td:first-child");
@@ -101,7 +102,8 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
         [Then(@"the page will have a add button")]
         public void ThenThePageWillHaveAAddButton()
         {
-            ScenarioContext.Current.Pending();
+            var addButton = _driver.FindElement(IndexPageModel.FeatureListAddFeatureBy);
+            Assert.NotNull(addButton);
         }
 
         [Given(@"I clicked the (.*) button of the (.*) feature")]
@@ -113,6 +115,7 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
         }
 
         [Then(@"I will see a modal popup to modify the configuration")]
+        [Then(@"I will see a modal popup")]
         public void ThenIWillSeeAModalPopupToModifyTheConfiguration()
         {
             var form = _driver.FindElement(IndexPageModel.EditFeaturePopupForm);
@@ -133,6 +136,20 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
             Assert.Equal(featureValue, featureTextBox.GetAttribute("value"));
         }
 
+        [Then(@"the feature name will be empty")]
+        public void ThenTheFeatureNameWillBeEmpty()
+        {
+            var featureTextBox = _driver.FindElement(IndexPageModel.EditPopupFeatureNameEdit);
+            Assert.True(string.IsNullOrEmpty(featureTextBox.GetAttribute("value")));
+        }
+
+        [Then(@"the feature value will be empty")]
+        public void ThenTheFeatureValueWillBeEmpty()
+        {
+            var featureTextBox = _driver.FindElement(IndexPageModel.EditPopupFeatureValueEdit);
+            Assert.True(string.IsNullOrEmpty(featureTextBox.GetAttribute("value")));
+        }
+
         [Then(@"the form method will be (.*)")]
         public void ThenTheFormMethodWillBePost(string expectedMethod)
         {
@@ -146,6 +163,14 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
         {
             var nameTextbox = _driver.FindElement(IndexPageModel.EditPopupFeatureNameEdit);
             Assert.Equal("true", nameTextbox.GetAttribute("readonly"));
+        }
+
+        [Then(@"the form will allow modifying the feature name")]
+        public void ThenTheFormWillAllowModifyingTheFeatureName()
+        {
+            var nameTextbox = _driver.FindElement(IndexPageModel.EditPopupFeatureNameEdit);
+            Assert.True(nameTextbox.Enabled);
+            Assert.True(string.IsNullOrEmpty(nameTextbox.GetAttribute("readonly")));
         }
 
         [Then(@"the form will allow modifying the feature value")]
