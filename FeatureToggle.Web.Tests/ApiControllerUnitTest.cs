@@ -34,11 +34,11 @@ namespace FeatureToggle.Web.Tests
         }
 
         [Fact]
-        public void GetFeature_ReturnsJson()
+        public void GetFeature_ReturnsObjectResult()
         {
-            var json = _sut.GetFeatures("");
+            var result = _sut.GetFeatures("");
 
-            json.Should().BeOfType<JsonResult>();
+            result.Should().BeAssignableTo<ObjectResult>();
         }
 
         [Fact]
@@ -49,9 +49,11 @@ namespace FeatureToggle.Web.Tests
                     new FeatureConfiguration("hello", "world")
                 });
 
-            var json = _sut.GetFeatures("");
+            var json = (_sut.GetFeatures("") as ObjectResult)?.Value;
 
-            json.Value.Should().BeAssignableTo<IEnumerable<FeatureConfiguration>>();
+            json
+                .Should().NotBeNull()
+                .And.BeAssignableTo<IEnumerable<FeatureConfiguration>>();
         }
 
         [Fact]
@@ -71,11 +73,13 @@ namespace FeatureToggle.Web.Tests
                     new FeatureConfiguration("hello", "world")
                 });
 
-            var featuresJson = _sut.GetFeatures(pattern);
+            var result = _sut.GetFeatures(pattern);
 
-            var features = featuresJson.Value as IEnumerable<FeatureConfiguration>;
+            var features = (result as ObjectResult)?.Value as IEnumerable<FeatureConfiguration>;
 
-            features.Should().HaveCount(1)
+            features
+                .Should().NotBeNull()
+                .And.HaveCount(1)
                 .And.OnlyContain(pair => pair.Feature.StartsWith(pattern, StringComparison.InvariantCultureIgnoreCase));
         }
     }

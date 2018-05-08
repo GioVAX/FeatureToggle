@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FeatureToggle.Web.Controllers
 {
+    [Produces("application/json")]
     public class ApiController : Controller
     {
         readonly IFeatureRepository _repository;
@@ -12,11 +13,11 @@ namespace FeatureToggle.Web.Controllers
             _repository = repository;
         }
 
-        public JsonResult GetFeatures(string beginningWith)
+        public IActionResult GetFeatures(string beginningWith)
         {
             var features = _repository.Select(beginningWith);
 
-            return Json(features);
+            return Ok(features);
         }
     }
 }
