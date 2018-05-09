@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace FeatureToggle.Web.Controllers
 {
     [Produces("application/json")]
+    [Route( "api/Feature/[action]")]
     public class ApiController : Controller
     {
         readonly IFeatureRepository _repository;
@@ -13,6 +14,7 @@ namespace FeatureToggle.Web.Controllers
             _repository = repository;
         }
 
+        [HttpGet]
         public IActionResult GetFeatures(string beginningWith)
         {
             var features = _repository.Select(beginningWith);
