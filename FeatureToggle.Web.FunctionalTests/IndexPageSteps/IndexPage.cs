@@ -38,7 +38,7 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
         public IndexPage()
         {
             File.Copy(
-                Path.Combine(WebApplicationRelativePath, "Features_Test.Json"),
+                "Features_Test.Json",
                 Path.Combine(WebApplicationRelativePath, "Features.json"),
                 true);
 

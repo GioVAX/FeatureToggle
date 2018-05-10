@@ -98,6 +98,9 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>EditFeature.feature.cs</LastGenOutput>
     </None>
+    <Content Include="Features_Test.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="packages.config" />
     <None Include="DeleteFeature.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
