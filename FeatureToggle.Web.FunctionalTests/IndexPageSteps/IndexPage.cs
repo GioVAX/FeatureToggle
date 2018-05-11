@@ -114,12 +114,20 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
             button.Click();
         }
 
+        [When(@"I click the add button")]
+        public void WhenIClickTheAddButton()
+        {
+            var addButton = _driver.FindElement(IndexPageModel.FeatureListAddFeatureBy);
+            addButton.Click();
+        }
+
         [Then(@"I will see a modal popup to modify the configuration")]
         [Then(@"I will see a modal popup")]
         public void ThenIWillSeeAModalPopupToModifyTheConfiguration()
         {
             var form = _driver.FindElement(IndexPageModel.EditFeaturePopupForm);
             Assert.NotNull(form);
+            Assert.True(form.Displayed);
         }
 
         [Then(@"the feature name will be (.*)")]

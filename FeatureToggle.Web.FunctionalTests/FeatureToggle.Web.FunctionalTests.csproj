@@ -70,6 +70,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddFeature.feature.cs">
+      <DependentUpon>AddFeature.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="FeaturesList.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -90,6 +95,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="AddFeature.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>AddFeature.feature.cs</LastGenOutput>
+    </None>
     <None Include="FeaturesList.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>FeaturesList.feature.cs</LastGenOutput>
