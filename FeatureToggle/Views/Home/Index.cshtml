@@ -89,13 +89,34 @@
         jQuery('#featureForm').on('show.bs.modal',
             function (event) {
                 var button = jQuery(event.relatedTarget);
-                var cells = button.parent().siblings();
 
-                var feature = cells.first().text();
-                jQuery('#featureForm input[name=Feature]').val(feature);
-
-                var value = cells.last().text();
-                jQuery('#featureForm input[name=Value]').val(value);
+                if (button.hasClass('edit'))
+                    ConfigureModalToUpdateFeature(button);
+                else if (button.hasClass('add'))
+                    ConfigureModalForNewFeature();
             });
+
+        function ConfigureModalForNewFeature() {
+            jQuery('#featureForm input[name=Feature]')
+                .val('')
+                .removeAttr('readonly');
+
+            jQuery('#featureForm input[name=Value]')
+                .val('');
+        }
+
+        function ConfigureModalToUpdateFeature(button) {
+            var cells = button.parent().siblings();
+
+            var feature = cells.first().text();
+            jQuery('#featureForm input[name=Feature]')
+                .val(feature)
+                .attr('readonly', 'readonly');
+
+            var value = cells.last().text();
+            jQuery('#featureForm input[name=Value]')
+                .val(value);
+        }
+
     </script>
 }
