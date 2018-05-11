@@ -52,7 +52,7 @@ namespace FeatureToggle.Web.Tests
             File.Copy("Features_Test.json", destinationFile, true);
 
         [Fact]
-        public async Task Get_All_Features_Returns_List_Of_Features_And_Http200()
+        public async void Get_All_Features_Returns_List_Of_Features_And_Http200()
         {
             // Act
             var response = await _httpClient.GetAsync("/api/Feature/GetFeatures");
@@ -62,7 +62,27 @@ namespace FeatureToggle.Web.Tests
 
             // Assert
             features
-                .Should().NotBeEmpty();
+                .Should().NotBeNull()
+                .And.NotBeEmpty();
+
+            response.StatusCode
+                .Should().Be(HttpStatusCode.OK);
+        }
+
+        [Fact]
+        public async void GetFeature_WithParameter_ReturnsFilteredList_AndHttpStatus200()
+        {
+            const string pattern = "FeatureToggle";
+            var response = await _httpClient.GetAsync($"/api/Feature/GetFeatures?beginningWith={pattern}");
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var features = JsonConvert.DeserializeObject<IEnumerable<FeatureConfiguration>>(responseContent);
+
+            features
+                .Should().NotBeNull()
+                .And.HaveCount(2)
+                .And.OnlyContain(pair => pair.Feature.StartsWith(pattern, StringComparison.InvariantCultureIgnoreCase));
+
             response.StatusCode
                 .Should().Be(HttpStatusCode.OK);
         }
