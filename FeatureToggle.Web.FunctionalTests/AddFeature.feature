@@ -7,3 +7,5 @@ Scenario: Adding a new configuration shows a modal form
     Given I browsed the index page of features 
     When I click the add button
     Then I will see a modal popup
+	And the form will allow modifying the feature name
+	And the form will allow modifying the feature value
