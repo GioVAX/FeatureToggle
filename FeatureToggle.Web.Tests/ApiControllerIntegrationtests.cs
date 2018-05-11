@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using System.Text;
+using System.Net.Http;
 using System.Threading.Tasks;
+using AutoFixture;
 using FeatureToggle.Definitions;
 using FluentAssertions;
 using Microsoft.AspNetCore;
@@ -11,20 +12,28 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Newtonsoft.Json;
 using Xunit;
-using System.Net.Http;
 
 namespace FeatureToggle.Web.Tests
 {
-    public class ApiControllerIntegrationTests
+    public class ApiControllerIntegrationTests : IDisposable
     {
+        private readonly string _configurationFile;
         private readonly HttpClient _httpClient;
+        private readonly Fixture _fixture;
 
         public ApiControllerIntegrationTests()
         {
-            const string configurationFile = "Features.json";
-            RestoreFeaturesConfiguration(configurationFile);
+            _fixture = new Fixture();
 
-            _httpClient = SetupHttpFramework(configurationFile);
+            _configurationFile = Path.ChangeExtension(_fixture.Create<string>(), "json");
+
+            RestoreFeaturesConfiguration(_configurationFile);
+            _httpClient = SetupHttpFramework(_configurationFile);
+        }
+
+        public void Dispose()
+        {
+            File.Delete(_configurationFile);
         }
 
         private HttpClient SetupHttpFramework(string configurationFile)
