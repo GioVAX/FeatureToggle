@@ -1,4 +1,4 @@
-﻿Feature: FeaturesList
+﻿Feature: ListOfConfiguredS
 	In order to work with features toggles
 	As a feature admin
 	I want to use a web site to manage the configured toggles
