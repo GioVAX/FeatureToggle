@@ -21,16 +21,26 @@ namespace FeatureToggle.Web.Tests
 
         public ApiControllerIntegrationTests()
         {
-            File.Copy("Features_Test.json", "Features.json", true);
+            const string configurationFile = "Features.json";
+            RestoreFeaturesConfiguration(configurationFile);
 
-            // using WebHost.CreateDefauldBuilder so that the json configuration files are picked up. WebHostBuilder() ignores them by default unless added explicitly. 
+            _httpClient = SetupHttpFramework(configurationFile);
+        }
+
+        private HttpClient SetupHttpFramework(string configurationFile)
+        {
+            // using WebHost.CreateDefauldBuilder so that the json configuration files are picked up.
+            // WebHostBuilder() ignores them by default unless added explicitly. 
             var builder = WebHost.CreateDefaultBuilder()
                 .UseStartup<Startup>()
-                .UseSetting("FeaturesConfigurationFile", "Features.json");
+                .UseSetting("FeaturesConfigurationFile", configurationFile);
 
             var testServer = new TestServer(builder);
-            _httpClient = testServer.CreateClient();
+            return testServer.CreateClient();
         }
+
+        private void RestoreFeaturesConfiguration(string destinationFile) =>
+            File.Copy("Features_Test.json", destinationFile, true);
 
         [Fact]
         public async Task Get_All_Features_Returns_List_Of_Features_And_Http200()
