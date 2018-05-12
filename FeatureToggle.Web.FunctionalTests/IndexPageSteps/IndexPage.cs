@@ -144,19 +144,11 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
             Assert.Equal(featureValue, featureTextBox.GetAttribute("value"));
         }
 
-        [Then(@"the feature name will be empty")]
-        public void ThenTheFeatureNameWillBeEmpty()
-        {
-            var featureTextBox = _driver.FindElement(IndexPageModel.EditPopupFeatureNameEdit);
-            Assert.True(string.IsNullOrEmpty(featureTextBox.GetAttribute("value")));
-        }
+        [Then(@"the feature name will have no value")]
+        public void ThenTheFeatureNameWillBeEmpty() => ThenTheFeatureNameWillBe("");
 
-        [Then(@"the feature value will be empty")]
-        public void ThenTheFeatureValueWillBeEmpty()
-        {
-            var featureTextBox = _driver.FindElement(IndexPageModel.EditPopupFeatureValueEdit);
-            Assert.True(string.IsNullOrEmpty(featureTextBox.GetAttribute("value")));
-        }
+        [Then(@"the feature value will have no value")]
+        public void ThenTheFeatureValueWillBeEmpty() => ThenTheFeatureValueWillBe("");
 
         [Then(@"the form method will be (.*)")]
         public void ThenTheFormMethodWillBePost(string expectedMethod)

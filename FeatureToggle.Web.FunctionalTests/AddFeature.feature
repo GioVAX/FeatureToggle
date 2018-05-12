@@ -9,3 +9,5 @@ Scenario: Adding a new configuration shows a modal form
     Then I will see a modal popup
 	And the form will allow modifying the feature name
 	And the form will allow modifying the feature value
+	And the feature name will have no value
+	And the feature value will have no value
