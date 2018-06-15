@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.TestHost;
 using Newtonsoft.Json;
 using Xunit;
 
-namespace FeatureToggle.Web.Tests
+namespace FeatureToggle.API.Tests
 {
     public class ApiControllerIntegrationTests : IDisposable
     {

@@ -1,7 +1,7 @@
 ﻿using FeatureToggle.Definitions;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FeatureToggle.Web.Controllers
+namespace FeatureToggle.API.Controllers
 {
     [Produces("application/json")]
     [Route( "api/Feature/[action]")]

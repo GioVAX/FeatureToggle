@@ -33,7 +33,7 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
     {
         private readonly IWebDriver _driver;
         private const string BaseUrl = "http://localhost:51847/";
-        private const string WebApplicationRelativePath = @"..\..\..\FeatureToggle";
+        private const string WebApplicationRelativePath = @"..\..\..\FeatureToggle.Web";
 
         public IndexPage()
         {
