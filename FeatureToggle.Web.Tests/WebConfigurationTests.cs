@@ -8,11 +8,11 @@ using Xunit;
 
 namespace FeatureToggle.Web.Tests
 {
-    public class ConfigurationTests
+    public class WebConfigurationTests
     {
         readonly IWebHost _sut;
 
-        public ConfigurationTests()
+        public WebConfigurationTests()
         {
             _sut = WebHost.CreateDefaultBuilder()
                .UseStartup<Startup>()
