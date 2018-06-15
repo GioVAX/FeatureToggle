@@ -207,12 +207,50 @@ namespace FeatureToggle.DAL.Tests
         [Theory]
         [InlineData("")]
         [InlineData(null)]
-        public void DiskFeatureRepository_Add_InvalidFeatureName_ShouldThrow( string featureName )
+        public void DiskFeatureRepository_Add_InvalidFeatureName_ShouldThrow(string featureName)
         {
-            Action action = () => _sut.Add( featureName, _fixture.Create<string>());
+            Action action = () => _sut.Add(featureName, _fixture.Create<string>());
 
             action.Should().Throw<InvalidDataException>()
                 .Which.Message.Should().Contain("parameter <featureName> cannot be empty");
+        }
+
+        [Fact]
+        public void DiskFeatureRepository_Add_ShouldAddOneNewFeature()
+        {
+            var startingCount = _sut.Select("").Count();
+            var newFeature = _fixture.Create<string>();
+            var newValue = _fixture.Create<string>();
+
+            _sut.Add(newFeature, newValue);
+
+            _sut.Select("").Should().HaveCount(startingCount + 1);
+        }
+
+        [Fact]
+        public void DiskFeatureRepository_Add_ShouldAddTheNewFeature()
+        {
+            var newFeature = _fixture.Create<string>();
+            var newValue = _fixture.Create<string>();
+
+            _sut.Add(newFeature, newValue);
+
+            _sut.Select("")
+                .Should().ContainSingle(fc => fc.Feature == newFeature)
+                .Which.Value.Should().Be(newValue);
+        }
+
+        [Fact]
+        public void DiskFeatureRepository_Add_ShouldBePersisted()
+        {
+            var newFeature = _fixture.Create<string>();
+            var newValue = _fixture.Create<string>();
+
+            _sut.Add(newFeature, newValue);
+
+            var checkRepository = new DiskFeatureRepository(_destFileName);
+            var feature = checkRepository.Select(newFeature).Single();
+            feature.Value.Should().Be(newValue);
         }
     }
 }

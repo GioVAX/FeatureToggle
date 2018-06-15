@@ -70,11 +70,11 @@ namespace FeatureToggle.DAL
         public void Add(string featureName, string newValue)
         {
             if (string.IsNullOrWhiteSpace(featureName))
-            {
                 throw new InvalidDataException("parameter <featureName> cannot be empty");
-            }
 
-            throw new NotImplementedException();
+            _features.Add(new FeatureConfiguration(featureName, newValue));
+
+            WriteConfigurationFile();
         }
     }
 }
