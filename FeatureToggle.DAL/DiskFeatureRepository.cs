@@ -66,5 +66,10 @@ namespace FeatureToggle.DAL
 
             return _features;
         }
+
+        public void Add(string featureName, string newValue)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

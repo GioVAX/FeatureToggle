@@ -29,13 +29,13 @@ namespace FeatureToggle.DAL.Tests
         }
 
         [Fact]
-        public void FeatureRepository_ShouldImplementIFeatureRepository()
+        public void DiskFeatureRepository_ShouldImplementIFeatureRepository()
         {
             _sut.Should().BeAssignableTo<IFeatureRepository>();
         }
 
         [Fact]
-        public void FeatureRepository_InitWithNullString_ShouldReturnEmptyListOfFeatures()
+        public void DiskFeatureRepository_InitWithNullString_ShouldReturnEmptyListOfFeatures()
         {
             var sut = new DiskFeatureRepository(null);
 
@@ -43,7 +43,7 @@ namespace FeatureToggle.DAL.Tests
         }
 
         [Fact]
-        public void FeatureRepository_InitWithNonExistingFile_ShouldReturnEmptyListOfFeatures()
+        public void DiskFeatureRepository_InitWithNonExistingFile_ShouldReturnEmptyListOfFeatures()
         {
             var sut = new DiskFeatureRepository("lksflskdjf.oiwefiuwrf");
 
@@ -51,14 +51,14 @@ namespace FeatureToggle.DAL.Tests
         }
 
         [Fact]
-        public void FeatureRepository_Select_ShouldReturnListOfFeatures()
+        public void DiskFeatureRepository_Select_ShouldReturnListOfFeatures()
         {
             _sut.Select("").Should()
                 .BeOfType<List<FeatureConfiguration>>();
         }
 
         [Fact]
-        public void FeatureRepository_SelectNoPattern_ShouldReturn4ValidFeatures()
+        public void DiskFeatureRepository_SelectNoPattern_ShouldReturn4ValidFeatures()
         {
             var features = _sut.Select("").ToList();
             using (new AssertionScope())
@@ -69,7 +69,7 @@ namespace FeatureToggle.DAL.Tests
         }
 
         [Fact]
-        public void FeatureRepository_SelectPatternFeatureToggle_ShouldReturn2FeaturesStartingWithFeatureToggle()
+        public void DiskFeatureRepository_SelectPatternFeatureToggle_ShouldReturn2FeaturesStartingWithFeatureToggle()
         {
             const string pattern = "FeatureToggle";
             var features = _sut.Select(pattern);
@@ -79,7 +79,7 @@ namespace FeatureToggle.DAL.Tests
         }
 
         [Fact]
-        public void FeatureRepository_DeleteExisitingFeature_ShouldRemoveTheFeature()
+        public void DiskFeatureRepository_DeleteExisitingFeature_ShouldRemoveTheFeature()
         {
             const string featureName = "OtherRoot.Font";
 
@@ -91,7 +91,7 @@ namespace FeatureToggle.DAL.Tests
         }
 
         [Fact]
-        public void FeatureRepository_DeleteNonExisitingFeature_ShouldThrowException()
+        public void DiskFeatureRepository_DeleteNonExisitingFeature_ShouldThrowException()
         {
             const string featureName = "kjsddfskj";
             Action action = () => _sut.Delete(featureName);
@@ -101,7 +101,7 @@ namespace FeatureToggle.DAL.Tests
         }
 
         [Fact]
-        public void FeatureRepository_DeleteFeature_ShouldBePersistedImmediately()
+        public void DiskFeatureRepository_DeleteFeature_ShouldBePersistedImmediately()
         {
             const string featureName = "OtherRoot.Font";
 
@@ -115,7 +115,7 @@ namespace FeatureToggle.DAL.Tests
         }
 
         [Fact]
-        public void FeatureRepository_Update_EmptyFeatureName_ShouldThrow()
+        public void DiskFeatureRepository_Update_EmptyFeatureName_ShouldThrow()
         {
             Action action = () => _sut.Update("", _fixture.Create<string>());
 
@@ -124,7 +124,7 @@ namespace FeatureToggle.DAL.Tests
         }
 
         [Fact]
-        public void FeatureRepository_Update_NullFeatureName_ShouldThrow()
+        public void DiskFeatureRepository_Update_NullFeatureName_ShouldThrow()
         {
             Action action = () => _sut.Update(null, _fixture.Create<string>());
 
@@ -133,7 +133,7 @@ namespace FeatureToggle.DAL.Tests
         }
 
         [Fact]
-        public void FeatureRepository_Update_ShouldNotChangeNumberOfFeatures()
+        public void DiskFeatureRepository_Update_ShouldNotChangeNumberOfFeatures()
         {
             var newValue = _fixture.Create<string>();
             const string featureName = "OtherRoot.Font";
@@ -147,7 +147,7 @@ namespace FeatureToggle.DAL.Tests
         }
 
         [Fact]
-        public void FeatureRepository_Update_ShouldContainTheSameFeatures()
+        public void DiskFeatureRepository_Update_ShouldContainTheSameFeatures()
         {
             var newValue = _fixture.Create<string>();
             const string featureName = "OtherRoot.Font";
@@ -163,7 +163,7 @@ namespace FeatureToggle.DAL.Tests
         }
 
         [Fact]
-        public void FeatureRepository_Update_ShouldChangeFeatureToTheNewValue()
+        public void DiskFeatureRepository_Update_ShouldChangeFeatureToTheNewValue()
         {
             var newValue = _fixture.Create<string>();
             const string featureName = "OtherRoot.Font";
@@ -179,7 +179,7 @@ namespace FeatureToggle.DAL.Tests
 
 
         [Fact]
-        public void FeatureRepository_UpdateUnknownFeature_ShouldThrowShowingFeatureName()
+        public void DiskFeatureRepository_UpdateUnknownFeature_ShouldThrowShowingFeatureName()
         {
             var featureName = _fixture.Create<string>();
 
@@ -190,7 +190,7 @@ namespace FeatureToggle.DAL.Tests
         }
 
         [Fact]
-        public void FeatureRepository_Update_ShouldBePersisted()
+        public void DiskFeatureRepository_Update_ShouldBePersisted()
         {
             const string featureName = "OtherRoot.Font";
             var newValue = _fixture.Create<string>();

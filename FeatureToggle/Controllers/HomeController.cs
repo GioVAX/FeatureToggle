@@ -44,6 +44,7 @@ namespace FeatureToggle.Web.Controllers
         [HttpPost]
         public IActionResult AddFeature(string feature, string value)
         {
+            _repository.Add(feature, value);
             return RedirectToAction(nameof(Index));
         }
     }

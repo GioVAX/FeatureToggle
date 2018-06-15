@@ -67,20 +67,22 @@ namespace FeatureToggle.Web.Tests
             {
                 viewModel.Should().BeAssignableTo<IEnumerable<FeatureConfiguration>>();
 
-                var modelList = (IEnumerable<FeatureConfiguration>) viewModel;
+                var modelList = (IEnumerable<FeatureConfiguration>)viewModel;
 
                 modelList.Should().HaveCount(2)
                     .And.BeEquivalentTo(featureList);
             }
         }
 
-        [Fact]
-        public void EditFeature_ShouldBeDecoratedWithHttpPost()
+        [Theory]
+        [InlineData(nameof(HomeController.EditFeature))]
+        [InlineData(nameof(HomeController.AddFeature))]
+        public void PostFeatures_ShouldBeDecoratedWithHttpPost(string featureName)
         {
             var type = typeof(HomeController);
-            var editFeatureMethod = type.GetMethod(nameof(HomeController.EditFeature));
+            var postMethod = type.GetMethod(featureName);
 
-            editFeatureMethod.Should().BeDecoratedWith<HttpPostAttribute>();
+            postMethod.Should().BeDecoratedWith<HttpPostAttribute>();
         }
 
         [Fact]
@@ -93,7 +95,7 @@ namespace FeatureToggle.Web.Tests
                 .Select(prm => prm.Name);
 
             editFeatureParameters.Should()
-                .BeEquivalentTo(new[] {"feature", "value"});
+                .BeEquivalentTo("feature", "value");
         }
 
         [Fact]
@@ -112,6 +114,31 @@ namespace FeatureToggle.Web.Tests
             _sut.EditFeature(feature, newValue);
 
             _repository.Verify(repo => repo.Update(feature, newValue), Times.Once);
+        }
+
+        [Fact]
+        public void AddFeature_ShouldAcceptFeatureNameAndFeatureValue()
+        {
+            var type = typeof(HomeController);
+            var addFeatureParameters = type
+                .GetMethod(nameof(HomeController.AddFeature))
+                .GetParameters()
+                .Select(prm => prm.Name);
+
+            addFeatureParameters.Should()
+                .BeEquivalentTo("feature", "value");
+        }
+
+        [Fact]
+        public void AddFeature_ShouldCallRepositoryAddFeatureOncePassingTheReceivedValues()
+        {
+            var feature = _fixture.Create<string>();
+            var newValue = _fixture.Create<string>();
+            _repository.Setup(mock => mock.Add(feature, newValue));
+
+            _sut.AddFeature(feature, newValue);
+
+            _repository.Verify(repo => repo.Add(feature, newValue), Times.Once);
         }
     }
 }
