@@ -51,7 +51,7 @@
             @{
                 FeatureConfiguration dummy = new FeatureConfiguration(null, null);
             }
-            <form asp-controller="Home" asp-action="EditFeature" method="post" class="form-horizontal" role="form">
+            <form method="post" class="form-horizontal" role="form">
                 <div class="modal-body">
                     <div class="form-group">
                         <label class="col-sm-2 control-label" asp-for="@dummy.Feature"></label>
@@ -97,6 +97,8 @@
             });
 
         function ConfigureModalForNewFeature() {
+            jQuery('#featureForm form').attr('action', '/Home/AddFeature');
+
             jQuery('#featureForm input[name=Feature]')
                 .val('')
                 .removeAttr('readonly');
@@ -106,6 +108,8 @@
         }
 
         function ConfigureModalToUpdateFeature(button) {
+            jQuery('#featureForm form').attr('action', '/Home/EditFeature');
+
             var cells = button.parent().siblings();
 
             var feature = cells.first().text();

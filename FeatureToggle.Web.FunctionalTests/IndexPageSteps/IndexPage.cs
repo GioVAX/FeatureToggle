@@ -115,6 +115,7 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
         }
 
         [When(@"I click the add button")]
+        [Given(@"I clicked the add button")]
         public void WhenIClickTheAddButton()
         {
             var addButton = _driver.FindElement(IndexPageModel.FeatureListAddFeatureBy);
@@ -219,11 +220,20 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
         }
 
         [Given("I modified the feature value to (.*)")]
+        [Given("I enter the feature value as (.*)")]
         public void GivenIModifiedTheFeatureValueTo(string newFeatureValue)
         {
             var valueTextbox = _driver.FindElement(IndexPageModel.EditPopupFeatureValueEdit);
             valueTextbox.Clear();
             valueTextbox.SendKeys(newFeatureValue);
+        }
+
+        [Given(@"I enter the feature name as (.*)")]
+        public void GivenIEnterTheFeatureNameAs(string newFeature)
+        {
+            var nameTextbox = _driver.FindElement(IndexPageModel.EditPopupFeatureNameEdit);
+            nameTextbox.Clear();
+            nameTextbox.SendKeys(newFeature);
         }
 
         [When(@"I click the Submit button")]
