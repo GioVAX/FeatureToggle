@@ -203,5 +203,16 @@ namespace FeatureToggle.DAL.Tests
 
             feature.Value.Should().Be(newValue);
         }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData(null)]
+        public void DiskFeatureRepository_Add_InvalidFeatureName_ShouldThrow( string featureName )
+        {
+            Action action = () => _sut.Add( featureName, _fixture.Create<string>());
+
+            action.Should().Throw<InvalidDataException>()
+                .Which.Message.Should().Contain("parameter <featureName> cannot be empty");
+        }
     }
 }
