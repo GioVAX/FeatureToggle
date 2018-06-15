@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2015
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FeatureToggle.Web", "FeatureToggle\FeatureToggle.Web.csproj", "{C01455B7-9622-4552-BA22-9198AD647859}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FeatureToggle.Web", "FeatureToggle.Web\FeatureToggle.Web.csproj", "{C01455B7-9622-4552-BA22-9198AD647859}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{178D9498-C28D-4667-8CBC-7A506D6CC43E}"
 EndProject
@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FeatureToggle.DAL.Tests", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatureToggle.Web.FunctionalTests", "FeatureToggle.Web.FunctionalTests\FeatureToggle.Web.FunctionalTests.csproj", "{59519556-B996-4416-B2D5-F8A94B9B3347}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatureToggle.API", "..\..\..\_Sw Lab\FeatureToggle\FeatureToggle.API\FeatureToggle.API.csproj", "{09E21D01-ED1F-43F3-AFB2-F37A1BFA2ED0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatureToggle.API", "FeatureToggle.API\FeatureToggle.API.csproj", "{09E21D01-ED1F-43F3-AFB2-F37A1BFA2ED0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatureToggle.API.Tests", "FeatureToggle.API.Tests\FeatureToggle.API.Tests.csproj", "{C3724872-BF03-4F01-850A-4197A7A6F4A2}"
 EndProject

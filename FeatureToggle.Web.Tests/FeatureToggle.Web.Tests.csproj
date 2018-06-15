@@ -30,7 +30,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FeatureToggle.Definitions\FeatureToggle.Definitions.csproj" />
-    <ProjectReference Include="..\FeatureToggle\FeatureToggle.Web.csproj" />
+    <ProjectReference Include="..\FeatureToggle.Web\FeatureToggle.Web.csproj" />
   </ItemGroup>
 
 </Project>
