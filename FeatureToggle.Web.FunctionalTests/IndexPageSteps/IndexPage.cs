@@ -189,6 +189,13 @@ namespace FeatureToggle.Web.FunctionalTests.IndexPageSteps
             Assert.DoesNotContain(removedFeature, cells.Select(c => c.Text));
         }
 
+        [Then(@"it will contain the (.*) feature")]
+        public void ThenItWillContainTheNewFeatureFeature(string featureName)
+        {
+            var cells = _driver.FindElements(IndexPageModel.FeatureListTableListedFeatures);
+            Assert.Contains(featureName, cells.Select(c => c.Text));
+        }
+
         [Then(@"I will see a confirmation (.*) popup")]
         public void ThenIWillSeeAConfirmationDeletePopup(string action2Confirm)
         {

@@ -21,3 +21,4 @@ Scenario: Adding a new configuration adds a value to the list
 	Then the modal popup will not be visible
 	And I will see the features list
 	And it will contain 5 features
+	And it will contain the NewFeature feature
