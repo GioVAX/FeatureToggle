@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using FeatureToggle.Definitions;
 using Newtonsoft.Json;
+using Microsoft.Extensions.Options;
 
 namespace FeatureToggle.DAL
 {
@@ -12,9 +13,9 @@ namespace FeatureToggle.DAL
         private readonly string _filepath;
         private readonly List<FeatureConfiguration> _features;
 
-        public DiskFeatureRepository(string filepath)
+        public DiskFeatureRepository(IOptions<FeaturesFileConfiguration> options)
         {
-            _filepath = filepath;
+            _filepath = options.Value.FeaturesConfigurationFile;
             _features = LoadConfigurationFile();
         }
 

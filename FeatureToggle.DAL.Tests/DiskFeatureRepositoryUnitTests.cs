@@ -7,6 +7,8 @@ using System.IO;
 using System.Linq;
 using AutoFixture;
 using FluentAssertions.Execution;
+using Microsoft.Extensions.Options;
+using Moq;
 
 namespace FeatureToggle.DAL.Tests
 {
@@ -18,9 +20,21 @@ namespace FeatureToggle.DAL.Tests
 
         public DiskFeatureRepositoryUnitTests()
         {
-            File.Copy("Test.Json", _destFileName);
+            File.Copy("Test.Json", _destFileName, true);
 
-            _sut = new DiskFeatureRepository(_destFileName);
+            var configMock = ConfigMock(_destFileName);
+
+            _sut = new DiskFeatureRepository(configMock.Object);
+        }
+
+        private Mock<IOptions<FeaturesFileConfiguration>> ConfigMock(string fileName)
+        {
+            var configMock = new Mock<IOptions<FeaturesFileConfiguration>>();
+
+            configMock.Setup(cfg => cfg.Value)
+                .Returns(new FeaturesFileConfiguration { FeaturesConfigurationFile = fileName });
+
+            return configMock;
         }
 
         public void Dispose()
@@ -37,7 +51,7 @@ namespace FeatureToggle.DAL.Tests
         [Fact]
         public void DiskFeatureRepository_InitWithNullString_ShouldReturnEmptyListOfFeatures()
         {
-            var sut = new DiskFeatureRepository(null);
+            var sut = new DiskFeatureRepository(ConfigMock(null).Object);
 
             sut.Select("").Should().BeEmpty();
         }
@@ -45,7 +59,8 @@ namespace FeatureToggle.DAL.Tests
         [Fact]
         public void DiskFeatureRepository_InitWithNonExistingFile_ShouldReturnEmptyListOfFeatures()
         {
-            var sut = new DiskFeatureRepository("lksflskdjf.oiwefiuwrf");
+            var sut = new DiskFeatureRepository(
+                ConfigMock("lksflskdjf.oiwefiuwrf").Object);
 
             sut.Select("").Should().BeEmpty();
         }
@@ -107,7 +122,7 @@ namespace FeatureToggle.DAL.Tests
 
             _sut.Delete(featureName);
 
-            var checkRepository = new DiskFeatureRepository(_destFileName);
+            var checkRepository = new DiskFeatureRepository(ConfigMock(_destFileName).Object);
 
             checkRepository.Select("")
                 .Should().HaveCount(3)
@@ -197,7 +212,7 @@ namespace FeatureToggle.DAL.Tests
 
             _sut.Update(featureName, newValue);
 
-            var checkRepository = new DiskFeatureRepository(_destFileName);
+            var checkRepository = new DiskFeatureRepository(ConfigMock(_destFileName).Object);
 
             var feature = checkRepository.Select(featureName).Single();
 
@@ -248,7 +263,7 @@ namespace FeatureToggle.DAL.Tests
 
             _sut.Add(newFeature, newValue);
 
-            var checkRepository = new DiskFeatureRepository(_destFileName);
+            var checkRepository = new DiskFeatureRepository(ConfigMock(_destFileName).Object);
             var feature = checkRepository.Select(newFeature).Single();
             feature.Value.Should().Be(newValue);
         }
