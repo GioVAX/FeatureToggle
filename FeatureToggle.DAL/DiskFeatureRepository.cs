@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using FeatureToggle.Definitions;
-using Newtonsoft.Json;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 
 namespace FeatureToggle.DAL
 {
@@ -12,9 +13,11 @@ namespace FeatureToggle.DAL
     {
         private readonly string _filepath;
         private readonly List<FeatureConfiguration> _features;
+        private readonly ILogger<DiskFeatureRepository> _logger;
 
-        public DiskFeatureRepository(IOptions<FeaturesFileConfiguration> options)
+        public DiskFeatureRepository(IOptions<FeaturesFileConfiguration> options, ILogger<DiskFeatureRepository> logger)
         {
+            _logger = logger;
             _filepath = options.Value.FeaturesConfigurationFile;
             _features = LoadConfigurationFile();
         }
@@ -22,7 +25,10 @@ namespace FeatureToggle.DAL
         private List<FeatureConfiguration> LoadConfigurationFile()
         {
             if (_filepath == null || !File.Exists(_filepath))
+            {
+                _logger.LogDebug($"File <{_filepath}> does not exist.");
                 return new List<FeatureConfiguration>();
+            }
 
             var json = File.ReadAllText(_filepath);
             return JsonConvert.DeserializeObject<List<FeatureConfiguration>>(json);

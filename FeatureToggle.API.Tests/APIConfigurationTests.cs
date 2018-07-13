@@ -4,37 +4,40 @@ using FluentAssertions;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
 
 namespace FeatureToggle.API.Tests
 {
-    public class ApiConfigurationTests
-    {
-        readonly IWebHost _sut;
+	public class ApiConfigurationTests
+	{
+		readonly IWebHost _sut;
 
-        public ApiConfigurationTests()
-        {
-            _sut = WebHost.CreateDefaultBuilder()
-               .UseStartup<Startup>()
-               .Build();
-        }
+		public ApiConfigurationTests()
+		{
+			_sut = WebHost.CreateDefaultBuilder()
+			    .UseStartup<Startup>()
+				.ConfigureServices(cfg => cfg.AddTransient<ILogger, NullLogger>())
+			    .Build();
+		}
 
-        [Fact]
-        public void FeatureRepository_ShouldBeRegistered()
-        {
-            var repository = _sut.Services.GetService<IFeatureRepository>();
+		[Fact]
+		public void FeatureRepository_ShouldBeRegistered()
+		{
+			var repository = _sut.Services.GetService<IFeatureRepository>();
 
-            repository.Should().NotBeNull()
-                .And.BeOfType<DiskFeatureRepository>();
-        }
+			repository.Should().NotBeNull()
+				.And.BeOfType<DiskFeatureRepository>();
+		}
 
-        //[Fact]
-        //public void FeatureConfigurationFile_IsConfigured()
-        //{
-        //    var configuration = (IConfiguration )_sut.Services.GetService<IFeatureRepository>();
+		//[Fact]
+		//public void FeatureConfigurationFile_IsConfigured()
+		//{
+		//    var configuration = (IConfiguration )_sut.Services.GetService<IFeatureRepository>();
 
-        //    configuration.GetValue<string>("FeaturesConfigurationFile")
-        //        .Should().NotBeNullOrWhiteSpace();
-        //}
-    }
+		//    configuration.GetValue<string>("FeaturesConfigurationFile")
+		//        .Should().NotBeNullOrWhiteSpace();
+		//}
+	}
 }
