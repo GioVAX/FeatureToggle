@@ -18,17 +18,16 @@ namespace FeatureToggle.DAL
         public DiskFeatureRepository(IOptions<FeaturesFileConfiguration> options, ILogger<DiskFeatureRepository> logger)
         {
             _logger = logger;
-            _filepath = options.Value.FeaturesConfigurationFile;
+            _filepath = Path.GetFullPath(options.Value.FeaturesConfigurationFile);
             _features = LoadConfigurationFile();
         }
 
         private List<FeatureConfiguration> LoadConfigurationFile()
         {
+            _logger.LogInformation($"Reading configuration from <{_filepath}>.");
+
             if (_filepath == null || !File.Exists(_filepath))
-            {
-                _logger.LogDebug($"File <{_filepath}> does not exist.");
                 return new List<FeatureConfiguration>();
-            }
 
             var json = File.ReadAllText(_filepath);
             return JsonConvert.DeserializeObject<List<FeatureConfiguration>>(json);
