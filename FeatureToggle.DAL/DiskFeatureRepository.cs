@@ -11,32 +11,37 @@ namespace FeatureToggle.DAL
 {
     public class DiskFeatureRepository : IFeatureRepository
     {
-        private readonly string _filepath;
+        private readonly string _featuresFile;
+
+        private string _featuresPath => string.IsNullOrWhiteSpace(_featuresFile)
+            ? @".\Features.json"
+            : Path.GetFullPath(_featuresFile);
         private readonly List<FeatureConfiguration> _features;
         private readonly ILogger<DiskFeatureRepository> _logger;
 
         public DiskFeatureRepository(IOptions<FeaturesFileConfiguration> options, ILogger<DiskFeatureRepository> logger)
         {
             _logger = logger;
-            _filepath = Path.GetFullPath(options.Value.FeaturesConfigurationFile);
-            _logger.LogInformation($"Reading configuration from <{_filepath}>."); 
+            _featuresFile = options?.Value?.FeaturesConfigurationFile;
 
             _features = LoadConfigurationFile();
         }
 
         private List<FeatureConfiguration> LoadConfigurationFile()
         {
-            if (_filepath == null || !File.Exists(_filepath))
+            _logger.LogInformation($"Reading configuration from <{_featuresPath}>."); 
+
+            if ( !File.Exists(_featuresPath))
                 return new List<FeatureConfiguration>();
 
-            var json = File.ReadAllText(_filepath);
+            var json = File.ReadAllText(_featuresPath);
             return JsonConvert.DeserializeObject<List<FeatureConfiguration>>(json);
         }
 
         private void WriteConfigurationFile()
         {
             var json = JsonConvert.SerializeObject(_features);
-            File.WriteAllText(_filepath, json);
+            File.WriteAllText(_featuresFile, json);
         }
 
         public IEnumerable<FeatureConfiguration> Select(string pattern)

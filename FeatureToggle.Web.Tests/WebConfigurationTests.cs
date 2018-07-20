@@ -2,9 +2,11 @@
 using FeatureToggle.Definitions;
 using FluentAssertions;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Moq;
 using Xunit;
 
 namespace FeatureToggle.Web.Tests
@@ -15,7 +17,11 @@ namespace FeatureToggle.Web.Tests
 
         public WebConfigurationTests()
         {
-            _sut = Program.BuildWebHost(null);
+            var configMock = new Mock<IConfiguration>();
+            configMock.Setup(cfg => cfg[It.IsAny<string>()])
+                .Returns(null as string);
+
+            _sut = Program.BuildWebHost(null, configMock.Object);
         }
 
         [Fact]
