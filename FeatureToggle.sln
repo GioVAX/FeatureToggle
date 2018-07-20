@@ -27,6 +27,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{EE541EC3
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{B028566C-77B0-45FB-90B2-73D76444FB44}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{6C284882-A01B-48CD-B286-4C91244E4333}"
+	ProjectSection(SolutionItems) = preProject
+		Docker\.dockerignore = Docker\.dockerignore
+		Docker\Dockerfile = Docker\Dockerfile
+		Docker\Features.json = Docker\Features.json
+		Docker\launchWebsites.bat = Docker\launchWebsites.bat
+		Docker\README.txt = Docker\README.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +84,7 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{C01455B7-9622-4552-BA22-9198AD647859} = {0A26FC5B-156D-4237-9F81-AA2763CB5F7F}
+		{178D9498-C28D-4667-8CBC-7A506D6CC43E} = {6C284882-A01B-48CD-B286-4C91244E4333}
 		{6F764E77-FB47-4131-B6AA-7005E84CAE41} = {EE541EC3-4743-4206-9163-41340A0F6A0B}
 		{64E310C7-763A-4EAC-BAF9-BB04C55D1B4B} = {B028566C-77B0-45FB-90B2-73D76444FB44}
 		{B951FFFE-D943-4148-9E2D-5B621C097037} = {B028566C-77B0-45FB-90B2-73D76444FB44}
