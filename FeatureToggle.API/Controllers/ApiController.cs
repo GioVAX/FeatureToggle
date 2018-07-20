@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace FeatureToggle.API.Controllers
 {
     [Produces("application/json")]
-    [Route( "api/Feature/[action]")]
+    [Route( "[action]")]
     public class ApiController : Controller
     {
         readonly IFeatureRepository _repository;

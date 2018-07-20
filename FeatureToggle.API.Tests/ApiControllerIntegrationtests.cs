@@ -19,13 +19,10 @@ namespace FeatureToggle.API.Tests
     {
         private readonly string _configurationFile;
         private readonly HttpClient _httpClient;
-        private readonly Fixture _fixture;
 
         public ApiControllerIntegrationTests()
         {
-            _fixture = new Fixture();
-
-            _configurationFile = Path.ChangeExtension(_fixture.Create<string>(), "json");
+            _configurationFile = Path.ChangeExtension(new Fixture().Create<string>(), "json");
 
             RestoreFeaturesConfiguration(_configurationFile);
             _httpClient = SetupHttpFramework(_configurationFile);
@@ -38,8 +35,6 @@ namespace FeatureToggle.API.Tests
 
         private HttpClient SetupHttpFramework(string configurationFile)
         {
-            // using WebHost.CreateDefauldBuilder so that the json configuration files are picked up.
-            // WebHostBuilder() ignores them by default unless added explicitly. 
             var builder = WebHost.CreateDefaultBuilder()
                 .UseStartup<Startup>()
                 .UseSetting("FeaturesConfigurationFile", configurationFile);
@@ -52,13 +47,11 @@ namespace FeatureToggle.API.Tests
             File.Copy("Features_Test.json", destinationFile, true);
 
         [Fact]
-        public async void Get_All_Features_Returns_List_Of_Features_And_Http200()
+        public async void GetAllFeatures_ShouldReturnListOfFeatures_AndHttpStatus200()
         {
             // Act
-            var response = await _httpClient.GetAsync("/api/Feature/GetFeatures");
-
-            var responseContent = await response.Content.ReadAsStringAsync();
-            var features = JsonConvert.DeserializeObject<IEnumerable<FeatureConfiguration>>(responseContent);
+            var response = await _httpClient.GetAsync("/GetFeatures");
+            var features = await ExtractFeaturesFromResponse(response);
 
             // Assert
             features
@@ -70,13 +63,12 @@ namespace FeatureToggle.API.Tests
         }
 
         [Fact]
-        public async void GetFeature_WithParameter_ReturnsFilteredList_AndHttpStatus200()
+        public async void GetFeatureWithParameter_ShouldReturnFilteredList_AndHttpStatus200()
         {
             const string pattern = "FeatureToggle";
-            var response = await _httpClient.GetAsync($"/api/Feature/GetFeatures?beginningWith={pattern}");
 
-            var responseContent = await response.Content.ReadAsStringAsync();
-            var features = JsonConvert.DeserializeObject<IEnumerable<FeatureConfiguration>>(responseContent);
+            var response = await _httpClient.GetAsync($"/GetFeatures?beginningWith={pattern}");
+            var features = await ExtractFeaturesFromResponse(response);
 
             features
                 .Should().NotBeNull()
@@ -85,6 +77,12 @@ namespace FeatureToggle.API.Tests
 
             response.StatusCode
                 .Should().Be(HttpStatusCode.OK);
+        }
+
+        private async Task<IEnumerable<FeatureConfiguration>> ExtractFeaturesFromResponse(HttpResponseMessage response)
+        {
+            var responseContent = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<IEnumerable<FeatureConfiguration>>(responseContent);
         }
     }
 }
