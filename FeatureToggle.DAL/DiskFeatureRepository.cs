@@ -19,13 +19,13 @@ namespace FeatureToggle.DAL
         {
             _logger = logger;
             _filepath = Path.GetFullPath(options.Value.FeaturesConfigurationFile);
+            _logger.LogInformation($"Reading configuration from <{_filepath}>."); 
+
             _features = LoadConfigurationFile();
         }
 
         private List<FeatureConfiguration> LoadConfigurationFile()
         {
-            _logger.LogInformation($"Reading configuration from <{_filepath}>.");
-
             if (_filepath == null || !File.Exists(_filepath))
                 return new List<FeatureConfiguration>();
 
