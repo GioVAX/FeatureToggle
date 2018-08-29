@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="FeaturesFileConfiguration.fs" />
+    <Compile Include="FeatureConfiguration.fs" />
+    <Compile Include="IFeatureRepository.fs" />
+  </ItemGroup>
+
+</Project>

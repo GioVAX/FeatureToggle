@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.28010.2016
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "FeatureToggle.API", "FeatureToggle.API\FeatureToggle.API.fsproj", "{6F50A3FE-75FA-499E-8574-1EFC82247978}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FeatureToggle.Definitions", "..\C#\FeatureToggle.Definitions\FeatureToggle.Definitions.csproj", "{D04B989A-4C24-418A-9156-33D463892EB7}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{E2B3E8BF-4C33-47F7-8E61-76856B768A3A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FeatureToggle.DAL", "..\C#\FeatureToggle.DAL\FeatureToggle.DAL.csproj", "{0FC66270-83EB-4F4C-8F11-26013B20228C}"
@@ -17,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web Apps", "Web Apps", "{F6
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{122AE616-8BA6-434E-9637-7274015235F1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FeatureToggle.DAL.Tests", "..\C#\FeatureToggle.DAL.Tests\FeatureToggle.DAL.Tests.csproj", "{7F54397B-B063-46C3-B0F5-77D8045CDD9D}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FeatureToggle.Definitions", "FeatureToggle.Definitions\FeatureToggle.Definitions.fsproj", "{205C1DCB-2554-4949-8E2A-9302B5432E83}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,27 +27,22 @@ Global
 		{6F50A3FE-75FA-499E-8574-1EFC82247978}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6F50A3FE-75FA-499E-8574-1EFC82247978}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6F50A3FE-75FA-499E-8574-1EFC82247978}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D04B989A-4C24-418A-9156-33D463892EB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D04B989A-4C24-418A-9156-33D463892EB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D04B989A-4C24-418A-9156-33D463892EB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D04B989A-4C24-418A-9156-33D463892EB7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0FC66270-83EB-4F4C-8F11-26013B20228C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0FC66270-83EB-4F4C-8F11-26013B20228C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0FC66270-83EB-4F4C-8F11-26013B20228C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0FC66270-83EB-4F4C-8F11-26013B20228C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7F54397B-B063-46C3-B0F5-77D8045CDD9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7F54397B-B063-46C3-B0F5-77D8045CDD9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7F54397B-B063-46C3-B0F5-77D8045CDD9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7F54397B-B063-46C3-B0F5-77D8045CDD9D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{205C1DCB-2554-4949-8E2A-9302B5432E83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{205C1DCB-2554-4949-8E2A-9302B5432E83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{205C1DCB-2554-4949-8E2A-9302B5432E83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{205C1DCB-2554-4949-8E2A-9302B5432E83}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{6F50A3FE-75FA-499E-8574-1EFC82247978} = {F6D0D339-2410-4B50-B6DB-6DE8D34B6BB3}
-		{D04B989A-4C24-418A-9156-33D463892EB7} = {E2B3E8BF-4C33-47F7-8E61-76856B768A3A}
 		{0FC66270-83EB-4F4C-8F11-26013B20228C} = {E2B3E8BF-4C33-47F7-8E61-76856B768A3A}
-		{7F54397B-B063-46C3-B0F5-77D8045CDD9D} = {122AE616-8BA6-434E-9637-7274015235F1}
+		{205C1DCB-2554-4949-8E2A-9302B5432E83} = {E2B3E8BF-4C33-47F7-8E61-76856B768A3A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {86BC843F-C75B-4BD5-94B6-3F32C5380890}

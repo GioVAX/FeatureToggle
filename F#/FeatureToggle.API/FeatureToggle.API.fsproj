@@ -16,7 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\C#\FeatureToggle.DAL\FeatureToggle.DAL.csproj" />
-    <ProjectReference Include="..\..\C#\FeatureToggle.Definitions\FeatureToggle.Definitions.csproj" />
+    <ProjectReference Include="..\FeatureToggle.Definitions\FeatureToggle.Definitions.fsproj" />
   </ItemGroup>
 
 </Project>
