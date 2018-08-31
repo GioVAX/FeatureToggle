@@ -1,7 +1,7 @@
 namespace FeatureToggle.Definitions
 
-open System.Collections.Generic
-
 type IFeatureRepository =
-    abstract member Select : string -> IEnumerable<FeatureConfiguration>
-
+    abstract member Select : string -> FeatureConfiguration list
+    abstract member Delete : string -> unit
+    abstract member Update : string -> string -> FeatureConfiguration list
+    abstract member Add : string -> string -> unit

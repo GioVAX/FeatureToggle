@@ -1,4 +1,6 @@
 ﻿namespace FeatureToggle.Definitions
 
-type FeaturesFileConfiguration( FeaturesConfigurationFile: string) = struct end
+type FeaturesFileConfiguration (featuresConfigurationFile: string) = 
+    member this.FeaturesConfigurationFile = featuresConfigurationFile
 
+    new () = FeaturesFileConfiguration("")
