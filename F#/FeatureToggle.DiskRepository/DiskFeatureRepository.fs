@@ -39,6 +39,7 @@ type DiskFeatureRepository ( options : IOptions<FeaturesFileConfiguration> (*, l
                 | ptrn -> features |> List.filter (fun p -> p.Feature.StartsWith( ptrn, StringComparison.InvariantCultureIgnoreCase))
 
         member this.Delete featureName =
+            features |> List.find (fun fc -> fc.Feature = featureName) |> ignore
             features <- (features |> List.filter (fun fc -> not (fc.Feature.StartsWith( featureName, StringComparison.InvariantCultureIgnoreCase))))
             WriteConfigurationFile()
 
@@ -62,4 +63,6 @@ type DiskFeatureRepository ( options : IOptions<FeaturesFileConfiguration> (*, l
             | _ -> if features |> List.exists (fun c -> c.Feature = featureName) then
                         features <- features |> upd featureName newValue
                         WriteConfigurationFile()
+                    else
+                        raise (ArgumentException "Feature not defined")
             features

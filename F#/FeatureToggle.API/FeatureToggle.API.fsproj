@@ -19,4 +19,10 @@
     <ProjectReference Include="..\FeatureToggle.DiskRepository\FeatureToggle.DAL.fsproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Features.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

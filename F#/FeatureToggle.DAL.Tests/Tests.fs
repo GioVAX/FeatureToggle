@@ -7,8 +7,8 @@ open Microsoft.Extensions.Options
 open FeatureToggle.Definitions
 open Moq
 open FeatureToggle.DAL
-open System.Collections
 open AutoFixture
+open System.Collections.Generic
 
 type DiskFeatureRepositoryUnitTests() =
     let srcFileName = "Test.json"
@@ -23,9 +23,9 @@ type DiskFeatureRepositoryUnitTests() =
     let sut = DiskFeatureRepository (mockOptions destFileName) :> IFeatureRepository
     let fixture = Fixture()
 
-    //[<Fact>]
-    //let ``DiskFeatureRepository Should Implement IFeatureRepository`` () =
-    //    Assert.IsAssignableFrom( IFeatureRepository, sut)
+    [<Fact>]
+    let ``DiskFeatureRepository Should Implement IFeatureRepository`` () =
+        Assert.True( sut :? IFeatureRepository )
 
     [<Fact>]
     let ``Init With Null String SHOULD Return Empty List Of Features``() =
@@ -39,7 +39,7 @@ type DiskFeatureRepositoryUnitTests() =
 
     //[<Fact>]
     //let ``Select Should return list of features`` () =
-    //    Assert.IsAssignableFrom( FeatureConfiguration list, sut.Select(""))
+    //    Assert.True( sut.Select("") :? FeatureConfiguration list )
     
     [<Fact>]
     let ``Select with no Pattern SHOULD return 4 valid features``() =
@@ -66,11 +66,10 @@ type DiskFeatureRepositoryUnitTests() =
         Assert.Equal(fs.Length, 3)
         Assert.Empty(fs |> List.filter (fun fc -> fc.Feature.StartsWith featureName))
 
-    //[<Fact>]
-    //let ``Delete non exisiting feature SHOULD throw exception``() =
-    //    let featureName = "adjflsdj.sdfsfsd"
-        
-    //    Assert.Throws( KeyNotFoundException, (fun _ -> sut.Delete featureName) )
+    [<Fact>]
+    let ``Delete non exisiting feature SHOULD throw exception``() =
+        let featureName = fixture.Create<string>()
+        ( fun () -> sut.Delete featureName ) |> Assert.Throws<KeyNotFoundException>
 
     [<Fact>]
     let ``Delete feature SHOULD be persisted immediately``() =
@@ -84,8 +83,12 @@ type DiskFeatureRepositoryUnitTests() =
         Assert.Equal(fs.Length, 3)
         Assert.Empty(fs |> List.filter (fun fc -> fc.Feature.StartsWith featureName))
 
-    //Update_EmptyFeatureName_ShouldThrow
-    //Update_NullFeatureName_ShouldThrow
+    [<Theory>]
+    [<InlineData "">]
+    [<InlineData null>]
+    let ``Update with invalid feature name SHOULD throw exception`` featureName =
+        let value = fixture.Create<string>()
+        (fun () -> (sut.Update featureName value) |> ignore)  |> Assert.Throws<ArgumentException>
 
     [<Fact>]
     let ``Update SHOULD not change number of features``() =
@@ -110,7 +113,11 @@ type DiskFeatureRepositoryUnitTests() =
         let actualFeatures = sut.Select("") |> extractFeatureNames
         Assert.Empty(actualFeatures |> List.except expectedFeatures ) 
 
-    //UpdateUnknownFeature_ShouldThrowShowingFeatureName
+    [<Fact>]
+    let ``Update unknown feature name SHOULD throw exception``() =
+        let feature = fixture.Create<string>()
+        let value = fixture.Create<string>()
+        (fun () -> (sut.Update feature value) |> ignore)  |> Assert.Throws<ArgumentException>
 
     [<Fact>]
     let ``Update SHOULD be persisted immediately``() =
@@ -124,8 +131,13 @@ type DiskFeatureRepositoryUnitTests() =
 
         Assert.Equal(fs.Length, 1)
         Assert.Equal(fs.Head.Value, newValue)
-
-    // Add_InvalidFeatureName_ShouldThrow
+  
+    [<Theory>]
+    [<InlineData "">]
+    [<InlineData null>]
+    let ``Add with invalid feature name SHOULD throw exception`` featureName =
+        let value = fixture.Create<string>()
+        (fun () -> (sut.Add featureName value) |> ignore)  |> Assert.Throws<ArgumentException>
 
     [<Fact>]
     let ``Add SHOULD add one new feature``() =
