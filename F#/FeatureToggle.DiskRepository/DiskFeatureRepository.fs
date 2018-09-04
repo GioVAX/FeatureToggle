@@ -8,16 +8,15 @@ open Microsoft.Extensions.Options
 open Newtonsoft.Json
 
 type DiskFeatureRepository ( options : IOptions<FeaturesFileConfiguration> (*, logger : ILogger<DiskFeatureRepository>*) )  =
+
+    let optionsFeaturesFileName = options |> function
+        | null -> null
+        | opt -> opt.Value.FeaturesConfigurationFile
     
     let featuresPath = 
-        let featuresFile = 
-            match options with
-            | null -> null
-            | _ -> options.Value.FeaturesConfigurationFile
-        match featuresFile with
-        | null
-        | "" -> @".\Features.json"
-        | _ -> Path.GetFullPath(featuresFile)
+        match optionsFeaturesFileName with
+            | null | "" -> @".\Features.json"
+            | file -> Path.GetFullPath(file)
     
     let LoadConfigurationFile() = 
         //_logger.LogInformation($"Reading configuration from <{_featuresPath}>."); 
@@ -36,30 +35,17 @@ type DiskFeatureRepository ( options : IOptions<FeaturesFileConfiguration> (*, l
     interface IFeatureRepository with
         member this.Select pattern = 
             match pattern with
-            | null
-            | "" -> features
-            | _ -> features |> List.filter (fun p -> p.Feature.StartsWith( pattern, StringComparison.InvariantCultureIgnoreCase))
+                | null | "" -> features
+                | ptrn -> features |> List.filter (fun p -> p.Feature.StartsWith( ptrn, StringComparison.InvariantCultureIgnoreCase))
 
         member this.Delete featureName =
-            //let rec removeAll pred list =
-            //    match list with
-            //    | [] -> []
-            //    | head :: tail -> 
-            //        if pred head then 
-            //            head :: (removeAll pred tail)
-            //        else
-            //            removeAll pred tail
-            //features <- (features |> removeAll (fun p -> p.Feature.StartsWith( featureName, StringComparison.InvariantCultureIgnoreCase))) 
-
             features <- (features |> List.filter (fun fc -> not (fc.Feature.StartsWith( featureName, StringComparison.InvariantCultureIgnoreCase))))
             WriteConfigurationFile()
 
         member this.Add featureName newValue = 
             match featureName with
-            | ""
-            | null -> raise (ArgumentException "FeatureName cannot be empty")
-            | _ -> features <- FeatureConfiguration(featureName, newValue) :: features
-
+                | "" | null -> raise (ArgumentException "FeatureName cannot be empty")
+                | _ -> features <- FeatureConfiguration(featureName,newValue) :: features
             WriteConfigurationFile()
     
         member this.Update featureName newValue =
@@ -72,8 +58,7 @@ type DiskFeatureRepository ( options : IOptions<FeaturesFileConfiguration> (*, l
                                     head :: (upd n v tail)
 
             match featureName with
-            | ""
-            | null -> raise (ArgumentException "FeatureName cannot be empty")
+            | "" | null -> raise (ArgumentException "FeatureName cannot be empty")
             | _ -> if features |> List.exists (fun c -> c.Feature = featureName) then
                         features <- features |> upd featureName newValue
                         WriteConfigurationFile()
