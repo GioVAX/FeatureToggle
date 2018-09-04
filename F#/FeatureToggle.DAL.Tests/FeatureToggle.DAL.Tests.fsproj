@@ -11,7 +11,7 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Compile Include="Tests.fs" />
+    <Compile Include="DiskFeatureRepositoryTests.fs" />
   </ItemGroup>
 
   <ItemGroup>
