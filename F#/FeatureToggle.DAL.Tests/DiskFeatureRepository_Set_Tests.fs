@@ -1,4 +1,4 @@
-﻿module Tests
+﻿module DiskFeatureRepository_Set_UnitTests
 
 open System
 open Xunit
@@ -8,11 +8,13 @@ open FeatureToggle.Definitions
 open Moq
 open FeatureToggle.DAL
 open AutoFixture
-open System.Collections.Generic
 
-type DiskFeatureRepositoryUnitTests() =
+type DiskFeatureRepository_Set_UnitTests() =
+    
+    let fixture = Fixture()
+    
     let srcFileName = "Test.json"
-    let destFileName = "Test_tmp.json"
+    let destFileName = fixture.Create<string>() + ".json"
     do File.Copy(srcFileName, destFileName, true)
 
     let mockOptions filename =
@@ -24,73 +26,6 @@ type DiskFeatureRepositoryUnitTests() =
         DiskFeatureRepository (mockOptions filename) :> IFeatureRepository
 
     let sut = initSUT destFileName
-    let fixture = Fixture()
-
-    [<Fact>]
-    let ``DiskFeatureRepository Should Implement IFeatureRepository`` () =
-        Assert.True (sut :? IFeatureRepository)
-
-    [<Theory>]
-    [<InlineData "">]
-    [<InlineData null>]
-    let ``Init with no config SHOULD return empty list of features`` fileName =
-        (initSUT fileName).Select "" 
-            |> Assert.Empty
-
-    [<Fact>]
-    let ``Init With Non Exisiting File SHOULD Return Empty List Of Features``() =
-        (initSUT (fixture.Create<string>())).Select "" 
-            |> Assert.Empty
-
-    //[<Fact>]
-    //let ``Select Should return list of features`` () =
-    //    Assert.True( sut.Select("") :? FeatureConfiguration list )
-    
-    [<Fact>]
-    let ``Select with no Pattern SHOULD return 4 valid features``() =
-        let fs = sut.Select ""
-        Assert.Equal(fs.Length, 4)
-        fs |> List.filter (fun fc -> String.IsNullOrWhiteSpace(fc.Feature) || String.IsNullOrWhiteSpace(fc.Value))
-           |> Assert.Empty
-
-    [<Fact>]
-    let ``Select with "FeatureToggle" SHOULD return 2 features starting with "FeatureToggle"``() =
-        let pattern = "FeatureToggle"
-        let fs = sut.Select pattern
-
-        Assert.Equal(fs.Length, 2)
-        fs |> List.filter (fun fc -> not(fc.Feature.StartsWith pattern))
-           |> Assert.Empty
-
-    [<Fact>]
-    let ``Delete exisiting feature SHOULD remove the feature``() =
-        let featureName = "OtherRoot.Font"
-
-        sut.Delete featureName
-
-        let fs = sut.Select ""
-        Assert.Equal(fs.Length, 3)
-        fs |> List.filter (fun fc -> fc.Feature.StartsWith featureName) 
-           |> Assert.Empty
-
-    [<Fact>]
-    let ``Delete non exisiting feature SHOULD throw exception``() =
-        let featureName = fixture.Create<string>()
-        ( fun () -> sut.Delete featureName )
-            |> Assert.Throws<KeyNotFoundException>
-
-    [<Fact>]
-    let ``Delete feature SHOULD be persisted immediately``() =
-        let featureName = "OtherRoot.Font"
-
-        sut.Delete featureName
-
-        let repo = DiskFeatureRepository (mockOptions destFileName) :> IFeatureRepository
-        let fs = repo.Select ""
-
-        Assert.Equal(fs.Length, 3)
-        fs |> List.filter (fun fc -> fc.Feature.StartsWith featureName)
-           |> Assert.Empty
 
     [<Theory>]
     [<InlineData "">]

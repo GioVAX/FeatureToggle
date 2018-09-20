@@ -11,7 +11,10 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Compile Include="DiskFeatureRepositoryTests.fs" />
+    <Compile Include="DiskFeatureRepository_DeleteTests.fs" />
+    <Compile Include="DiskFeatureRepository_Select_Tests.fs" />
+    <Compile Include="DiskFeatureRepository_Set_Tests.fs" />
+    <Compile Include="DiskFeatureRepository_Init_Tests.fs" />
   </ItemGroup>
 
   <ItemGroup>
