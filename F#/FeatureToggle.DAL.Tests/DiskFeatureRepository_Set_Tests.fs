@@ -30,22 +30,22 @@ type DiskFeatureRepository_Set_UnitTests() =
     [<Theory>]
     [<InlineData "">]
     [<InlineData null>]
-    let ``Update with invalid feature name SHOULD throw exception`` featureName =
+    let ``Set with invalid feature name SHOULD throw exception`` featureName =
         let value = fixture.Create<string>()
-        (fun () -> (sut.Update featureName value) |> ignore)
+        (fun () -> (sut.Set featureName value) |> ignore)
             |> Assert.Throws<ArgumentException>
 
     [<Fact>]
-    let ``Update SHOULD not change number of features``() =
+    let ``Set for an existing feature SHOULD not change number of features``() =
         let featureName = "OtherRoot.Font"
         let origCount = sut.Select("").Length
         
-        sut.Update featureName (fixture.Create<string>()) |> ignore
+        let fs = sut.Set featureName (fixture.Create<string>())
 
-        Assert.Equal(origCount, sut.Select("").Length)
+        Assert.Equal(origCount, fs |> List.length )
 
     [<Fact>]
-    let ``Update SHOULD contain the same features``() =
+    let ``Set of an exisiting feature SHOULD contain the same features``() =
         let featureName = "OtherRoot.Font"
 
         let extractFeatureNames(list:FeatureConfiguration list) =
@@ -53,74 +53,45 @@ type DiskFeatureRepository_Set_UnitTests() =
         
         let expectedFeatures = sut.Select("") |> extractFeatureNames
 
-        sut.Update featureName (fixture.Create<string>()) |> ignore
+        let fs = sut.Set featureName (fixture.Create<string>())
 
-        let actualFeatures = sut.Select("") |> extractFeatureNames
+        let actualFeatures = fs |> extractFeatureNames
         actualFeatures |> List.except expectedFeatures
             |> Assert.Empty
 
     [<Fact>]
-    let ``Update unknown feature name SHOULD throw exception``() =
-        let feature = fixture.Create<string>()
-        let value = fixture.Create<string>()
-        (fun () -> (sut.Update feature value) |> ignore)
-            |> Assert.Throws<ArgumentException>
-
-    [<Fact>]
-    let ``Update SHOULD be persisted immediately``() =
+    let ``Set SHOULD be persisted immediately``() =
         let featureName = "OtherRoot.Font"
         let newValue = fixture.Create<string>()
 
-        sut.Update featureName newValue |> ignore
+        sut.Set featureName newValue |> ignore
 
         let repo = DiskFeatureRepository (mockOptions destFileName) :> IFeatureRepository
         let fs = repo.Select featureName
 
-        Assert.Equal(fs.Length, 1)
-        Assert.Equal(fs.Head.Value, newValue)
+        Assert.Equal(1, fs.Length)
+        Assert.Equal( newValue, fs.Head.Value)
   
-    [<Theory>]
-    [<InlineData "">]
-    [<InlineData null>]
-    let ``Add with invalid feature name SHOULD throw exception`` featureName =
-        let value = fixture.Create<string>()
-        (fun () -> (sut.Add featureName value) |> ignore)
-            |> Assert.Throws<ArgumentException>
-
     [<Fact>]
-    let ``Add SHOULD add one new feature``() =
+    let ``Set of a new feature SHOULD add one new feature``() =
         let originalCount = sut.Select("").Length
         let featureName = fixture.Create<string>()
         let newValue = fixture.Create<string>()
 
-        sut.Add featureName newValue
+        let fs = sut.Set featureName newValue
 
-        Assert.Equal( originalCount + 1, sut.Select("").Length)
+        Assert.Equal( originalCount + 1, fs.Length)
 
     [<Fact>]
-    let ``Add SHOULD add the new feature``() = 
+    let ``Set of a new feature SHOULD add the new feature``() = 
         let featureName = fixture.Create<string>()
         let newValue = fixture.Create<string>()
 
-        sut.Add featureName newValue
+        let fs = sut.Set featureName newValue
 
         let actual = sut.Select(featureName)
         Assert.Equal( actual.Length, 1)
         (actual.Head.Feature.Equals(featureName) && actual.Head.Value.Equals(newValue))
-            |> Assert.True
-
-    [<Fact>]
-    let ``Add SHOULD be persisted immediately``() =
-        let featureName = fixture.Create<string>()
-        let newValue = fixture.Create<string>()
-
-        sut.Add featureName newValue
-
-        let repo = DiskFeatureRepository (mockOptions destFileName) :> IFeatureRepository
-        let fs = repo.Select featureName
-
-        Assert.Equal(fs.Length, 1)
-        (fs.Head.Feature.Equals(featureName) && fs.Head.Value.Equals(newValue))
             |> Assert.True
 
     interface IDisposable with

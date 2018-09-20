@@ -42,14 +42,16 @@ type DiskFeatureRepository ( options : IOptions<FeaturesFileConfiguration> (*, l
             features |> List.find (fun fc -> fc.Feature = featureName) |> ignore
             features <- (features |> List.filter (fun fc -> not (fc.Feature.StartsWith( featureName, StringComparison.InvariantCultureIgnoreCase))))
             WriteConfigurationFile()
+            features
 
-        member this.Add featureName newValue = 
-            match featureName with
-                | "" | null -> raise (ArgumentException "FeatureName cannot be empty")
-                | _ -> features <- FeatureConfiguration(featureName,newValue) :: features
-            WriteConfigurationFile()
+        //member this.Set featureName newValue = 
+        //    match featureName with
+        //        | "" | null -> raise (ArgumentException "FeatureName cannot be empty")
+        //        | _ -> features <- FeatureConfiguration(featureName,newValue) :: features
+        //    WriteConfigurationFile()
+        //    features
     
-        member this.Update featureName newValue =
+        member this.Set featureName newValue =
             let rec upd n v (fl:FeatureConfiguration list) = 
                 match fl with
                 | [] -> []
@@ -62,7 +64,8 @@ type DiskFeatureRepository ( options : IOptions<FeaturesFileConfiguration> (*, l
             | "" | null -> raise (ArgumentException "FeatureName cannot be empty")
             | _ -> if features |> List.exists (fun c -> c.Feature = featureName) then
                         features <- features |> upd featureName newValue
-                        WriteConfigurationFile()
                     else
-                        raise (ArgumentException "Feature not defined")
+                        features <- FeatureConfiguration(featureName,newValue) :: features
+
+            WriteConfigurationFile()
             features

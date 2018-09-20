@@ -31,9 +31,8 @@ type DiskFeatureRepository_Delete_UnitTests() =
     let ``Delete exisiting feature SHOULD remove the feature``() =
         let featureName = "OtherRoot.Font"
 
-        sut.Delete featureName
+        let fs = sut.Delete featureName
 
-        let fs = sut.Select ""
         Assert.Equal(fs.Length, 3)
         fs |> List.filter (fun fc -> fc.Feature.StartsWith featureName) 
            |> Assert.Empty
@@ -41,14 +40,14 @@ type DiskFeatureRepository_Delete_UnitTests() =
     [<Fact>]
     let ``Delete non exisiting feature SHOULD throw exception``() =
         let featureName = fixture.Create<string>()
-        ( fun () -> sut.Delete featureName )
+        ( fun () -> sut.Delete featureName |> ignore )
             |> Assert.Throws<KeyNotFoundException>
 
     [<Fact>]
     let ``Delete feature SHOULD be persisted immediately``() =
         let featureName = "OtherRoot.Font"
 
-        sut.Delete featureName
+        sut.Delete featureName |> ignore
 
         let repo = DiskFeatureRepository (mockOptions destFileName) :> IFeatureRepository
         let fs = repo.Select ""
