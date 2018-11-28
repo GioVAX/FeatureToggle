@@ -6,7 +6,7 @@ module Views =
     open GiraffeViewEngine
     open Models
 
-    let layout (content: XmlNode list) =
+    let private layout (content: XmlNode list) =
         html [] [
             head [] [
                 title []  [ encodedText "FeatureToggle_Web" ]
