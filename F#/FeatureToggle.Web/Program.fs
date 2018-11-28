@@ -10,19 +10,13 @@ module App =
     open Microsoft.Extensions.Logging
     open Microsoft.Extensions.DependencyInjection
     open Giraffe
-    open Models
+    open Handlers
 
     // ---------------------------------
     // Web app
     // ---------------------------------
 
-    let indexHandler (greet, name) =
-        let greetings = sprintf "%s %s, from Giraffe!" greet name
-        let model     = { Text = greetings }
-        let view      = FeatureToggleWeb.Views.index model
-        htmlView view
-
-    let webApp =
+    let routingDefinitions =
         choose [
             GET >=>
                 choose [
@@ -30,14 +24,6 @@ module App =
                     routef "/%s/%s" indexHandler
                 ]
             setStatusCode 404 >=> text "Not Found" ]
-
-    // ---------------------------------
-    // Error handler
-    // ---------------------------------
-
-    let errorHandler (ex : Exception) (logger : ILogger) =
-        logger.LogError(ex, "An unhandled exception has occurred while executing the request.")
-        clearResponse >=> setStatusCode 500 >=> text ex.Message
 
     // ---------------------------------
     // Config and Main
@@ -57,7 +43,7 @@ module App =
             .UseHttpsRedirection()
             .UseCors(configureCors)
             .UseStaticFiles()
-            .UseGiraffe(webApp)
+            .UseGiraffe(routingDefinitions)
 
     let configureServices (services : IServiceCollection) =
         services.AddCors()    |> ignore
