@@ -1,4 +1,4 @@
-﻿module DiskFeatureRepository_Set_UnitTests
+﻿namespace DiskFeatureRepository_UnitTests
 
 open System
 open Xunit
@@ -9,7 +9,7 @@ open Moq
 open FeatureToggle.DAL
 open AutoFixture
 
-type DiskFeatureRepository_Set_UnitTests() =
+type Set() =
     
     let fixture = Fixture()
     

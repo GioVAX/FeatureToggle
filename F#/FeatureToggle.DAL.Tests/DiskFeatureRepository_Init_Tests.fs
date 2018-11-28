@@ -1,4 +1,4 @@
-﻿module DiskFeatureRepository_Init_UnitTests
+﻿namespace DiskFeatureRepository_UnitTests
 
 open Xunit
 open Microsoft.Extensions.Options
@@ -7,7 +7,7 @@ open Moq
 open FeatureToggle.DAL
 open AutoFixture
 
-type DiskFeatureRepository_Init_UnitTests() =
+type Init() =
 
     let mockOptions filename =
         let mock = Mock<IOptions<FeaturesFileConfiguration>>()

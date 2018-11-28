@@ -1,4 +1,4 @@
-﻿module DiskFeatureRepository_Delete_UnitTests
+﻿namespace DiskFeatureRepository_UnitTests
 
 open System
 open Xunit
@@ -10,7 +10,7 @@ open FeatureToggle.DAL
 open AutoFixture
 open System.Collections.Generic
 
-type DiskFeatureRepository_Delete_UnitTests() =
+type Delete() =
 
     let fixture = Fixture()
     let srcFileName = "Test.json"
