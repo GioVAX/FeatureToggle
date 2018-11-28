@@ -1,118 +1,85 @@
-module FeatureToggle_Web.App
+namespace FeatureToggleWeb
 
-open System
-open System.IO
-open Microsoft.AspNetCore.Builder
-open Microsoft.AspNetCore.Cors.Infrastructure
-open Microsoft.AspNetCore.Hosting
-open Microsoft.Extensions.Logging
-open Microsoft.Extensions.DependencyInjection
-open Giraffe
+module App = 
 
-// ---------------------------------
-// Models
-// ---------------------------------
+    open System
+    open System.IO
+    open Microsoft.AspNetCore.Builder
+    open Microsoft.AspNetCore.Cors.Infrastructure
+    open Microsoft.AspNetCore.Hosting
+    open Microsoft.Extensions.Logging
+    open Microsoft.Extensions.DependencyInjection
+    open Giraffe
+    open Models
 
-type Message =
-    {
-        Text : string
-    }
+    // ---------------------------------
+    // Web app
+    // ---------------------------------
 
-// ---------------------------------
-// Views
-// ---------------------------------
+    let indexHandler (greet, name) =
+        let greetings = sprintf "%s %s, from Giraffe!" greet name
+        let model     = { Text = greetings }
+        let view      = FeatureToggleWeb.Views.index model
+        htmlView view
 
-module Views =
-    open GiraffeViewEngine
+    let webApp =
+        choose [
+            GET >=>
+                choose [
+                    route "/" >=> indexHandler ("hello", "world")
+                    routef "/%s/%s" indexHandler
+                ]
+            setStatusCode 404 >=> text "Not Found" ]
 
-    let layout (content: XmlNode list) =
-        html [] [
-            head [] [
-                title []  [ encodedText "FeatureToggle_Web" ]
-                link [ _rel  "stylesheet"
-                       _type "text/css"
-                       _href "/main.css" ]
-            ]
-            body [] content
-        ]
+    // ---------------------------------
+    // Error handler
+    // ---------------------------------
 
-    let partial () =
-        h1 [] [ encodedText "FeatureToggle_Web" ]
+    let errorHandler (ex : Exception) (logger : ILogger) =
+        logger.LogError(ex, "An unhandled exception has occurred while executing the request.")
+        clearResponse >=> setStatusCode 500 >=> text ex.Message
 
-    let index (model : Message) =
-        [
-            partial()
-            p [] [ encodedText model.Text ]
-        ] |> layout
+    // ---------------------------------
+    // Config and Main
+    // ---------------------------------
 
-// ---------------------------------
-// Web app
-// ---------------------------------
+    let configureCors (builder : CorsPolicyBuilder) =
+        builder.WithOrigins("http://localhost:8080")
+               .AllowAnyMethod()
+               .AllowAnyHeader()
+               |> ignore
 
-let indexHandler (greet, name) =
-    let greetings = sprintf "%s %s, from Giraffe!" greet name
-    let model     = { Text = greetings }
-    let view      = Views.index model
-    htmlView view
+    let configureApp (app : IApplicationBuilder) =
+        let env = app.ApplicationServices.GetService<IHostingEnvironment>()
+        (match env.IsDevelopment() with
+        | true  -> app.UseDeveloperExceptionPage()
+        | false -> app.UseGiraffeErrorHandler errorHandler)
+            .UseHttpsRedirection()
+            .UseCors(configureCors)
+            .UseStaticFiles()
+            .UseGiraffe(webApp)
 
-let webApp =
-    choose [
-        GET >=>
-            choose [
-                route "/" >=> indexHandler ("hello", "world")
-                routef "/%s/%s" indexHandler
-            ]
-        setStatusCode 404 >=> text "Not Found" ]
+    let configureServices (services : IServiceCollection) =
+        services.AddCors()    |> ignore
+        services.AddGiraffe() |> ignore
 
-// ---------------------------------
-// Error handler
-// ---------------------------------
+    let configureLogging (builder : ILoggingBuilder) =
+        builder.AddFilter(fun l -> l.Equals LogLevel.Error)
+               .AddConsole()
+               .AddDebug() |> ignore
 
-let errorHandler (ex : Exception) (logger : ILogger) =
-    logger.LogError(ex, "An unhandled exception has occurred while executing the request.")
-    clearResponse >=> setStatusCode 500 >=> text ex.Message
-
-// ---------------------------------
-// Config and Main
-// ---------------------------------
-
-let configureCors (builder : CorsPolicyBuilder) =
-    builder.WithOrigins("http://localhost:8080")
-           .AllowAnyMethod()
-           .AllowAnyHeader()
-           |> ignore
-
-let configureApp (app : IApplicationBuilder) =
-    let env = app.ApplicationServices.GetService<IHostingEnvironment>()
-    (match env.IsDevelopment() with
-    | true  -> app.UseDeveloperExceptionPage()
-    | false -> app.UseGiraffeErrorHandler errorHandler)
-        .UseHttpsRedirection()
-        .UseCors(configureCors)
-        .UseStaticFiles()
-        .UseGiraffe(webApp)
-
-let configureServices (services : IServiceCollection) =
-    services.AddCors()    |> ignore
-    services.AddGiraffe() |> ignore
-
-let configureLogging (builder : ILoggingBuilder) =
-    builder.AddFilter(fun l -> l.Equals LogLevel.Error)
-           .AddConsole()
-           .AddDebug() |> ignore
-
-[<EntryPoint>]
-let main _ =
-    let contentRoot = Directory.GetCurrentDirectory()
-    let webRoot     = Path.Combine(contentRoot, "WebRoot")
-    WebHostBuilder()
-        .UseKestrel()
-        .UseContentRoot(contentRoot)
-        .UseIISIntegration()
-        .UseWebRoot(webRoot)
-        .Configure(Action<IApplicationBuilder> configureApp)
-        .ConfigureServices(configureServices)
-        .ConfigureLogging(configureLogging)
-        .Build()
-        .Run()
-    0
+    [<EntryPoint>]
+    let main _ =
+        let contentRoot = Directory.GetCurrentDirectory()
+        let webRoot     = Path.Combine(contentRoot, "WebRoot")
+        WebHostBuilder()
+            .UseKestrel()
+            .UseContentRoot(contentRoot)
+            .UseIISIntegration()
+            .UseWebRoot(webRoot)
+            .Configure(Action<IApplicationBuilder> configureApp)
+            .ConfigureServices(configureServices)
+            .ConfigureLogging(configureLogging)
+            .Build()
+            .Run()
+        0
