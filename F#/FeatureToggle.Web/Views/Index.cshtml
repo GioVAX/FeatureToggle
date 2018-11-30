@@ -1,0 +1,38 @@
+﻿@using FeatureToggle.Definitions
+
+@model IEnumerable<FeatureConfiguration>
+
+@{
+    Layout = "_Layout";A
+    ViewData["Title"] = "Features List";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h2>Features configured</h2>
+        <table id="featuresList" class="table-bordered table-condensed">
+            <thead>
+                <tr>
+                    <th>Feature Name</th>
+                    <th>Configuration Value</th>
+                    <th>
+                        <button class="btn btn-default glyphicon glyphicon-plus add" data-toggle="modal" data-target="#featureForm"></button>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var config in Model)
+            {
+                <!-- <tr class="config.Feature.Replace('.', '_')"> -->
+                <tr class="">
+                    <td>@config.Feature</td>
+                    <td>@config.Value</td>
+                    <td>
+                        <button class="btn btn-default glyphicon glyphicon-pencil edit" data-toggle="modal" data-target="#featureForm"></button>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

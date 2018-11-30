@@ -6,3 +6,9 @@ module Models =
         {
             Text : string
         }
+
+    [<CLIMutable>]
+    type RazorModel = {
+        Title : string
+        Text : string
+    }
