@@ -44,12 +44,12 @@ module App =
             .UseGiraffe(routingDefinitions app.ApplicationServices)
 
     let configureServices (services : IServiceCollection) =
+        let sp  = services.BuildServiceProvider()
+        
         services.AddCors()    |> ignore
         services.AddGiraffe() |> ignore
 
-        let sp  = services.BuildServiceProvider()
         let env = sp.GetService<IHostingEnvironment>()
-
         Path.Combine(env.ContentRootPath, "Views")
             |> services.AddRazorEngine
             |> ignore
