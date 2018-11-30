@@ -3,8 +3,8 @@
 @model IEnumerable<FeatureConfiguration>
 
 @{
-    Layout = "_Layout";A
-    ViewData["Title"] = "Features List";
+    Layout = "_Layout";
+    <!--ViewData["Title"] = "Features List";-->
 }
 
 <div class="row">
@@ -23,8 +23,7 @@
             <tbody>
             @foreach (var config in Model)
             {
-                <!-- <tr class="config.Feature.Replace('.', '_')"> -->
-                <tr class="">
+                <tr class="@config.Feature.Replace('.', '_')"> 
                     <td>@config.Feature</td>
                     <td>@config.Value</td>
                     <td>

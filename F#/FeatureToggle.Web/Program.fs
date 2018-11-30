@@ -1,17 +1,19 @@
 namespace FeatureToggleWeb
 
-module App = 
+open System
+open System.IO
+open Microsoft.AspNetCore.Builder
+open Microsoft.AspNetCore.Cors.Infrastructure
+open Microsoft.AspNetCore.Hosting
+open Microsoft.Extensions.Configuration
+open Microsoft.Extensions.Logging
+open Microsoft.Extensions.DependencyInjection
+open Giraffe
+open Giraffe.Razor
+open FeatureToggle.Definitions
+open Routing
 
-    open System
-    open System.IO
-    open Microsoft.AspNetCore.Builder
-    open Microsoft.AspNetCore.Cors.Infrastructure
-    open Microsoft.AspNetCore.Hosting
-    open Microsoft.Extensions.Logging
-    open Microsoft.Extensions.DependencyInjection
-    open Giraffe
-    open Giraffe.Razor
-    open Routing
+module App = 
 
     // ---------------------------------
     // Error handler
@@ -39,7 +41,7 @@ module App =
             .UseHttpsRedirection()
             .UseCors(configureCors)
             .UseStaticFiles()
-            .UseGiraffe(routingDefinitions)
+            .UseGiraffe(routingDefinitions app.ApplicationServices)
 
     let configureServices (services : IServiceCollection) =
         services.AddCors()    |> ignore
@@ -47,14 +49,15 @@ module App =
 
         let sp  = services.BuildServiceProvider()
         let env = sp.GetService<IHostingEnvironment>()
+
         Path.Combine(env.ContentRootPath, "Views")
             |> services.AddRazorEngine
             |> ignore
 
-        // let configuration = services.
-        // services
-        //     .AddTransient<IFeatureRepository, DiskFeatureRepository>()
-        //     .Configure<FeaturesFileConfiguration>(this.Configuration) |> ignore
+        let configuration = sp.GetService<IConfiguration>()
+        services
+             .AddTransient<IFeatureRepository, FeatureToggle.DAL.DiskFeatureRepository>()
+             .Configure<FeaturesFileConfiguration>(configuration) |> ignore
 
     let configureLogging (builder : ILoggingBuilder) =
         builder.AddFilter(fun l -> l.Equals LogLevel.Error)
@@ -65,6 +68,7 @@ module App =
     let main _ =
         let contentRoot = Directory.GetCurrentDirectory()
         let webRoot     = Path.Combine(contentRoot, "WebRoot")
+
         WebHostBuilder()
             .UseKestrel()
             .UseContentRoot(contentRoot)

@@ -2,16 +2,15 @@ namespace FeatureToggleWeb
 
 module Routing =
 
+    open System
+    open Microsoft.Extensions.DependencyInjection
+    open Microsoft.Extensions.Options
     open Giraffe
     open FeatureToggle.DAL
     open FeatureToggle.Definitions
     open Handlers
-    open Microsoft.Extensions.Configuration
 
-    let (routingDefinitions:HttpHandler) =
-
-        let ffConfig = FeaturesFileConfiguration("Features.json")
-        //let config = Configuration.GetSection()
+    let routingDefinitions (services: IServiceProvider) : HttpHandler =
 
         choose [
             GET >=>
@@ -19,6 +18,6 @@ module Routing =
                     route "/" >=> indexHandler ("hello", "world")
                     routef "/%s/%s" indexHandler
                     route  "/razor" >=> razorHandler
-                    route  "/index" >=> ftListHandler (DiskFeatureRepository( IOptions<FeaturesFileConfiguration>("Features.json")))
+                    route  "/index" >=> ftListHandler (services.GetService<IFeatureRepository>())
                 ]
-            setStatusCode 404 >=> text "Not " ]
+            setStatusCode 404 >=> text "Not Found" ]
