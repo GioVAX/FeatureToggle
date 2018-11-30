@@ -2,36 +2,120 @@
 
 @model IEnumerable<FeatureConfiguration>
 
-@{
+    @{
     Layout = "_Layout";
     <!--ViewData["Title"] = "Features List";-->
-}
+    }
 
-<div class="row">
-    <div class="col-md-12">
-        <h2>Features configured</h2>
-        <table id="featuresList" class="table-bordered table-condensed">
-            <thead>
-                <tr>
-                    <th>Feature Name</th>
-                    <th>Configuration Value</th>
-                    <th>
-                        <button class="btn btn-default glyphicon glyphicon-plus add" data-toggle="modal" data-target="#featureForm"></button>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-            @foreach (var config in Model)
-            {
-                <tr class="@config.Feature.Replace('.', '_')"> 
-                    <td>@config.Feature</td>
-                    <td>@config.Value</td>
-                    <td>
-                        <button class="btn btn-default glyphicon glyphicon-pencil edit" data-toggle="modal" data-target="#featureForm"></button>
-                    </td>
-                </tr>
-            }
-            </tbody>
-        </table>
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Features configured</h2>
+            <table id="featuresList" class="table-bordered table-condensed">
+                <thead>
+                    <tr>
+                        <th>Feature Name</th>
+                        <th>Configuration Value</th>
+                        <th>
+                            <button class="btn btn-default glyphicon glyphicon-plus add" data-toggle="modal" data-target="#featureForm"></button>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var config in Model)
+                    {
+                    <tr class="@config.Feature.Replace('.', '_')">
+                        <td>@config.Feature</td>
+                        <td>@config.Value</td>
+                        <td>
+                            <button class="btn btn-default glyphicon glyphicon-pencil edit" data-toggle="modal" data-target="#featureForm"></button>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
+
+    <div id="featureForm" class="modal" role="dialog" aria-labelledby="featureFormTitle">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="featureFormTitle">Modal title</h4>
+                </div>
+                @{
+                FeatureConfiguration dummy = new FeatureConfiguration(null, null);
+                }
+                <form method="post" class="form-horizontal" role="form">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" asp-for="@dummy.Feature"></label>
+                            <div class="col-sm-10">
+                                <input asp-for="@dummy.Feature" name="@nameof(dummy.Feature)" class="form-control" placeholder="Feature Name" readonly="readonly" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" asp-for="@dummy.Value"></label>
+                            <div class="col-sm-10">
+                                <input asp-for="@dummy.Value" name="@nameof(dummy.Value)" class="form-control" placeholder="Configuration Value" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    @section Scripts
+    {
+    <script language="javascript">
+        jQuery("#featuresList tbody").on("click", ".glyphicon-remove.btn",
+            function (event) {
+                var origin = jQuery(event.currentTarget);
+                var featureName = origin.data('feature');
+
+                return confirm('Do you really want to delete feature <' + featureName + '>?');
+            });
+
+        jQuery('#featureForm').on('show.bs.modal',
+            function (event) {
+                var button = jQuery(event.relatedTarget);
+
+                if (button.hasClass('edit'))
+                    ConfigureModalToUpdateFeature(button);
+                else if (button.hasClass('add'))
+                    ConfigureModalForNewFeature();
+            });
+
+        function ConfigureModalForNewFeature() {
+            jQuery('#featureForm form').attr('action', '/Home/AddFeature');
+
+            jQuery('#featureForm input[name=Feature]')
+                .val('')
+                .removeAttr('readonly');
+
+            jQuery('#featureForm input[name=Value]')
+                .val('');
+        }
+
+        function ConfigureModalToUpdateFeature(button) {
+            jQuery('#featureForm form').attr('action', '/Home/EditFeature');
+
+            var cells = button.parent().siblings();
+
+            var feature = cells.first().text();
+            jQuery('#featureForm input[name=Feature]')
+                .val(feature)
+                .attr('readonly', 'readonly');
+
+            var value = cells.last().text();
+            jQuery('#featureForm input[name=Value]')
+                .val(value);
+        }
+
+    </script>
+    }
