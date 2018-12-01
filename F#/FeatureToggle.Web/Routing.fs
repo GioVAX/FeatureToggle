@@ -10,9 +10,16 @@ module Routing =
 
     let routingDefinitions (services:IServiceProvider) : HttpHandler =
 
+        let repo = services.GetService<IFeatureRepository>()
         choose [
             GET >=>
                 choose [
-                    route  "/index" >=> indexHandler (services.GetService<IFeatureRepository>())
+                    route  "/index" >=> indexHandler repo
+                    route "/DeleteFeature" >=> setStatusCode 404 >=> text "Not Found" //deleteFeature
                 ]
-            setStatusCode 404 >=> text "Not Found" ]
+            POST >=>
+                choose [
+                    route "/AddFeature" >=> setStatusCode 404 >=> text "Not Found" //addNewFeature
+                    route "/UpdateFeature" >=> updateFeature repo
+                ]
+            setStatusCode 404 >=> text "Not Found" ]    

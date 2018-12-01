@@ -2,13 +2,8 @@
 
 module Models =
 
-   type Message =
-        {
-            Text : string
-        }
-
     [<CLIMutable>]
-    type RazorModel = {
-        Title : string
-        Text : string
+    type FeatureModel = {
+        Feature : string
+        Value : string
     }
