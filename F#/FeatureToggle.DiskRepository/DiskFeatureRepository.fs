@@ -49,13 +49,15 @@ type DiskFeatureRepository ( options : IOptions<FeaturesFileConfiguration> (*, l
             let splitAt f =
                 let rec loop acc = function
                     | [] -> List.rev acc,[]
-                    | x::xs when f x -> List.rev acc, xs
+                    | x::xs when f x -> List.rev acc, x::xs
                     | x::xs -> loop (x::acc) xs
                 loop []
 
             match featureName with
             | "" | null -> raise (ArgumentException "FeatureName cannot be empty")
-            | _ ->  let first, last = features |> splitAt (fun feature -> featureName = feature.Feature)
-                    features <- List.concat [first; [FeatureConfiguration(featureName,newValue)]; last]
-                    WriteConfigurationFile()
+            | _ ->  let split = features |> splitAt (fun feature -> featureName = feature.Feature)
+                    features <- match split with
+                                | list,[] -> FeatureConfiguration(featureName, newValue)::list
+                                | first, last -> List.concat [first; [FeatureConfiguration(featureName, newValue)]; List.tail last]
+            WriteConfigurationFile()
             features
