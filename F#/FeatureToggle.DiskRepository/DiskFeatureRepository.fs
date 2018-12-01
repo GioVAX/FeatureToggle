@@ -9,7 +9,8 @@ open Newtonsoft.Json
 
 type DiskFeatureRepository ( options : IOptions<FeaturesFileConfiguration> (*, logger : ILogger<DiskFeatureRepository>*) )  =
 
-    let optionsFeaturesFileName = options |> function
+    let optionsFeaturesFileName = 
+        match options with
         | null -> null
         | opt -> opt.Value.FeaturesConfigurationFile
     
@@ -44,28 +45,17 @@ type DiskFeatureRepository ( options : IOptions<FeaturesFileConfiguration> (*, l
             WriteConfigurationFile()
             features
 
-        //member this.Set featureName newValue = 
-        //    match featureName with
-        //        | "" | null -> raise (ArgumentException "FeatureName cannot be empty")
-        //        | _ -> features <- FeatureConfiguration(featureName,newValue) :: features
-        //    WriteConfigurationFile()
-        //    features
-    
         member this.Set featureName newValue =
-            let rec upd n v (fl:FeatureConfiguration list) = 
-                match fl with
-                | [] -> []
-                | head::tail -> if head.Feature = n then
-                                    FeatureConfiguration(head.Feature, newValue) :: tail
-                                else
-                                    head :: (upd n v tail)
+            let splitAt f =
+                let rec loop acc = function
+                    | [] -> List.rev acc,[]
+                    | x::xs when f x -> List.rev acc, xs
+                    | x::xs -> loop (x::acc) xs
+                loop []
 
             match featureName with
             | "" | null -> raise (ArgumentException "FeatureName cannot be empty")
-            | _ -> if features |> List.exists (fun c -> c.Feature = featureName) then
-                        features <- features |> upd featureName newValue
-                    else
-                        features <- FeatureConfiguration(featureName,newValue) :: features
-
-            WriteConfigurationFile()
+            | _ ->  let first, last = features |> splitAt (fun feature -> featureName = feature.Feature)
+                    features <- List.concat [first; [FeatureConfiguration(featureName,newValue)]; last]
+                    WriteConfigurationFile()
             features
