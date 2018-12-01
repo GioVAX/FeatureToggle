@@ -14,12 +14,22 @@ module Routing =
         choose [
             GET >=>
                 choose [
-                    route  "/index" >=> indexHandler repo
-                    route "/DeleteFeature" >=> setStatusCode 404 >=> text "Not Found" //deleteFeature
+                    routeCi  "/index" 
+                        >=> indexHandler repo
+                    routeCi "/DeleteFeature" 
+                        >=> setStatusCode 404 >=> text "Not Found"
+                        //>=> deleteFeature repo
+                        //>=> redirectTo false "/Index"
                 ]
             POST >=>
                 choose [
-                    route "/AddFeature" >=> setStatusCode 404 >=> text "Not Found" //addNewFeature
-                    route "/UpdateFeature" >=> updateFeature repo
+                    routeCi "/AddFeature" 
+                        >=> setStatusCode 404 >=> text "Not Found"
+                        //>=> addNewFeature repo
+                        //>=> redirectTo false "/Index"
+
+                    routeCi "/UpdateFeature"
+                        >=> updateFeature repo
+                        >=> redirectTo false "/Index"
                 ]
             setStatusCode 404 >=> text "Not Found" ]    
