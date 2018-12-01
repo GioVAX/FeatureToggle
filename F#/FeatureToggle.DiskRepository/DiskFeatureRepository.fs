@@ -57,7 +57,7 @@ type DiskFeatureRepository ( options : IOptions<FeaturesFileConfiguration> (*, l
             | "" | null -> raise (ArgumentException "FeatureName cannot be empty")
             | _ ->  let split = features |> splitAt (fun feature -> featureName = feature.Feature)
                     features <- match split with
-                                | list,[] -> FeatureConfiguration(featureName, newValue)::list
-                                | first, last -> List.concat [first; [FeatureConfiguration(featureName, newValue)]; List.tail last]
+                                | list,[] -> {Feature = featureName; Value = newValue}::list
+                                | first, last -> List.concat [first; [ {List.head last with Value = newValue}]; List.tail last]
             WriteConfigurationFile()
             features
