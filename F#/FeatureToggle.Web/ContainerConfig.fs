@@ -15,6 +15,5 @@ let registerAppServices (container:ServiceProvider) (services:IServiceCollection
                 let options = cnt.GetService<IOptions<FeaturesFileConfiguration>>()
                 DiskFeatureRepository.createRepository options.Value
         )
-        //.AddSingleton<IFeatureRepository>( DiskFeatureRepository.createRepository )
         .Configure<FeaturesFileConfiguration>(configuration) |> ignore
 

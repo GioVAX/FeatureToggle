@@ -4,7 +4,6 @@ open System
 open System.Collections.Generic
 open System.IO
 open FeatureToggle.Definitions
-open Microsoft.Extensions.Options
 open Newtonsoft.Json
 
 module DiskFeatureRepository =
@@ -27,16 +26,6 @@ module DiskFeatureRepository =
         let json = JsonConvert.SerializeObject(features)
         let path = featuresPath options
         File.WriteAllText(path, json)
-
-    //let LoadConfigurationFile() = 
-    //    //_logger.LogInformation($"Reading configuration from <{_featuresPath}>."); 
-    //    if not(File.Exists(featuresPath)) then
-    //        []
-    //    else
-    //        let json = File.ReadAllText(featuresPath)
-    //        List.ofSeq (JsonConvert.DeserializeObject<List<FeatureConfiguration>>(json))
-
-    //let mutable features = LoadConfigurationFile()
 
     let splitAt f =
         let rec loop acc = function

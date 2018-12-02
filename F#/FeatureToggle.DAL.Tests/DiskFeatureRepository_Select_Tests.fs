@@ -19,10 +19,6 @@ type Select() =
 
     let sut = initSUT destFileName
 
-    //[<Fact>]
-    //let ``Select Should return list of features`` () =
-    //    Assert.True( sut.Select("") :? FeatureConfiguration list )
-    
     [<Fact>]
     let ``Select with no Pattern SHOULD return 4 valid features``() =
         let fs = sut.Select ""
