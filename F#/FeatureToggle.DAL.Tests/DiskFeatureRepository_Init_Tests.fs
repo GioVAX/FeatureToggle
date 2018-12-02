@@ -1,28 +1,16 @@
 ﻿namespace DiskFeatureRepository_UnitTests
 
 open Xunit
-open Microsoft.Extensions.Options
 open FeatureToggle.Definitions
-open Moq
 open FeatureToggle.DAL
 open AutoFixture
 
 type Init() =
 
-    let mockOptions filename =
-        let mock = Mock<IOptions<FeaturesFileConfiguration>>()
-        mock.Setup((fun cfg -> cfg.Value)).Returns(FeaturesFileConfiguration(filename)) |> ignore
-        mock.Object
-
     let initSUT filename =
-        DiskFeatureRepository (mockOptions filename) :> IFeatureRepository
+        DiskFeatureRepository.createRepository (FeaturesFileConfiguration(filename))
 
     let fixture = Fixture()
-    let sut = initSUT (fixture.Create<string>())
-
-    [<Fact>]
-    let ``DiskFeatureRepository Should Implement IFeatureRepository`` () =
-        Assert.True (sut :? IFeatureRepository)
 
     [<Theory>]
     [<InlineData "">]

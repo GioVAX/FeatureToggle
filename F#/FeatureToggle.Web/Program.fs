@@ -5,7 +5,6 @@ open System.IO
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Cors.Infrastructure
 open Microsoft.AspNetCore.Hosting
-open Microsoft.Extensions.Configuration
 open Microsoft.Extensions.Logging
 open Microsoft.Extensions.DependencyInjection
 open Giraffe
@@ -54,10 +53,7 @@ module App =
             |> services.AddRazorEngine
             |> ignore
 
-        let configuration = sp.GetService<IConfiguration>()
-        services
-             .AddTransient<IFeatureRepository, FeatureToggle.DAL.DiskFeatureRepository>()
-             .Configure<FeaturesFileConfiguration>(configuration) |> ignore
+        ContainerConfig.registerAppServices sp services
 
     let configureLogging (builder : ILoggingBuilder) =
         builder.AddFilter(fun l -> l.Equals LogLevel.Error)

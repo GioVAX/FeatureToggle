@@ -3,9 +3,7 @@
 open System
 open Xunit
 open System.IO
-open Microsoft.Extensions.Options
 open FeatureToggle.Definitions
-open Moq
 open FeatureToggle.DAL
 open AutoFixture
 
@@ -17,13 +15,8 @@ type Set() =
     let destFileName = fixture.Create<string>() + ".json"
     do File.Copy(srcFileName, destFileName, true)
 
-    let mockOptions filename =
-        let mock = Mock<IOptions<FeaturesFileConfiguration>>()
-        mock.Setup((fun cfg -> cfg.Value)).Returns(FeaturesFileConfiguration(filename)) |> ignore
-        mock.Object
-
     let initSUT filename =
-        DiskFeatureRepository (mockOptions filename) :> IFeatureRepository
+        DiskFeatureRepository.createRepository (FeaturesFileConfiguration(filename))
 
     let sut = initSUT destFileName
 
@@ -66,7 +59,7 @@ type Set() =
 
         sut.Set featureName newValue |> ignore
 
-        let repo = DiskFeatureRepository (mockOptions destFileName) :> IFeatureRepository
+        let repo = initSUT destFileName
         let fs = repo.Select featureName
 
         Assert.Equal(1, fs.Length)

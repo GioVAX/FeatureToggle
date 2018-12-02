@@ -3,9 +3,7 @@
 open System
 open Xunit
 open System.IO
-open Microsoft.Extensions.Options
 open FeatureToggle.Definitions
-open Moq
 open FeatureToggle.DAL
 open AutoFixture
 open System.Collections.Generic
@@ -17,13 +15,8 @@ type Delete() =
     let destFileName = fixture.Create<string>() + ".json"
     do File.Copy(srcFileName, destFileName, true)
 
-    let mockOptions filename =
-        let mock = Mock<IOptions<FeaturesFileConfiguration>>()
-        mock.Setup((fun cfg -> cfg.Value)).Returns(FeaturesFileConfiguration(filename)) |> ignore
-        mock.Object
-
     let initSUT filename =
-        DiskFeatureRepository (mockOptions filename) :> IFeatureRepository
+        DiskFeatureRepository.createRepository (FeaturesFileConfiguration(filename))
 
     let sut = initSUT destFileName
 
@@ -49,7 +42,7 @@ type Delete() =
 
         sut.Delete featureName |> ignore
 
-        let repo = DiskFeatureRepository (mockOptions destFileName) :> IFeatureRepository
+        let repo = initSUT destFileName
         let fs = repo.Select ""
 
         Assert.Equal(fs.Length, 3)
