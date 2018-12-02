@@ -5,9 +5,9 @@ open System.Collections.Generic
 open System.IO
 open FeatureToggle.Definitions
 open Newtonsoft.Json
+open DiskStorage
 
 module DiskFeatureRepository =
-//type DiskFeatureRepository ( options : IOptions<FeaturesFileConfiguration> (*, logger : ILogger<DiskFeatureRepository>*) )  =
 
     let featuresPath (options:FeaturesFileConfiguration) = 
         match options.FeaturesConfigurationFile with
@@ -36,37 +36,37 @@ module DiskFeatureRepository =
 
     let matches fname = (fun feature -> feature.Feature = fname)
 
-    let private IRepository_Select options pattern = 
-        let features = loadConfigurationFile options
+    let private IRepository_Select (storage:DiskStorage) pattern = 
+        let features = storage.readFile()
         match pattern with
             | null | "" -> features
             | ptrn -> features |> List.filter (fun p -> p.Feature.StartsWith( ptrn, StringComparison.InvariantCultureIgnoreCase))
     
-    let private IRepository_Delete options featureName =
-        let features = loadConfigurationFile options
+    let private IRepository_Delete storage featureName =
+        let features = storage.readFile()
         
         let split = features |> splitAt (matches featureName)
         let newFeatures = match split with
                             | list,[] -> raise (KeyNotFoundException "FeatureName not found")
                             | first, last -> List.concat [first; List.tail last]
 
-        writeConfigurationFile options newFeatures
+        storage.writeFile newFeatures
         newFeatures
 
-    let private IRepository_Set options featureName newValue =
+    let private IRepository_Set storage featureName newValue =
         match featureName with
         | "" | null -> raise (ArgumentException "FeatureName cannot be empty")
         | _ ->  
-            let features = loadConfigurationFile options
+            let features = storage.readFile()
             let split = features |> splitAt (matches featureName)
             let newFeatures = match split with
                                 | list,[] -> {Feature = featureName; Value = newValue}::list
                                 | first, last -> List.concat [first; [ {List.head last with Value = newValue}]; List.tail last]
-            writeConfigurationFile options newFeatures
+            storage.writeFile newFeatures
             newFeatures
 
-    let createRepository options = {
-        Select = IRepository_Select options
-        Delete = IRepository_Delete options
-        Set = IRepository_Set options
+    let createRepository storage = {
+        Select = IRepository_Select storage
+        Delete = IRepository_Delete storage
+        Set = IRepository_Set storage
     }

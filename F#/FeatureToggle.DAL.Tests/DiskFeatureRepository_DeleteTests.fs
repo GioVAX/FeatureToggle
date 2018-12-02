@@ -7,6 +7,8 @@ open FeatureToggle.Definitions
 open FeatureToggle.DAL
 open AutoFixture
 open System.Collections.Generic
+open FeatureToggle.DAL.DiskStorage
+open FeatureToggle.DAL.DiskFeatureRepository
 
 type Delete() =
 
@@ -16,7 +18,7 @@ type Delete() =
     do File.Copy(srcFileName, destFileName, true)
 
     let initSUT filename =
-        DiskFeatureRepository.createRepository (FeaturesFileConfiguration(filename))
+        createRepository (createDiskStoreage  (FeaturesFileConfiguration(filename)))
 
     let sut = initSUT destFileName
 

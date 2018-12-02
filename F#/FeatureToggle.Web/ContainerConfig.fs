@@ -10,10 +10,15 @@ let registerAppServices (container:ServiceProvider) (services:IServiceCollection
     let configuration = container.GetService<IConfiguration>()
     
     services
+        .AddTransient<DiskStorage.DiskStorage>(
+            fun cnt ->
+                let options = cnt.GetService<IOptions<FeaturesFileConfiguration>>()
+                DiskStorage.createDiskStoreage options.Value
+        )
         .AddTransient<IFeatureRepository>( 
             fun cnt -> 
-                let options = cnt.GetService<IOptions<FeaturesFileConfiguration>>()
-                DiskFeatureRepository.createRepository options.Value
+                let storage = cnt.GetService<DiskStorage.DiskStorage>()
+                DiskFeatureRepository.createRepository storage
         )
         .Configure<FeaturesFileConfiguration>(configuration) |> ignore
 

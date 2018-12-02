@@ -4,7 +4,8 @@ open System
 open Xunit
 open System.IO
 open FeatureToggle.Definitions
-open FeatureToggle.DAL
+open FeatureToggle.DAL.DiskStorage
+open FeatureToggle.DAL.DiskFeatureRepository
 open AutoFixture
 
 type Set() =
@@ -16,7 +17,7 @@ type Set() =
     do File.Copy(srcFileName, destFileName, true)
 
     let initSUT filename =
-        DiskFeatureRepository.createRepository (FeaturesFileConfiguration(filename))
+        createRepository (createDiskStoreage  (FeaturesFileConfiguration(filename)))
 
     let sut = initSUT destFileName
 
