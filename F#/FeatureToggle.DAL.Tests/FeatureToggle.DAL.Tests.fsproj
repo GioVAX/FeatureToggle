@@ -11,6 +11,7 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Compile Include="TestData.fs" />
     <Compile Include="DiskFeatureRepository_DeleteTests.fs" />
     <Compile Include="DiskFeatureRepository_Select_Tests.fs" />
     <Compile Include="DiskFeatureRepository_Set_Tests.fs" />
@@ -19,6 +20,7 @@
 
   <ItemGroup>
     <PackageReference Include="AutoFixture" Version="4.9.0" />
+    <PackageReference Include="FsCheck" Version="2.14.0" />
     <PackageReference Include="FsCheck.Xunit" Version="2.14.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.1.1" />
     <PackageReference Include="Moq" Version="4.11.0" />

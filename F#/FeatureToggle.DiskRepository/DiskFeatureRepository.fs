@@ -2,9 +2,7 @@ namespace FeatureToggle.DAL
 
 open System
 open System.Collections.Generic
-open System.IO
 open FeatureToggle.Definitions
-open Newtonsoft.Json
 open DiskStorage
 
 module DiskFeatureRepository =

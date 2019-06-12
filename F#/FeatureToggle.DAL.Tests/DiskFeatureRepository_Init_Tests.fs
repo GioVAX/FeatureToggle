@@ -2,14 +2,13 @@
 
 open Xunit
 open FeatureToggle.Definitions
-open FeatureToggle.DAL.DiskStorage
 open FeatureToggle.DAL.DiskFeatureRepository
 open AutoFixture
 
 type Init() =
 
     let initSUT filename =
-        createRepository (createDiskStoreage  (FeaturesFileConfiguration(filename)))
+        createRepository TestData.notExistingRepo
 
     let fixture = Fixture()
 
