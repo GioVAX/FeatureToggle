@@ -11,12 +11,12 @@ module DiskStorage =
         writeFile: FeatureConfiguration list -> unit
     }
 
-    let featuresPath (options:FeaturesFileConfiguration) = 
+    let private featuresPath (options:FeaturesFileConfiguration) = 
         match options.FeaturesConfigurationFile with
             | null | "" -> @".\Features.json"
             | file -> Path.GetFullPath(file)
     
-    let loadConfigurationFile options =
+    let private loadConfigurationFile options =
         let path = featuresPath options
         if not(File.Exists(path)) then
             []
@@ -24,7 +24,7 @@ module DiskStorage =
             let json = File.ReadAllText(path)
             List.ofSeq (JsonConvert.DeserializeObject<List<FeatureConfiguration>>(json))
 
-    let writeConfigurationFile options features =
+    let private writeConfigurationFile options features =
         let json = JsonConvert.SerializeObject(features)
         let path = featuresPath options
         File.WriteAllText(path, json)
