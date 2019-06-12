@@ -30,6 +30,6 @@ module DiskStorage =
         File.WriteAllText(path, json)
 
     let createDiskStoreage options = {
-        readFile = (fun unit -> loadConfigurationFile options)
+        readFile = (fun () -> loadConfigurationFile options)
         writeFile = writeConfigurationFile options
     }

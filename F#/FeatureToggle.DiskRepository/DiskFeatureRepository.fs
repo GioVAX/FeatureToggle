@@ -9,32 +9,14 @@ open DiskStorage
 
 module DiskFeatureRepository =
 
-    let featuresPath (options:FeaturesFileConfiguration) = 
-        match options.FeaturesConfigurationFile with
-            | null | "" -> @".\Features.json"
-            | file -> Path.GetFullPath(file)
-    
-    let loadConfigurationFile options =
-        let path = featuresPath options
-        if not(File.Exists(path)) then
-            []
-        else
-            let json = File.ReadAllText(path)
-            List.ofSeq (JsonConvert.DeserializeObject<List<FeatureConfiguration>>(json))
-
-    let writeConfigurationFile options features =
-        let json = JsonConvert.SerializeObject(features)
-        let path = featuresPath options
-        File.WriteAllText(path, json)
-
-    let splitAt f =
+    let private splitAt f =
         let rec loop acc = function
             | [] -> List.rev acc,[]
             | x::xs when f x -> List.rev acc, x::xs
             | x::xs -> loop (x::acc) xs
         loop []
 
-    let matches fname = (fun feature -> feature.Feature = fname)
+    let private matches fname = (fun feature -> feature.Feature = fname)
 
     let private IRepository_Select (storage:DiskStorage) pattern = 
         let features = storage.readFile()
