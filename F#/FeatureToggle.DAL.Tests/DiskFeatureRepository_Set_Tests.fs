@@ -1,12 +1,13 @@
-﻿namespace DiskFeatureRepository_UnitTests
+﻿module SetTests
 
 open System
 open Xunit
 open System.IO
 open FeatureToggle.Definitions
-open FeatureToggle.DAL.DiskStorage
 open FeatureToggle.DAL.DiskFeatureRepository
 open AutoFixture
+open FsUnit.Xunit
+open FeatureToggle.DAL
 
 type Set() =
     
@@ -17,8 +18,9 @@ type Set() =
     do File.Copy(srcFileName, destFileName, true)
 
     let initSUT filename =
-        createRepository (createDiskStoreage  (FeaturesFileConfiguration(filename)))
-
+        //createRepository TestData.goodDataRepo
+        createRepository (DiskStorage.createDiskStoreage  (FeaturesFileConfiguration(filename)))
+    
     let sut = initSUT destFileName
 
     [<Theory>]
@@ -27,7 +29,7 @@ type Set() =
     let ``Set with invalid feature name SHOULD throw exception`` featureName =
         let value = fixture.Create<string>()
         (fun () -> (sut.Set featureName value) |> ignore)
-            |> Assert.Throws<ArgumentException>
+            |> should throw typeof<ArgumentException>
 
     [<Fact>]
     let ``Set for an existing feature SHOULD not change number of features``() =
@@ -36,7 +38,7 @@ type Set() =
         
         let fs = sut.Set featureName (fixture.Create<string>())
 
-        Assert.Equal(origCount, fs |> List.length )
+        fs |> should haveLength origCount
 
     [<Fact>]
     let ``Set of an exisiting feature SHOULD contain the same features``() =
@@ -50,8 +52,8 @@ type Set() =
         let fs = sut.Set featureName (fixture.Create<string>())
 
         let actualFeatures = fs |> extractFeatureNames
-        actualFeatures |> List.except expectedFeatures
-            |> Assert.Empty
+
+        actualFeatures |> should equal expectedFeatures
 
     [<Fact>]
     let ``Set SHOULD be persisted immediately``() =
@@ -63,8 +65,9 @@ type Set() =
         let repo = initSUT destFileName
         let fs = repo.Select featureName
 
-        Assert.Equal(1, fs.Length)
-        Assert.Equal( newValue, fs.Head.Value)
+        fs |> should haveLength 1
+        fs.Head.Value
+            |> should equal newValue
   
     [<Fact>]
     let ``Set of a new feature SHOULD add one new feature``() =
@@ -74,7 +77,7 @@ type Set() =
 
         let fs = sut.Set featureName newValue
 
-        Assert.Equal( originalCount + 1, fs.Length)
+        fs |> should haveLength (originalCount + 1)
 
     [<Fact>]
     let ``Set of a new feature SHOULD add the new feature``() = 
@@ -84,9 +87,9 @@ type Set() =
         let fs = sut.Set featureName newValue
 
         let actual = sut.Select(featureName)
-        Assert.Equal( actual.Length, 1)
-        (actual.Head.Feature.Equals(featureName) && actual.Head.Value.Equals(newValue))
-            |> Assert.True
+
+        actual |> should haveLength 1
+        actual.Head |> should equal {Feature = featureName; Value = newValue}
 
     interface IDisposable with
         member this.Dispose() =

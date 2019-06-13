@@ -1,25 +1,24 @@
-﻿namespace DiskFeatureRepository_UnitTests
+﻿module InitTests
 
-open Xunit
 open FeatureToggle.Definitions
 open FeatureToggle.DAL.DiskFeatureRepository
 open AutoFixture
+open FsUnit.Xunit
+open Xunit
 
-type Init() =
+let private initSUT filename =
+    createRepository TestData.notExistingRepo
 
-    let initSUT filename =
-        createRepository TestData.notExistingRepo
+let private fixture = Fixture()
 
-    let fixture = Fixture()
+[<Theory>]
+[<InlineData "">]
+[<InlineData null>]
+let ``Init with no config SHOULD return empty list of features`` fileName =
+    (initSUT fileName).Select "" 
+        |> should be Empty
 
-    [<Theory>]
-    [<InlineData "">]
-    [<InlineData null>]
-    let ``Init with no config SHOULD return empty list of features`` fileName =
-        (initSUT fileName).Select "" 
-            |> Assert.Empty
-
-    [<Fact>]
-    let ``Init With Non Exisiting File SHOULD Return Empty List Of Features``() =
-        (initSUT (fixture.Create<string>())).Select "" 
-            |> Assert.Empty
+[<Fact>]
+let ``Init With Non Exisiting File SHOULD Return Empty List Of Features``() =
+    (initSUT (fixture.Create<string>())).Select "" 
+        |> should be Empty

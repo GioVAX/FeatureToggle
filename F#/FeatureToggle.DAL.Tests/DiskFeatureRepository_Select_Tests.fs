@@ -1,41 +1,31 @@
-﻿namespace DiskFeatureRepository_UnitTests
+﻿module SelectTests
 
-open System
 open Xunit
-open System.IO
 open FeatureToggle.Definitions
 open FeatureToggle.DAL.DiskStorage
 open FeatureToggle.DAL.DiskFeatureRepository
-open AutoFixture
+open FsUnit.Xunit
+//open Test_Commons
 
-type Select() =
+let private initSUT filename =
+    createRepository (createDiskStoreage (FeaturesFileConfiguration(filename)))
 
-    let fixture = Fixture()
-    let srcFileName = "Test.json"
-    let destFileName = fixture.Create<string>() + ".json"
-    do File.Copy(srcFileName, destFileName, true)
+let private sut = initSUT "Test.json"
 
-    let initSUT filename =
-        createRepository (createDiskStoreage (FeaturesFileConfiguration(filename)))
+[<Fact>]
+let ``Select with no Pattern SHOULD return 4 valid features``() =
+    let fs = sut.Select ""
 
-    let sut = initSUT destFileName
+    fs |> should haveLength 4
+    fs |> List.forall featureIsValid
+        |> should be True
 
-    [<Fact>]
-    let ``Select with no Pattern SHOULD return 4 valid features``() =
-        let fs = sut.Select ""
-        Assert.Equal(fs.Length, 4)
-        fs |> List.filter (fun fc -> String.IsNullOrWhiteSpace(fc.Feature) || String.IsNullOrWhiteSpace(fc.Value))
-           |> Assert.Empty
+[<Fact>]
+let ``Select with "FeatureToggle" SHOULD return 2 features starting with "FeatureToggle"``() =
+    let pattern = "FeatureToggle"
+    
+    let fs = sut.Select pattern
 
-    [<Fact>]
-    let ``Select with "FeatureToggle" SHOULD return 2 features starting with "FeatureToggle"``() =
-        let pattern = "FeatureToggle"
-        let fs = sut.Select pattern
-
-        Assert.Equal(fs.Length, 2)
-        fs |> List.filter (fun fc -> not(fc.Feature.StartsWith pattern))
-           |> Assert.Empty
-
-    interface IDisposable with
-        member this.Dispose() =
-            File.Delete( destFileName )
+    fs |> should haveLength 2
+    fs |> List.forall (featureNameStartsWith pattern)
+        |> should be True

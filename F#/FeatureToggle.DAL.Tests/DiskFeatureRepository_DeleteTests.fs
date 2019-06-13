@@ -1,14 +1,14 @@
-﻿namespace DiskFeatureRepository_UnitTests
+﻿namespace DeleteTests
 
 open System
 open Xunit
 open System.IO
 open FeatureToggle.Definitions
-open FeatureToggle.DAL
 open AutoFixture
 open System.Collections.Generic
 open FeatureToggle.DAL.DiskStorage
 open FeatureToggle.DAL.DiskFeatureRepository
+open FsUnit.Xunit
 
 type Delete() =
 
@@ -28,15 +28,15 @@ type Delete() =
 
         let fs = sut.Delete featureName
 
-        Assert.Equal(fs.Length, 3)
-        fs |> List.filter (fun fc -> fc.Feature.StartsWith featureName) 
-           |> Assert.Empty
+        fs |> should haveLength 3
+        fs |> List.forall (featureNameDoesNotStartWith featureName)
+           |> should be True
 
     [<Fact>]
     let ``Delete non exisiting feature SHOULD throw exception``() =
         let featureName = fixture.Create<string>()
         ( fun () -> sut.Delete featureName |> ignore )
-            |> Assert.Throws<KeyNotFoundException>
+            |> should throw typeof<KeyNotFoundException>
 
     [<Fact>]
     let ``Delete feature SHOULD be persisted immediately``() =
@@ -47,9 +47,9 @@ type Delete() =
         let repo = initSUT destFileName
         let fs = repo.Select ""
 
-        Assert.Equal(fs.Length, 3)
-        fs |> List.filter (fun fc -> fc.Feature.StartsWith featureName)
-           |> Assert.Empty
+        fs |> should haveLength 3
+        fs |> List.forall (featureNameDoesNotStartWith featureName)
+           |> should be True
 
     interface IDisposable with
         member this.Dispose() =
