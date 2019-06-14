@@ -2,95 +2,79 @@
 
 open System
 open Xunit
-open System.IO
 open FeatureToggle.Definitions
 open FeatureToggle.DAL.DiskFeatureRepository
 open AutoFixture
 open FsUnit.Xunit
-open FeatureToggle.DAL
 
-type Set() =
+let fixture = Fixture()
     
-    let fixture = Fixture()
+let initSUT = createRepository TestData.goodDataRepo
     
-    let srcFileName = "Test.json"
-    let destFileName = fixture.Create<string>() + ".json"
-    do File.Copy(srcFileName, destFileName, true)
+let sut = initSUT
 
-    let initSUT filename =
-        //createRepository TestData.goodDataRepo
-        createRepository (DiskStorage.createDiskStoreage  (FeaturesFileConfiguration(filename)))
-    
-    let sut = initSUT destFileName
+[<Theory>]
+[<InlineData "">]
+[<InlineData null>]
+let ``Set with invalid feature name SHOULD throw exception`` featureName =
+    let value = fixture.Create<string>()
+    (fun () -> (sut.Set featureName value) |> ignore)
+        |> should throw typeof<ArgumentException>
 
-    [<Theory>]
-    [<InlineData "">]
-    [<InlineData null>]
-    let ``Set with invalid feature name SHOULD throw exception`` featureName =
-        let value = fixture.Create<string>()
-        (fun () -> (sut.Set featureName value) |> ignore)
-            |> should throw typeof<ArgumentException>
-
-    [<Fact>]
-    let ``Set for an existing feature SHOULD not change number of features``() =
-        let featureName = "OtherRoot.Font"
-        let origCount = sut.Select("").Length
+[<Fact>]
+let ``Set for an existing feature SHOULD not change number of features``() =
+    let origCount = "" |> sut.Select |> List.length
         
-        let fs = sut.Set featureName (fixture.Create<string>())
+    let fs = sut.Set "OtherFont.Root" (fixture.Create<string>())
 
-        fs |> should haveLength origCount
+    fs |> should haveLength origCount
 
-    [<Fact>]
-    let ``Set of an exisiting feature SHOULD contain the same features``() =
-        let featureName = "OtherRoot.Font"
+[<Fact>]
+let ``Set of an exisiting feature SHOULD contain the same features``() =
+    let extractFeatureNames = List.map (fun f -> f.Feature)
+    let expectedFeatures = "" |> sut.Select |> extractFeatureNames
 
-        let extractFeatureNames(list:FeatureConfiguration list) =
-            list |> List.map (fun f -> f.Feature)
-        
-        let expectedFeatures = sut.Select("") |> extractFeatureNames
+    let fs = sut.Set "OtherFont.Root" (fixture.Create<string>())
 
-        let fs = sut.Set featureName (fixture.Create<string>())
+    let actualFeatures = fs |> extractFeatureNames
+    actualFeatures |> should equal expectedFeatures
 
-        let actualFeatures = fs |> extractFeatureNames
+[<Fact>]
+let ``Set of an exisiting feature SHOULD change the value of the feature``() =
+    let featureName = "OtherFont.Root"
+    let newValue = fixture.Create<string>()
 
-        actualFeatures |> should equal expectedFeatures
+    let fs = sut.Set featureName newValue
 
-    [<Fact>]
-    let ``Set SHOULD be persisted immediately``() =
-        let featureName = "OtherRoot.Font"
-        let newValue = fixture.Create<string>()
+    fs |> should contain {Feature = featureName; Value = newValue}
 
-        sut.Set featureName newValue |> ignore
+[<Fact>]
+let ``Set SHOULD be persisted immediately``() =
+    let featureName = "OtherRoot.Font"
+    let newValue = fixture.Create<string>()
 
-        let repo = initSUT destFileName
-        let fs = repo.Select featureName
+    sut.Set featureName newValue |> ignore
 
-        fs |> should haveLength 1
-        fs.Head.Value
-            |> should equal newValue
+    let repo = initSUT
+    let fs = repo.Select featureName
+
+    fs |> should equal [{Feature = featureName; Value = newValue}]
   
-    [<Fact>]
-    let ``Set of a new feature SHOULD add one new feature``() =
-        let originalCount = sut.Select("").Length
-        let featureName = fixture.Create<string>()
-        let newValue = fixture.Create<string>()
+[<Fact>]
+let ``Set of a new feature SHOULD add one new feature``() =
+    let originalCount = sut.Select("").Length
+    let featureName = fixture.Create<string>()
+    let newValue = fixture.Create<string>()
 
-        let fs = sut.Set featureName newValue
+    let fs = sut.Set featureName newValue
 
-        fs |> should haveLength (originalCount + 1)
+    fs |> should haveLength (originalCount + 1)
 
-    [<Fact>]
-    let ``Set of a new feature SHOULD add the new feature``() = 
-        let featureName = fixture.Create<string>()
-        let newValue = fixture.Create<string>()
+[<Fact>]
+let ``Set of a new feature SHOULD add the new feature``() = 
+    let featureName = fixture.Create<string>()
+    let newValue = fixture.Create<string>()
 
-        let fs = sut.Set featureName newValue
+    let actual = sut.Set featureName newValue
 
-        let actual = sut.Select(featureName)
-
-        actual |> should haveLength 1
-        actual.Head |> should equal {Feature = featureName; Value = newValue}
-
-    interface IDisposable with
-        member this.Dispose() =
-            File.Delete( destFileName )
+    actual |> should contain {Feature = featureName; Value = newValue}

@@ -1,30 +1,22 @@
 ﻿namespace DeleteTests
 
-open System
 open Xunit
-open System.IO
-open FeatureToggle.Definitions
 open AutoFixture
 open System.Collections.Generic
-open FeatureToggle.DAL.DiskStorage
 open FeatureToggle.DAL.DiskFeatureRepository
 open FsUnit.Xunit
+open TestData
 
 type Delete() =
 
     let fixture = Fixture()
-    let srcFileName = "Test.json"
-    let destFileName = fixture.Create<string>() + ".json"
-    do File.Copy(srcFileName, destFileName, true)
 
-    let initSUT filename =
-        createRepository (createDiskStoreage  (FeaturesFileConfiguration(filename)))
-
-    let sut = initSUT destFileName
+    let initSUT  = createRepository goodDataRepo
+    let sut = initSUT
 
     [<Fact>]
     let ``Delete exisiting feature SHOULD remove the feature``() =
-        let featureName = "OtherRoot.Font"
+        let featureName = "OtherFont.Root"
 
         let fs = sut.Delete featureName
 
@@ -39,16 +31,12 @@ type Delete() =
 
     [<Fact>]
     let ``Delete feature SHOULD be persisted immediately``() =
-        let featureName = "OtherRoot.Font"
+        let featureName = "OtherFont.Root"
 
         let _ = sut.Delete featureName
 
-        let repo = initSUT destFileName
+        let repo = initSUT
         let fs = repo.Select ""
 
         fs |> should haveLength 3
         fs |> should containNothingStartingWith featureName
-
-    interface IDisposable with
-        member this.Dispose() =
-            File.Delete( destFileName )

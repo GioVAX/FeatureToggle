@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="Test.json">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Compile Include="TestData.fs" />
     <Compile Include="Commons.fs" />
     <Compile Include="DiskFeatureRepository_DeleteTests.fs" />

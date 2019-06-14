@@ -7,10 +7,10 @@ open DiskStorage
 
 module DiskFeatureRepository =
 
-    let private splitAt f =
+    let private splitWhen pred =
         let rec loop acc = function
-            | [] -> List.rev acc,[]
-            | x::xs when f x -> List.rev acc, x::xs
+            | [] -> None
+            | x::xs when pred x -> Some (List.rev acc, x::xs)
             | x::xs -> loop (x::acc) xs
         loop []
 
@@ -25,10 +25,10 @@ module DiskFeatureRepository =
     let private IRepository_Delete storage featureName =
         let features = storage.readFile()
         
-        let split = features |> splitAt (matches featureName)
+        let split = features |> splitWhen (matches featureName)
         let newFeatures = match split with
-                            | list,[] -> raise (KeyNotFoundException "FeatureName not found")
-                            | first, last -> List.concat [first; List.tail last]
+                            | None -> raise (KeyNotFoundException "FeatureName not found")
+                            | Some (first, last) -> List.concat [first; List.tail last]
 
         storage.writeFile newFeatures
         newFeatures
@@ -38,10 +38,10 @@ module DiskFeatureRepository =
         | "" | null -> raise (ArgumentException "FeatureName cannot be empty")
         | _ ->  
             let features = storage.readFile()
-            let split = features |> splitAt (matches featureName)
+            let split = features |> splitWhen (matches featureName)
             let newFeatures = match split with
-                                | list,[] -> {Feature = featureName; Value = newValue}::list
-                                | first, last -> List.concat [first; [ {List.head last with Value = newValue}]; List.tail last]
+                                | None -> {Feature = featureName; Value = newValue}::features
+                                | Some (first, head::tail) -> List.concat [first; [ {head with Value = newValue}]; tail]
             storage.writeFile newFeatures
             newFeatures
 

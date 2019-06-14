@@ -10,9 +10,11 @@ let goodFeatures = [
     { Feature="Boolean.Value"; Value ="false" } 
 ]
 
+let mutable private features = goodFeatures
+
 let goodDataRepo = {
-    readFile = fun () -> goodFeatures
-    writeFile = fun _ -> ()
+    readFile = fun () -> features
+    writeFile = fun newFeatures -> features <- newFeatures  
 }
 
 let notExistingRepo = { 
