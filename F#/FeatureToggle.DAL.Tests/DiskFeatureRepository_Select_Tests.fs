@@ -1,14 +1,12 @@
 ﻿module SelectTests
 
 open Xunit
-open FeatureToggle.Definitions
-open FeatureToggle.DAL.DiskStorage
 open FeatureToggle.DAL.DiskFeatureRepository
 open FsUnit.Xunit
-//open Test_Commons
+open TestData
 
 let private initSUT filename =
-    createRepository (createDiskStoreage (FeaturesFileConfiguration(filename)))
+    createRepository goodDataRepo
 
 let private sut = initSUT "Test.json"
 
