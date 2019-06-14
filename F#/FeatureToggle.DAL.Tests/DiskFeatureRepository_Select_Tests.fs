@@ -17,8 +17,7 @@ let ``Select with no Pattern SHOULD return 4 valid features``() =
     let fs = sut.Select ""
 
     fs |> should haveLength 4
-    fs |> List.forall featureIsValid
-        |> should be True
+    fs |> should only containValidFeatures
 
 [<Fact>]
 let ``Select with "FeatureToggle" SHOULD return 2 features starting with "FeatureToggle"``() =
@@ -27,5 +26,4 @@ let ``Select with "FeatureToggle" SHOULD return 2 features starting with "Featur
     let fs = sut.Select pattern
 
     fs |> should haveLength 2
-    fs |> List.forall (featureNameStartsWith pattern)
-        |> should be True
+    fs |> should only (containStartingWith pattern)

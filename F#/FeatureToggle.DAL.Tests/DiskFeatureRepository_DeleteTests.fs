@@ -29,8 +29,7 @@ type Delete() =
         let fs = sut.Delete featureName
 
         fs |> should haveLength 3
-        fs |> List.forall (featureNameDoesNotStartWith featureName)
-           |> should be True
+        fs |> should containNothingStartingWith featureName
 
     [<Fact>]
     let ``Delete non exisiting feature SHOULD throw exception``() =
@@ -42,14 +41,13 @@ type Delete() =
     let ``Delete feature SHOULD be persisted immediately``() =
         let featureName = "OtherRoot.Font"
 
-        sut.Delete featureName |> ignore
+        let _ = sut.Delete featureName
 
         let repo = initSUT destFileName
         let fs = repo.Select ""
 
         fs |> should haveLength 3
-        fs |> List.forall (featureNameDoesNotStartWith featureName)
-           |> should be True
+        fs |> should containNothingStartingWith featureName
 
     interface IDisposable with
         member this.Dispose() =
